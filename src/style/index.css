@@ -1,5 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
 
+:root {
+    --background: rgb(7, 8, 29);
+    --border: rgb(9, 33, 50);
+    --highlight: rgb(66, 182, 230);
+    --highlight2: rgb(51, 141, 205);
+    --line: rgb(40, 43, 105);
+    --subline: rgb(60, 63, 122);
+
+    --color: white;
+    --font-family: "Lato";
+
+    --d3fc-gradient: linear-gradient(
+            #000080,
+            #7d007e,
+            #c0006f,
+            #f10057,
+            #ff473b,
+            #ff8a0b,
+            #ffc600,
+            #ffff00
+        );
+}
+
 #main, .modal-background {
     position: absolute;
     top: 0;
@@ -13,23 +36,31 @@
     flex-direction: column;
 }
 
+.header,
 .footer {
-    background: rgb(7, 8, 29) !important;
-    color: white;
-    border-top: 1px solid rgb(9, 33, 50);
+    background: var(--background) !important;
+    color: var(--color);
     display: flex;
     flex-direction: row;
     align-content: space-between;
     align-items: center;
     justify-content: space-between;
     height: 30px;
-    font-family: "Lato";
+    font-family: var(--font-family);
     padding: 10px;
 }
 
+.header {
+    border-bottom: 1px solid var(--border);
+}
+
+.footer {
+    border-top: 1px solid var(--border);
+}
+
 .footer path {
-    stroke: rgb(66, 182, 230);
-    fill: rgb(66, 182, 230);
+    stroke: var(--highlight);
+    fill: var(--highlight);
     transition: stroke 0.5s, fill 0.5s;
 }
 
@@ -40,11 +71,11 @@
 }
 
 .footer-meta a:hover, .footer-meta a:hover:visited {
-    color: white;
+    color: var(--color);
 }
 
 .footer-meta a, .footer-meta a:visited {
-    color: rgb(66, 182, 230);
+    color: var(--highlight);
     transition: color 0.5s;
 }
 
@@ -54,20 +85,20 @@
 }
 
 .footer #github-link:hover path {
-    stroke: white;
-    fill: white;
+    stroke: var(--color);
+    fill: var(--color);
 }
 
 .footer-meta p {
-    color: white;
+    color: var(--color);
     margin-left: 10px;
     margin-right: 10px;
 }
 
 #reset_config {
     background: transparent;
-    border: 1px solid rgb(9, 33, 50);
-    color: rgb(66, 182, 230);
+    border: 1px solid var(--border);
+    color: var(--highlight);
     font-family: 'Lato' !important;
     font-size: 11px;
     padding: 10px;
@@ -76,20 +107,20 @@
 
 #reset_config:hover {
     /* background: #eaeaea; */
-    border-color: rgb(66, 182, 230);
-    color: rgb(66, 182, 230);
+    border-color: var(--highlight);
+    color: var(--highlight);
 }
 
 a.data-permalink {
-    color: rgb(51, 141, 205);
+    color: var(--highlight2);
 }
 
 a.data-permalink:visited {
-    color: rgb(51, 141, 205);
+    color: var(--highlight2);
 }
 
 custom-datagrid regular-table {
-    font-family: "Lato";
+    font-family: var(--font-family);
 }
 
 custom-datagrid regular-table td {
@@ -105,7 +136,7 @@ perspective-viewer.workspace-master-widget custom-datagrid regular-table tbody t
 }
 
 #progress {
-    background: rgb(7, 8, 29);
+    background: var(--background);
     position: absolute;
     top: 0;
     left: 0;
@@ -130,14 +161,14 @@ perspective-viewer.workspace-master-widget custom-datagrid regular-table tbody t
 .line {
     position: absolute;
     opacity: 0.4;
-    background: rgb(40, 43, 105);
+    background: var(--line);
     width: 150%;
     height: 5px;
 }
 
 .subline {
     position: absolute;
-    background: rgb(60, 63, 122);
+    background: var(--subline);
     height: 5px;
 }
 
@@ -204,9 +235,9 @@ td.is-timestamp:not(.psp-is-width-override) {
 }
 
 regular-table {
-    --pp-color-1: rgb(9, 33, 50);
-    --pp-color-2: rgb(66, 182, 230);
-    --rt-pos-cell--color: rgb(66, 182, 230) !important;
+    --pp-color-1: var(--border);
+    --pp-color-2: var(--highlight);
+    --rt-pos-cell--color: var(--highlight) !important;
 }
 
 regular-table td, th {
@@ -216,49 +247,20 @@ regular-table td, th {
 perspective-viewer.workspace-detail-widget {
     --inactive--color: rgb(19, 33, 50) !important;
     --plugin--border: 1px solid rgb(19, 33, 50) !important;
-    --plugin--background: rgb(7, 8, 29) !important;
-    background: rgb(7, 8, 29) !important;
+    --plugin--background: var(--background) !important;
+    background: var(--background) !important;
 }
 
 perspective-viewer {
     font-family: 'Lato' !important;
-    --d3fc-positive--gradient: linear-gradient(
-        #000080,
-        #7d007e,
-        #c0006f,
-        #f10057,
-        #ff473b,
-        #ff8a0b,
-        #ffc600,
-        #ffff00
-    ) !important;
-
-    --d3fc-negative--gradient: linear-gradient(
-        #000080,
-        #7d007e,
-        #c0006f,
-        #f10057,
-        #ff473b,
-        #ff8a0b,
-        #ffc600,
-        #ffff00
-    ) !important;
-
-    --d3fc-full--gradient: linear-gradient(
-        #000080,
-        #7d007e,
-        #c0006f,
-        #f10057,
-        #ff473b,
-        #ff8a0b,
-        #ffc600,
-        #ffff00
-    ) !important;
+    --d3fc-positive--gradient: var(---d3fc-gradient) !important;
+    --d3fc-negative--gradient: var(---d3fc-gradient) !important;
+    --d3fc-full--gradient: var(---d3fc-gradient) !important;
 }
 
 perspective-workspace {
-    background: rgb(7, 8, 29) !important;
-    --workspace-tabbar--background-color: rgb(7, 8, 29) !important;
-    --workspace-tabbar--border-color: rgb(9, 33, 50) !important;
-    --workspace-tabbar--border: 1px solid rgb(9, 33, 50) !important;
+    background: var(--background) !important;
+    --workspace-tabbar--background-color: var(--background) !important;
+    --workspace-tabbar--border-color: var(--border) !important;
+    --workspace-tabbar--border: 1px solid var(--border) !important;
 }
