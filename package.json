@@ -20,6 +20,8 @@
     "@finos/perspective-workspace": "^1.0.8",
     "@polygon.io/client-js": "^4.0.3",
     "chroma-js": "^2.1.2",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-autosuggest": "^10.1.0",
     "react-dom": "^17.0.2"

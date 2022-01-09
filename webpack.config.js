@@ -42,5 +42,16 @@ module.exports = {
   },
   devServer: {
     static: [{directory: path.join(__dirname, "dist")}, {directory: path.join(__dirname, "./static")}],
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+      "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization",
+    },
+    proxy: {
+      "/logos": {
+        target: "https://s3.polygon.io",
+        changeOrigin: true,
+      },
+    },
   },
 };

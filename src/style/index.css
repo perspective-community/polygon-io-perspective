@@ -13,6 +13,7 @@
     --color: white;
     --font-family: "Lato";
 
+    --perspective-accent: rgba(163, 162, 255, .4);
     --d3fc-gradient: linear-gradient(
             #000080,
             #7d007e,
@@ -317,17 +318,17 @@ regular-table td, th {
 }
 
 perspective-viewer.workspace-detail-widget {
-    --inactive--color: rgb(19, 33, 50) !important;
-    --plugin--border: 1px solid rgb(19, 33, 50) !important;
+    --inactive--color: var(--perspective-accent) !important;
+    --plugin--border: 1px solid var(--perspective-accent) !important;
     --plugin--background: var(--background) !important;
     background: var(--background) !important;
 }
 
 perspective-viewer {
     font-family: 'Lato' !important;
-    --d3fc-positive--gradient: var(---d3fc-gradient) !important;
-    --d3fc-negative--gradient: var(---d3fc-gradient) !important;
-    --d3fc-full--gradient: var(---d3fc-gradient) !important;
+    --d3fc-positive--gradient: var(--d3fc-gradient) !important;
+    --d3fc-negative--gradient: var(--d3fc-gradient) !important;
+    --d3fc-full--gradient: var(--d3fc-gradient) !important;
 }
 
 perspective-workspace {

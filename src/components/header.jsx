@@ -1,19 +1,18 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState} from "react";
 import Autosuggest from "react-autosuggest";
 
 import {getReferenceData} from "../data";
-import layout1 from "../layouts/layout1.json";
 
 function Header(props) {
-  // set API Key
-  const {changeApiKey, apiClients} = props;
+  // store ticker and layouts in parent element state
+  const {layouts} = props;
 
-  // layout
-  const [layout, changeLayout] = useState(layout1);
+  // pass state modifiers in
+  const {changeTicker, changeLayout, changeApiKey} = props;
 
   // search bar state
-  const [value, changeValue] = useState("");
   const [suggestions, changeSuggestions] = useState([]);
+  const [value, changeValue] = useState("");
 
   // Autosuggest will call this function every time you need to update suggestions.
   const onSuggestionsFetchRequested = async ({value: searchValue}) => {
@@ -29,12 +28,6 @@ function Header(props) {
       <span className="pl10">{suggestion.primary_exchange}</span>
     </div>
   );
-
-  // restore layout when it changes
-  useEffect(() => {
-    const workspace = document.getElementsByTagName("perspective-workspace")[0];
-    workspace.restore(layout);
-  }, [layout]);
 
   // Autosuggest will pass through all these props to the input.
   const inputProps = {
@@ -52,15 +45,18 @@ function Header(props) {
           suggestions={suggestions}
           onSuggestionsFetchRequested={onSuggestionsFetchRequested}
           onSuggestionsClearRequested={() => changeSuggestions([])}
+          onSuggestionSelected={() => changeTicker(value)}
           getSuggestionValue={(suggestion) => suggestion.ticker}
           renderSuggestion={renderSuggestion}
           inputProps={inputProps}
         />
       </div>
-      <select className="layout_config" onChange={(e) => changeLayout(e.target.value)}>
-        <option value={layout1}>Layout 1</option>
-        <option value={layout1}>Layout 2</option>
-        <option value={layout1}>Layout 3</option>
+      <select className="layout_config" onChange={(e) => {console.log(JSON.stringify(e.target.value)); changeLayout(layouts[e.target.value]);}}>
+        {Object.keys(layouts).map((k) => (
+          <option key={k} value={k}>
+            {k}
+          </option>
+        ))}
       </select>
     </div>
   );
