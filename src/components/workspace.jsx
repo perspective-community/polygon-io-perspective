@@ -1,5 +1,4 @@
 import React, {useEffect, useRef} from "react";
-import {uniqBy} from "lodash";
 
 function Workspace(props) {
   const {tables, layout} = props;
@@ -33,7 +32,7 @@ function Workspace(props) {
 
         // update layouts state overriding the custom one
         if (layouts.length > 0) {
-          changeLayouts(uniqBy([{name: "Custom Layout", layout: modifiedConfig}, ...layouts], (datum) => datum.name));
+          changeLayouts({...layouts, "Custom Layout": modifiedConfig});
         }
       });
     }

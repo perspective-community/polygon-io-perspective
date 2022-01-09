@@ -17,17 +17,6 @@ function getBase64Image(img) {
   return canvas.toDataURL("image/png");
 }
 
-const convertBlobToBase64 = (blob) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onerror = reject;
-    reader.onload = () => {
-      console.log(blob, reader.result);
-      resolve(reader.result);
-    };
-    reader.readAsDataURL(blob);
-  });
-
 function make_image(td, metadata, cache, clean_name) {
   td.style.background = "";
   td.style.border = ``;
