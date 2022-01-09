@@ -1,7 +1,8 @@
 /* eslint-disable no-param-reassign */
 const CACHE = {};
 
-const isDevServer = window.location.host.indexOf("localhost") >= 0;
+// const isDevServer = window.location.host.indexOf("localhost") >= 0;
+const isDevServer = false;
 if (isDevServer) {
   console.info("running in dev mode");
 }
@@ -16,6 +17,17 @@ function getBase64Image(img) {
   return canvas.toDataURL("image/png");
 }
 
+const convertBlobToBase64 = (blob) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = () => {
+      console.log(blob, reader.result);
+      resolve(reader.result);
+    };
+    reader.readAsDataURL(blob);
+  });
+
 function make_image(td, metadata, cache, clean_name) {
   td.style.background = "";
   td.style.border = ``;
@@ -27,6 +39,10 @@ function make_image(td, metadata, cache, clean_name) {
     const link = metadata.value;
     const span = document.createElement("span");
     const img = document.createElement("img");
+
+    // omit
+    // img.setAttribute("crossorigin", "anonymous");
+
     img.onload = () => {
       img.onload = undefined;
       const data = getBase64Image(img);
@@ -37,7 +53,7 @@ function make_image(td, metadata, cache, clean_name) {
       // now set data
       img.src = data;
     };
-    img.setAttribute("crossorigin", "anonymous");
+
     if (isDevServer) {
       // proxy
       img.setAttribute("src", link.replace("https://s3.polygon.io", ""));
@@ -75,15 +91,13 @@ function clone_img_cache() {
   }, {});
 }
 
-class CustomDatagridPlugin extends customElements.get(
-  "perspective-viewer-datagrid"
-) {
+class CustomDatagridPlugin extends customElements.get("perspective-viewer-datagrid") {
   get name() {
     return "Custom Datagrid";
   }
 
   async styleListener() {
-    const { datagrid } = this;
+    const {datagrid} = this;
     if (this._dirty) {
       await this.refresh_cache();
     }
@@ -126,7 +140,7 @@ class CustomDatagridPlugin extends customElements.get(
     this._dirty = true;
     if (!this._custom_initialized) {
       const viewer = this.parentElement;
-      const { datagrid } = this;
+      const {datagrid} = this;
       this._max = -Infinity;
       await this.refresh_cache(view);
       const table = await viewer.getTable(true);
@@ -142,11 +156,6 @@ class CustomDatagridPlugin extends customElements.get(
   }
 }
 
-customElements.define(
-  "perspective-viewer-custom-datagrid",
-  CustomDatagridPlugin
-);
+customElements.define("perspective-viewer-custom-datagrid", CustomDatagridPlugin);
 
-customElements
-  .get("perspective-viewer")
-  .registerPlugin("perspective-viewer-custom-datagrid");
+customElements.get("perspective-viewer").registerPlugin("perspective-viewer-custom-datagrid");
