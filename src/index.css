@@ -1,0 +1,264 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+#main, .modal-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer {
+    background: rgb(7, 8, 29) !important;
+    color: white;
+    border-top: 1px solid rgb(9, 33, 50);
+    display: flex;
+    flex-direction: row;
+    align-content: space-between;
+    align-items: center;
+    justify-content: space-between;
+    height: 30px;
+    font-family: "Lato";
+    padding: 10px;
+}
+
+.footer path {
+    stroke: rgb(66, 182, 230);
+    fill: rgb(66, 182, 230);
+    transition: stroke 0.5s, fill 0.5s;
+}
+
+.footer-meta {
+    display: flex;
+    font-size: 12px;
+    align-items: center;
+}
+
+.footer-meta a:hover, .footer-meta a:hover:visited {
+    color: white;
+}
+
+.footer-meta a, .footer-meta a:visited {
+    color: rgb(66, 182, 230);
+    transition: color 0.5s;
+}
+
+#github-link {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.footer #github-link:hover path {
+    stroke: white;
+    fill: white;
+}
+
+.footer-meta p {
+    color: white;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#reset_config {
+    background: transparent;
+    border: 1px solid rgb(9, 33, 50);
+    color: rgb(66, 182, 230);
+    font-family: 'Lato' !important;
+    font-size: 11px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+#reset_config:hover {
+    /* background: #eaeaea; */
+    border-color: rgb(66, 182, 230);
+    color: rgb(66, 182, 230);
+}
+
+a.data-permalink {
+    color: rgb(51, 141, 205);
+}
+
+a.data-permalink:visited {
+    color: rgb(51, 141, 205);
+}
+
+custom-datagrid regular-table {
+    font-family: "Lato";
+}
+
+custom-datagrid regular-table td {
+    font-size: 16px;
+}
+
+custom-datagrid regular-table tbody tr {
+    height: 50px !important;
+}
+
+perspective-viewer.workspace-master-widget custom-datagrid regular-table tbody tr:first-of-type {
+    height: auto !important;
+}
+
+#progress {
+    background: rgb(7, 8, 29);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100000;
+}
+
+.slider {
+    position: absolute;
+    width: 250px;
+    height: 10px;
+    overflow-x: hidden;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -125px;
+    margin-top: -5px;
+    z-index: 1000000;
+}
+
+.line {
+    position: absolute;
+    opacity: 0.4;
+    background: rgb(40, 43, 105);
+    width: 150%;
+    height: 5px;
+}
+
+.subline {
+    position: absolute;
+    background: rgb(60, 63, 122);
+    height: 5px;
+}
+
+.inc {
+    animation: increase 2s infinite;
+}
+
+.dec {
+    animation: decrease 2s 0.5s infinite;
+}
+
+@keyframes increase {
+    from {
+        left: -5%;
+        width: 5%;
+    }
+
+    to {
+        left: 130%;
+        width: 100%;
+    }
+}
+
+@keyframes decrease {
+    from {
+        left: -80%;
+        width: 80%;
+    }
+
+    to {
+        left: 110%;
+        width: 10%;
+    }
+}
+
+perspective-viewer.workspace-detail-widget regular-table table tbody tr td, 
+perspective-viewer.workspace-detail-widget regular-table table tbody tr th {
+    border-top-color: var(--pp-color-1) !important;
+    /* border-top-color: rgb(173, 228, 246) !important; */
+}
+
+perspective-viewer.workspace-detail-widget regular-table table tbody th:empty {
+    background: linear-gradient(to right, transparent 9px, var(--pp-color-1) 10px, transparent 11px) !important;
+    background-repeat: no-repeat;
+    background-position: 0px -10px;
+}
+
+.is-timestamp:not(.psp-is-width-override) {
+    max-width: 120px !important;
+    min-width: 120px !important;
+    width: 120px !important;
+}
+
+td canvas {
+    margin-bottom: -4px;
+}
+
+td.penguin-canvas {
+    padding: 0px;
+}
+
+td.is-timestamp:not(.psp-is-width-override) {
+    white-space: break-spaces;
+}
+
+regular-table {
+    --pp-color-1: rgb(9, 33, 50);
+    --pp-color-2: rgb(66, 182, 230);
+    --rt-pos-cell--color: rgb(66, 182, 230) !important;
+}
+
+regular-table td, th {
+    --rt-hover--border-color: var(--pp-color-1) !important;
+}
+
+perspective-viewer.workspace-detail-widget {
+    --inactive--color: rgb(19, 33, 50) !important;
+    --plugin--border: 1px solid rgb(19, 33, 50) !important;
+    --plugin--background: rgb(7, 8, 29) !important;
+    background: rgb(7, 8, 29) !important;
+}
+
+perspective-viewer {
+    font-family: 'Lato' !important;
+    --d3fc-positive--gradient: linear-gradient(
+        #000080,
+        #7d007e,
+        #c0006f,
+        #f10057,
+        #ff473b,
+        #ff8a0b,
+        #ffc600,
+        #ffff00
+    ) !important;
+
+    --d3fc-negative--gradient: linear-gradient(
+        #000080,
+        #7d007e,
+        #c0006f,
+        #f10057,
+        #ff473b,
+        #ff8a0b,
+        #ffc600,
+        #ffff00
+    ) !important;
+
+    --d3fc-full--gradient: linear-gradient(
+        #000080,
+        #7d007e,
+        #c0006f,
+        #f10057,
+        #ff473b,
+        #ff8a0b,
+        #ffc600,
+        #ffff00
+    ) !important;
+}
+
+perspective-workspace {
+    background: rgb(7, 8, 29) !important;
+    --workspace-tabbar--background-color: rgb(7, 8, 29) !important;
+    --workspace-tabbar--border-color: rgb(9, 33, 50) !important;
+    --workspace-tabbar--border: 1px solid rgb(9, 33, 50) !important;
+}
