@@ -1,62 +1,22 @@
 /* eslint-disable no-param-reassign */
-const CACHE = {};
 
-// const isDevServer = window.location.host.indexOf("localhost") >= 0;
-const isDevServer = false;
-if (isDevServer) {
-  console.info("running in dev mode");
-}
-
-function getBase64Image(img) {
-  const canvas = document.createElement("canvas");
-  canvas.width = img.width;
-  canvas.height = img.height;
-  const ctx = canvas.getContext("2d");
-  ctx.drawImage(img, 0, 0);
-
-  return canvas.toDataURL("image/png");
-}
-
-function make_image(td, metadata, cache, clean_name) {
+function make_image(td, metadata) {
   td.style.background = "";
   td.style.border = ``;
-  if (cache[clean_name] && cache[clean_name].length > 0) {
-    const name = metadata.value;
-    td.textContent = "";
-    td.appendChild(cache[name].pop());
-  } else {
-    const link = metadata.value;
-    const span = document.createElement("span");
-    const img = document.createElement("img");
+  const link = metadata.value;
+  const span = document.createElement("span");
+  const img = document.createElement("img");
+  img.style.maxHeight = "50px";
+  img.style.maxWidth = "100px";
 
-    // omit
-    // img.setAttribute("crossorigin", "anonymous");
+  // omit
+  // img.setAttribute("crossorigin", "anonymous");
+  // set direct
+  img.setAttribute("src", link);
 
-    img.onload = () => {
-      img.onload = undefined;
-      const data = getBase64Image(img);
-      // set style before data so it doesnt glitch
-      img.style.maxHeight = "50px";
-      img.style.maxWidth = "100px";
-
-      // now set data
-      img.src = data;
-    };
-
-    if (isDevServer) {
-      // proxy
-      img.setAttribute("src", link.replace("https://s3.polygon.io", ""));
-    } else {
-      // set direct
-      img.setAttribute("src", link);
-    }
-
-    td.textContent = "";
-    span.appendChild(img);
-    td.appendChild(span);
-    CACHE[link] = CACHE[link] || [];
-    CACHE[link].push(img);
-  }
+  td.textContent = "";
+  span.appendChild(img);
+  td.appendChild(span);
 }
 
 function make_link(td, clean_name) {
@@ -73,13 +33,6 @@ function make_clear(td) {
   td.style.color = "";
 }
 
-function clone_img_cache() {
-  return Object.keys(CACHE).reduce((obj, key) => {
-    obj[key] = CACHE[key].slice();
-    return obj;
-  }, {});
-}
-
 class CustomDatagridPlugin extends customElements.get("perspective-viewer-datagrid") {
   get name() {
     return "Custom Datagrid";
@@ -91,7 +44,6 @@ class CustomDatagridPlugin extends customElements.get("perspective-viewer-datagr
       await this.refresh_cache();
     }
 
-    const cache = clone_img_cache();
     datagrid.querySelectorAll("td").forEach((td) => {
       const metadata = datagrid.getMeta(td);
 
@@ -106,7 +58,7 @@ class CustomDatagridPlugin extends customElements.get("perspective-viewer-datagr
       const clean_name = metadata.value && metadata.value.trim && metadata.value.trim();
 
       if (column_name === "logo") {
-        make_image(td, metadata, cache, clean_name);
+        make_image(td, metadata);
       } else if (column_name === "url") {
         make_link(td, clean_name);
       } else {
