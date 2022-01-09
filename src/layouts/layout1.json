@@ -1,0 +1,67 @@
+{
+  "sizes": [1],
+  "detail": {
+    "main": {
+      "type": "split-area",
+      "orientation": "horizontal",
+      "children": [
+        {
+          "type": "split-area",
+          "orientation": "vertical",
+          "children": [
+            {
+              "type": "tab-area",
+              "widgets": ["PERSPECTIVE_GENERATED_ID_1"],
+              "currentIndex": 0
+            },
+            {
+              "type": "tab-area",
+              "widgets": ["PERSPECTIVE_GENERATED_ID_2"],
+              "currentIndex": 0
+            }
+          ],
+          "sizes": [0.3, 0.7]
+        }
+      ],
+      "sizes": [1.0]
+    }
+  },
+  "mode": "globalFilters",
+  "viewers": {
+    "PERSPECTIVE_GENERATED_ID_1": {
+      "plugin": "Custom Datagrid",
+      "settings": false,
+      "columns": [
+        "logo",
+        "symbol",
+        "name",
+        "sector",
+        "industry",
+        "type",
+        "tags",
+        "url",
+        "exchange"
+      ],
+      "master": false,
+      "name": "Reference Data",
+      "table": "reference",
+      "linked": false
+    },
+    "PERSPECTIVE_GENERATED_ID_2": {
+      "plugin": "OHLC",
+      "plugin_config": {},
+      "settings": false,
+      "row_pivots": ["datetime"],
+      "column_pivots": ["symbol"],
+      "columns": ["open", "close", "high", "low"],
+      "filter": [],
+      "sort": [["datetime", "asc"]],
+      "expressions": [],
+      "aggregates": {},
+      "master": false,
+      "name": "Daily Data",
+      "table": "bars",
+      "linked": false
+    }
+  }
+}

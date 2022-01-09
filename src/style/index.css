@@ -1,0 +1,339 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+@import "./scrollbar.css";
+
+:root {
+    --background: rgb(13, 13, 13);
+    --background-light: rgb(39, 39, 39);
+    --border: rgba(144, 142, 255, .2);
+    --highlight: rgb(84, 82, 255);
+    --highlight2: rgb(163, 162, 255);
+    --line: rgb(40, 43, 105);
+    --subline: rgb(60, 63, 122);
+
+    --color: white;
+    --font-family: "Lato";
+
+    --perspective-accent: rgba(163, 162, 255, .4);
+    --d3fc-gradient: linear-gradient(
+            #000080,
+            #7d007e,
+            #c0006f,
+            #f10057,
+            #ff473b,
+            #ff8a0b,
+            #ffc600,
+            #ffff00
+        );
+}
+
+/* General */
+ul {
+    list-style-type: none;
+}
+
+#main, .modal-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.monospace {
+    font-family: "SF Mono", "Menlo", monospace, "Monaco", "Source Sans Pro", "Roboto Mono", Consolas;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.pl10 {
+    padding-left: 10px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.header,
+.footer {
+    background: var(--background) !important;
+    color: var(--color);
+    display: flex;
+    flex-direction: row;
+    align-content: space-between;
+    align-items: center;
+    justify-content: space-between;
+    height: 30px;
+    font-family: var(--font-family);
+    padding: 10px;
+}
+
+.header {
+    border-bottom: 1px solid var(--border);
+}
+
+.footer {
+    border-top: 1px solid var(--border);
+}
+
+.footer path {
+    stroke: var(--highlight);
+    fill: var(--highlight);
+    transition: stroke 0.5s, fill 0.5s;
+}
+
+.footer-meta {
+    display: flex;
+    font-size: 12px;
+    align-items: center;
+}
+
+.footer-meta a:hover, .footer-meta a:hover:visited {
+    color: var(--color);
+}
+
+.footer-meta a, .footer-meta a:visited {
+    color: var(--highlight);
+    transition: color 0.5s;
+}
+
+.github-link {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.footer #github-link:hover path {
+    stroke: var(--color);
+    fill: var(--color);
+}
+
+.footer-meta p {
+    color: var(--color);
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.text_input,
+.layout_config {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--highlight);
+    min-width: 200px;
+    font-family: 'Lato' !important;
+    font-size: 11px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.text_input::placeholder {
+    color: var(--highlight);
+    font-family: 'Lato' !important;
+    font-size: 11px;
+}
+
+.ticker_input {
+    z-index: 10000;
+    background: transparent;
+    border: 1px solid var(--border);
+    min-height: 25px;
+    min-width: 250px;
+    color: var(--highlight);
+    font-family: 'Lato' !important;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.ticker_input::placeholder {
+    color: var(--highlight);
+    font-family: 'Lato' !important;
+    font-size: 11px;
+}
+
+.ticker_input_container > div > div > ul {
+    margin: 0px;
+    padding: 5px;
+}
+
+.ticker_input_container > div > div {
+    z-index: 1000;
+    background: var(--background-light);
+    position: absolute;
+    top: 50px;
+    margin: auto;
+    padding: 0;
+}
+
+.ticker_input_results_container {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.ticker_input_results_container:hover {
+    background: var(--background);
+}
+
+.layout_config:hover {
+    /* background: #eaeaea; */
+    border-color: var(--highlight);
+    color: var(--highlight);
+}
+
+a.data-permalink {
+    color: var(--highlight2);
+}
+
+a.data-permalink:visited {
+    color: var(--highlight2);
+}
+
+custom-datagrid regular-table {
+    font-family: var(--font-family);
+}
+
+custom-datagrid regular-table td {
+    font-size: 16px;
+}
+
+custom-datagrid regular-table tbody tr {
+    height: 50px !important;
+}
+
+perspective-viewer.workspace-master-widget custom-datagrid regular-table tbody tr:first-of-type {
+    height: auto !important;
+}
+
+#progress {
+    background: var(--background);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100000;
+}
+
+.slider {
+    position: absolute;
+    width: 250px;
+    height: 10px;
+    overflow-x: hidden;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -125px;
+    margin-top: -5px;
+    z-index: 1000000;
+}
+
+.line {
+    position: absolute;
+    opacity: 0.4;
+    background: var(--line);
+    width: 150%;
+    height: 5px;
+}
+
+.subline {
+    position: absolute;
+    background: var(--subline);
+    height: 5px;
+}
+
+.inc {
+    animation: increase 2s infinite;
+}
+
+.dec {
+    animation: decrease 2s 0.5s infinite;
+}
+
+@keyframes increase {
+    from {
+        left: -5%;
+        width: 5%;
+    }
+
+    to {
+        left: 130%;
+        width: 100%;
+    }
+}
+
+@keyframes decrease {
+    from {
+        left: -80%;
+        width: 80%;
+    }
+
+    to {
+        left: 110%;
+        width: 10%;
+    }
+}
+
+perspective-viewer.workspace-detail-widget regular-table table tbody tr td, 
+perspective-viewer.workspace-detail-widget regular-table table tbody tr th {
+    border-top-color: var(--pp-color-1) !important;
+    /* border-top-color: rgb(173, 228, 246) !important; */
+}
+
+perspective-viewer.workspace-detail-widget regular-table table tbody th:empty {
+    background: linear-gradient(to right, transparent 9px, var(--pp-color-1) 10px, transparent 11px) !important;
+    background-repeat: no-repeat;
+    background-position: 0px -10px;
+}
+
+.is-timestamp:not(.psp-is-width-override) {
+    max-width: 120px !important;
+    min-width: 120px !important;
+    width: 120px !important;
+}
+
+td canvas {
+    margin-bottom: -4px;
+}
+
+td.penguin-canvas {
+    padding: 0px;
+}
+
+td.is-timestamp:not(.psp-is-width-override) {
+    white-space: break-spaces;
+}
+
+regular-table {
+    --pp-color-1: var(--border);
+    --pp-color-2: var(--highlight);
+    --rt-pos-cell--color: var(--highlight) !important;
+}
+
+regular-table td, th {
+    --rt-hover--border-color: var(--pp-color-1) !important;
+}
+
+perspective-viewer.workspace-detail-widget {
+    --inactive--color: var(--perspective-accent) !important;
+    --plugin--border: 1px solid var(--perspective-accent) !important;
+    --plugin--background: var(--background) !important;
+    background: var(--background) !important;
+}
+
+perspective-viewer {
+    font-family: 'Lato' !important;
+    --d3fc-positive--gradient: var(--d3fc-gradient) !important;
+    --d3fc-negative--gradient: var(--d3fc-gradient) !important;
+    --d3fc-full--gradient: var(--d3fc-gradient) !important;
+}
+
+perspective-workspace {
+    background: var(--background) !important;
+    --workspace-tabbar--background-color: var(--background) !important;
+    --workspace-tabbar--border-color: var(--border) !important;
+    --workspace-tabbar--border: 1px solid var(--border) !important;
+}

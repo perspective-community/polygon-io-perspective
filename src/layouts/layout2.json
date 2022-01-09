@@ -1,0 +1,99 @@
+{
+  "sizes": [0.25, 0.75],
+  "detail": {
+    "main": {
+      "type": "split-area",
+      "orientation": "vertical",
+      "children": [
+        {
+          "type": "tab-area",
+          "widgets": ["PERSPECTIVE_GENERATED_ID_0"],
+          "currentIndex": 0
+        },
+        {
+          "type": "tab-area",
+          "widgets": ["PERSPECTIVE_GENERATED_ID_2"],
+          "currentIndex": 0
+        }
+      ],
+      "sizes": [0.3, 0.7]
+    }
+  },
+  "mode": "globalFilters",
+  "master": { "widgets": ["PERSPECTIVE_GENERATED_ID_1"], "sizes": [1] },
+  "viewers": {
+    "PERSPECTIVE_GENERATED_ID_1": {
+      "plugin": "Datagrid",
+      "plugin_config": {},
+      "settings": false,
+      "row_pivots": [],
+      "column_pivots": [],
+      "columns": ["symbol", "name"],
+      "filter": [],
+      "sort": [],
+      "expressions": [],
+      "aggregates": {},
+      "master": true,
+      "name": "Reference Data",
+      "table": "reference",
+      "linked": true,
+      "selectable": ""
+    },
+    "PERSPECTIVE_GENERATED_ID_0": {
+      "plugin": "Custom Datagrid",
+      "plugin_config": {},
+      "settings": false,
+      "row_pivots": [],
+      "column_pivots": [],
+      "columns": [
+        "logo",
+        "symbol",
+        "exchangeSymbol",
+        "name",
+        "industry",
+        "sector",
+        "listdate",
+        "country",
+        "marketcap",
+        "type",
+        "updated",
+        "tags",
+        "similar",
+        "employees",
+        "phone",
+        "ceo",
+        "url",
+        "description",
+        "exchange",
+        "hq_address",
+        "hq_state",
+        "hq_country",
+        "active"
+      ],
+      "filter": [],
+      "sort": [],
+      "expressions": [],
+      "aggregates": {},
+      "master": false,
+      "name": "Reference Data (duplicate)",
+      "table": "reference",
+      "linked": true
+    },
+    "PERSPECTIVE_GENERATED_ID_2": {
+      "plugin": "OHLC",
+      "plugin_config": {},
+      "settings": false,
+      "row_pivots": ["datetime"],
+      "column_pivots": ["symbol"],
+      "columns": ["open", "close", "high", "low"],
+      "filter": [],
+      "sort": [["datetime", "asc"]],
+      "expressions": [],
+      "aggregates": {},
+      "master": false,
+      "name": "Daily Data",
+      "table": "bars",
+      "linked": true
+    }
+  }
+}

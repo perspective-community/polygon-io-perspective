@@ -1,0 +1,44 @@
+[
+  {
+    "ticker": "AAPL",
+    "name": "Apple Inc.",
+    "market": "stocks",
+    "locale": "us",
+    "primary_exchange": "XNAS",
+    "type": "CS",
+    "active": true,
+    "currency_name": "usd",
+    "cik": "0000320193",
+    "composite_figi": "BBG000B9XRY4",
+    "share_class_figi": "BBG001S5N8V8",
+    "last_updated_utc": "2021-12-21T00:00:00Z"
+  },
+  {
+    "ticker": "IBM",
+    "name": "International Business Machines Corporation",
+    "market": "stocks",
+    "locale": "us",
+    "primary_exchange": "XNYS",
+    "type": "CS",
+    "active": true,
+    "currency_name": "usd",
+    "cik": "0000051143",
+    "composite_figi": "BBG000BLNNH6",
+    "share_class_figi": "BBG001S5S399",
+    "last_updated_utc": "2021-12-21T00:00:00Z"
+  },
+  {
+    "ticker": "MSFT",
+    "name": "Microsoft Corp",
+    "market": "stocks",
+    "locale": "us",
+    "primary_exchange": "XNAS",
+    "type": "CS",
+    "active": true,
+    "currency_name": "usd",
+    "cik": "0000789019",
+    "composite_figi": "BBG000BPH459",
+    "share_class_figi": "BBG001S5TD05",
+    "last_updated_utc": "2021-12-21T00:00:00Z"
+  }
+]
