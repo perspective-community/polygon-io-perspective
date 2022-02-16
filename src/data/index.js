@@ -180,7 +180,7 @@ export const getNews = async (symbol) => {
   let rawData;
 
   if (currentClients) {
-    rawData = (await currentClients.rest.reference.tickerNews(symbol)).results;
+    rawData = (await currentClients.rest.reference.tickerNews({ticker: symbol})).results;
   } else {
     rawData = SampleData.news[symbol];
   }
