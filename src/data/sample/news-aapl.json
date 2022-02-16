@@ -1,0 +1,202 @@
+[
+  {
+    "id": "2XrW9SombAccJfk6HA_eszvHbmThYAVv_QAGtzcLOnI",
+    "publisher": {
+      "name": "MarketWatch",
+      "homepage_url": "https://www.marketwatch.com/",
+      "logo_url": "https://s3.polygon.io/public/assets/news/logos/marketwatch.svg",
+      "favicon_url": "https://s3.polygon.io/public/assets/news/favicons/marketwatch.ico"
+    },
+    "title": "‘Companies can no longer look the other way’: Is it time for corporate America to take a stand on abortion?",
+    "author": "MarketWatch",
+    "published_utc": "2022-02-16T20:59:00Z",
+    "article_url": "https://www.marketwatch.com/story/companies-can-no-longer-look-the-other-way-is-it-time-for-corporate-america-to-throw-down-the-gauntlet-on-abortion-11645022034",
+    "tickers": [
+      "SQ",
+      "ZM",
+      "UL",
+      "NFLX",
+      "DIS",
+      "LYFT",
+      "MTCH",
+      "UBER",
+      "AAPL"
+    ],
+    "amp_url": "https://www.marketwatch.com/amp/story/companies-can-no-longer-look-the-other-way-is-it-time-for-corporate-america-to-throw-down-the-gauntlet-on-abortion-11645022034",
+    "image_url": "https://images.mktw.net/im-486905/social",
+    "description": "‘This is not like you can ignore what is a fundamental healthcare-access issue for literally half the population.’"
+  },
+  {
+    "id": "pdMzMh6YCIEO7wPdzo0mtJDsuEz2NgUhB6ePSYyKSSA",
+    "publisher": {
+      "name": "Zacks Investment Research",
+      "homepage_url": "https://www.zacks.com/",
+      "logo_url": "https://s3.polygon.io/public/assets/news/logos/zacks.png",
+      "favicon_url": "https://s3.polygon.io/public/assets/news/favicons/zacks.ico"
+    },
+    "title": "Generac (GNRC) Q4 Earnings & Revenues Top Estimates, Shares Up",
+    "author": "Zacks Equity Research",
+    "published_utc": "2022-02-16T18:20:00Z",
+    "article_url": "https://www.zacks.com/stock/news/1868660/generac-gnrc-q4-earnings-revenues-top-estimates-shares-up",
+    "tickers": ["AAPL", "AVGO", "CDNS", "GNRC"],
+    "amp_url": "https://www.zacks.com/amp/stock/news/1868660/generac-gnrc-q4-earnings-revenues-top-estimates-shares-up",
+    "image_url": "https://staticx-tuner.zacks.com/images/articles/main/bf/827.jpg",
+    "description": "Robust demand for Residential and C&I products drive Generac's (GNRC) fourth-quarter 2021 results."
+  },
+  {
+    "id": "7bIb3vesLfLqRpTOQ5zYwAi34Isardm6iyF69R34wNw",
+    "publisher": {
+      "name": "Benzinga",
+      "homepage_url": "https://www.benzinga.com/",
+      "logo_url": "https://s3.polygon.io/public/assets/news/logos/benzinga.svg",
+      "favicon_url": "https://s3.polygon.io/public/assets/news/favicons/benzinga.ico"
+    },
+    "title": "Here's Why Magnite, Digital Turbine, Trade Desk Shares Are Trading Lower Today",
+    "author": "Anusuya Lahiri",
+    "published_utc": "2022-02-16T18:04:36Z",
+    "article_url": "https://www.benzinga.com/government/22/02/25666388/heres-why-magnite-digital-turbine-trade-desk-shares-are-trading-lower-today",
+    "tickers": ["AAPL", "GOOG", "GOOGL", "APPS", "TTD", "MGNI"],
+    "amp_url": "https://www.benzinga.com/amp/content/25666388",
+    "image_url": "https://cdn.benzinga.com/files/imagecache/og_image_social_share_1200x630/images/story/2012/abtech_3445.png",
+    "description": "Shares of adtech companies fell on Wednesday morning on a report that Alphabet Inc's (NASDAQ: GOOG) (NASDAQ: GOOGL) Google will stop cross-app tracking on Android phones, following a similar move by Apple Inc (NASDAQ: AAPL). \n\"We don't think there should be a forced choice between privacy and developers building their business,\" Anthony Chavez, VP of product management for Android security and privacy, told The Wall Street Journal. \nGoogle has not yet provided details about its plans for how its new systems would work. However, it plans to keep supporting current smartphone identifiers for at least the next two years and give the industry important notice before any changes. \nFollowing the report, Oppenheimer analyst Timothy Horan said ...",
+    "keywords": [
+      "News",
+      "Government",
+      "Regulations",
+      "Small Cap",
+      "Analyst Ratings",
+      "Movers",
+      "Tech",
+      "Media",
+      "Trading Ideas"
+    ]
+  },
+  {
+    "id": "IKTH4bxhFMpMSqvIEJ2BaxZ0GRCpGl5N2o6BfirM-yQ",
+    "publisher": {
+      "name": "Benzinga",
+      "homepage_url": "https://www.benzinga.com/",
+      "logo_url": "https://s3.polygon.io/public/assets/news/logos/benzinga.svg",
+      "favicon_url": "https://s3.polygon.io/public/assets/news/favicons/benzinga.ico"
+    },
+    "title": "Nvidia Aims To Transform The Auto Industry: Why Jim Cramer Is Telling Competitors To Pay Attention",
+    "author": "Adam Eckert",
+    "published_utc": "2022-02-16T16:12:01Z",
+    "article_url": "https://www.benzinga.com/node/25664888",
+    "tickers": ["AAPL", "NVDA", "F", "GM", "TSLA"],
+    "amp_url": "https://www.benzinga.com/amp/content/25664888",
+    "image_url": "https://cdn.benzinga.com/files/images/story/2012/drive-_agx_orin_press.jpg?width=1200&height=800&fit=crop",
+    "description": "NVIDIA Corp (NASDAQ: NVDA) is ramping up its automobile advancement efforts with a newly announced partnership that aims to infuse intelligence technology into the consumers' driving experience.\nWhat Happened: Nvidia and Jaguar Land Rover announced Wednesday that the automaker will develop its upcoming vehicles on the full-stack Nvidia DRIVE Hyperion 8 platform.\nDRIVE Orin will deliver a wide range of active safety, automated driving and parking systems, as well as driver assistance systems built on DRIVE AV software. The system will also deliver AI features inside the vehicle, including driver ...",
+    "keywords": ["Long Ideas", "News", "Previews", "Contracts", "Trading Ideas"]
+  },
+  {
+    "id": "B0kVeFrQQzCGfmFcrhIMd50jwr8o-imm0ibmkCWb9K4",
+    "publisher": {
+      "name": "Zacks Investment Research",
+      "homepage_url": "https://www.zacks.com/",
+      "logo_url": "https://s3.polygon.io/public/assets/news/logos/zacks.png",
+      "favicon_url": "https://s3.polygon.io/public/assets/news/favicons/zacks.ico"
+    },
+    "title": "Is iShares MSCI USA Multifactor ETF (LRGF) a Strong ETF Right Now?",
+    "author": "Zacks Equity Research",
+    "published_utc": "2022-02-16T15:36:42Z",
+    "article_url": "https://www.zacks.com/stock/news/1868501/is-ishares-msci-usa-multifactor-etf-lrgf-a-strong-etf-right-now",
+    "tickers": ["LRGF", "AAPL", "MSFT", "ORCL", "VTV", "IWD"],
+    "amp_url": "https://www.zacks.com/amp/stock/news/1868501/is-ishares-msci-usa-multifactor-etf-lrgf-a-strong-etf-right-now",
+    "image_url": "https://staticx-tuner.zacks.com/images/default_article_images/default27.jpg",
+    "description": "Smart Beta ETF report for LRGF"
+  },
+  {
+    "id": "7VRb8sP-lWzfspqWO8js2lC02lIJkn_XEI1D1UDd4U8",
+    "publisher": {
+      "name": "Zacks Investment Research",
+      "homepage_url": "https://www.zacks.com/",
+      "logo_url": "https://s3.polygon.io/public/assets/news/logos/zacks.png",
+      "favicon_url": "https://s3.polygon.io/public/assets/news/favicons/zacks.ico"
+    },
+    "title": "Should Motley Fool 100 Index ETF (TMFC) Be on Your Investing Radar?",
+    "author": "Zacks Equity Research",
+    "published_utc": "2022-02-16T15:35:59Z",
+    "article_url": "https://www.zacks.com/stock/news/1868489/should-motley-fool-100-index-etf-tmfc-be-on-your-investing-radar",
+    "tickers": ["TMFC", "GOOG", "AAPL", "MSFT", "QQQ", "VUG"],
+    "amp_url": "https://www.zacks.com/amp/stock/news/1868489/should-motley-fool-100-index-etf-tmfc-be-on-your-investing-radar",
+    "image_url": "https://staticx-tuner.zacks.com/images/default_article_images/default15.jpg",
+    "description": "Style Box ETF report for TMFC"
+  },
+  {
+    "id": "YuHmHdJh1Hmml3ntQEJVMYLi3weo63ts_cIp5iWHZHk",
+    "publisher": {
+      "name": "The Motley Fool",
+      "homepage_url": "https://www.fool.com/",
+      "logo_url": "https://s3.polygon.io/public/assets/news/logos/themotleyfool.svg",
+      "favicon_url": "https://s3.polygon.io/public/assets/news/favicons/themotleyfool.ico"
+    },
+    "title": "How to Build a Stock Portfolio for Beginners",
+    "author": "newsfeedback@fool.com (Eric Cuka)",
+    "published_utc": "2022-02-16T15:15:00Z",
+    "article_url": "https://www.fool.com/investing/2022/02/16/how-to-build-a-stock-portfolio-for-beginners/",
+    "tickers": ["QQQ", "AAPL", "MSFT", "LRCX", "VOO", "ARKK"],
+    "image_url": "https://g.foolcdn.com/editorial/images/666230/growth-pro-fuw-logo.jpg",
+    "description": "How to build a bulletproof, diversified growth stock portfolio for long-term investing!",
+    "keywords": ["investing"]
+  },
+  {
+    "id": "IZtxRYoc8kKmSm_cNqNWrBMbhix1oQ3IEqykYg69ANo",
+    "publisher": {
+      "name": "Zacks Investment Research",
+      "homepage_url": "https://www.zacks.com/",
+      "logo_url": "https://s3.polygon.io/public/assets/news/logos/zacks.png",
+      "favicon_url": "https://s3.polygon.io/public/assets/news/favicons/zacks.ico"
+    },
+    "title": "Sabre (SABR) Q4 Loss Narrower Than Expected, Sales Up Y/Y",
+    "author": "Zacks Equity Research",
+    "published_utc": "2022-02-16T15:07:00Z",
+    "article_url": "https://www.zacks.com/stock/news/1868448/sabre-sabr-q4-loss-narrower-than-expected-sales-up-yy",
+    "tickers": ["ADI", "AAPL", "ACLS", "SABR"],
+    "amp_url": "https://www.zacks.com/amp/stock/news/1868448/sabre-sabr-q4-loss-narrower-than-expected-sales-up-yy",
+    "image_url": "https://staticx-tuner.zacks.com/images/articles/main/94/1507.jpg",
+    "description": "Sabre's (SABR) Q4 results reflect a continued gradual recovery in global air, hotel and other bookings."
+  },
+  {
+    "id": "CyCGKQtjGD5QFXVAtOmPUy_YEcfYdrwRCjeUHbxOvcY",
+    "publisher": {
+      "name": "The Motley Fool",
+      "homepage_url": "https://www.fool.com/",
+      "logo_url": "https://s3.polygon.io/public/assets/news/logos/themotleyfool.svg",
+      "favicon_url": "https://s3.polygon.io/public/assets/news/favicons/themotleyfool.ico"
+    },
+    "title": "2 Warren Buffett Stocks to Buy and Hold Forever",
+    "author": "newsfeedback@fool.com (Prosper Junior Bakiny)",
+    "published_utc": "2022-02-16T15:00:00Z",
+    "article_url": "https://www.fool.com/investing/2022/02/16/2-warren-buffett-stocks-to-buy-and-hold-forever/",
+    "tickers": ["ABBV", "AAPL", "BRK.A", "BRK.B", "BB"],
+    "image_url": "https://g.foolcdn.com/editorial/images/665894/gettyimages-1293518316.jpg",
+    "description": "The Oracle of Omaha has historically beaten the market, so it might not be a bad thing to pick up a few tips from him.",
+    "keywords": ["investing"]
+  },
+  {
+    "id": "pncw4GIhgqAkjWA7YLfEb9WbotklyCC1miO4e-k3ozo",
+    "publisher": {
+      "name": "Benzinga",
+      "homepage_url": "https://www.benzinga.com/",
+      "logo_url": "https://s3.polygon.io/public/assets/news/logos/benzinga.svg",
+      "favicon_url": "https://s3.polygon.io/public/assets/news/favicons/benzinga.ico"
+    },
+    "title": "Talking His Generation: The Who's Pete Townshend On NFTs, Joe Rogan And Spotify",
+    "author": "Chris Katje",
+    "published_utc": "2022-02-16T14:50:30Z",
+    "article_url": "https://www.benzinga.com/markets/cryptocurrency/22/02/25652241/talking-his-generation-the-whos-pete-townshend-on-nfts-joe-rogan-and-spotify",
+    "tickers": ["AAPL", "SPOT"],
+    "amp_url": "https://www.benzinga.com/amp/content/25652241",
+    "image_url": "https://cdn2.benzinga.com/files/imagecache/og_image_social_share_1200x630/images/story/2012/pete_townsend_8210373056.jpg?width=720",
+    "description": "Ahead of an upcoming tour for The Who, legendary guitarist Pete Townshend shared his thoughts on several topics in a Rolling Stone interview — including his thoughts on non-fungible tokens and Spotify (NYSE: SPOT).\nTownshend On NFTs: Pete Townshend hates non-fungible tokens and likely won’t be among the musicians using the space to offer fans additional rewards and utility.\n“If what we’re going to have with the glory of artists having the right to control their own careers in the shape of non-fungible tokens is that we’re all going to buy f***in’ videos of monkeys’ heads, then f*** it! Just f*** it, f*** it, f*** it! It’s just junk,” Townshend said.\nTownshend jokingly said he’s not against people making a quick buck, possibly ...",
+    "keywords": [
+      "News",
+      "Cryptocurrency",
+      "Entertainment",
+      "Markets",
+      "Media",
+      "General"
+    ]
+  }
+]

@@ -1,13 +1,13 @@
 /* eslint-disable no-param-reassign */
 
-function make_image(td, metadata) {
+function make_image(td, metadata, height = 50, width = 100) {
   td.style.background = "";
   td.style.border = ``;
   const link = metadata.value;
   const span = document.createElement("span");
   const img = document.createElement("img");
-  img.style.maxHeight = "50px";
-  img.style.maxWidth = "100px";
+  img.style.maxHeight = `${height}px`;
+  img.style.maxWidth = `${width}px`;
 
   // omit
   // img.setAttribute("crossorigin", "anonymous");
@@ -19,11 +19,11 @@ function make_image(td, metadata) {
   td.appendChild(span);
 }
 
-function make_link(td, clean_name) {
+function make_link(td, clean_name, textContent = "Website") {
   td.textContent = "";
   const link = document.createElement("a");
   link.setAttribute("href", clean_name);
-  link.textContent = "Website";
+  link.textContent = textContent;
   td.appendChild(link);
 }
 
@@ -57,10 +57,14 @@ class CustomDatagridPlugin extends customElements.get("perspective-viewer-datagr
       }
       const clean_name = metadata.value && metadata.value.trim && metadata.value.trim();
 
-      if (column_name === "logo") {
+      if (["logo"].indexOf(column_name) >= 0) {
         make_image(td, metadata);
-      } else if (column_name === "url") {
+      } else if (["image_url", "publisher_logo"].indexOf(column_name) >= 0) {
+        make_image(td, metadata, 25, 50);
+      } else if (["url", "publisher_url"].indexOf(column_name) >= 0) {
         make_link(td, clean_name);
+      } else if (["article_url"].indexOf(column_name) >= 0) {
+        make_link(td, clean_name, "Link");
       } else {
         make_clear(td);
       }

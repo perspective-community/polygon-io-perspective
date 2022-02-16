@@ -8,7 +8,7 @@ function Header(props) {
   const {layouts} = props;
 
   // pass state modifiers in
-  const {changeTicker, changeLayout, changeApiKey} = props;
+  const {changeTicker, changeLayout, changeApiKey, resetTables} = props;
 
   // search bar state
   const [suggestions, changeSuggestions] = useState([]);
@@ -51,7 +51,16 @@ function Header(props) {
           inputProps={inputProps}
         />
       </div>
-      <select className="layout_config" onChange={(e) => {console.log(JSON.stringify(e.target.value)); changeLayout(layouts[e.target.value]);}}>
+      <button className="text_button" type="button" onClick={() => resetTables()}>
+        Reset Data
+      </button>
+      <select
+        className="layout_config"
+        onChange={(e) => {
+          console.log(JSON.stringify(e.target.value));
+          changeLayout(layouts[e.target.value]);
+        }}
+      >
         {Object.keys(layouts).map((k) => (
           <option key={k} value={k}>
             {k}

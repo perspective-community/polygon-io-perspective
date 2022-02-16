@@ -25,7 +25,7 @@ export const schemas = {
     description: "string",
     exchange: "string",
     name: "string",
-    symbol: "string",
+    ticker: "string",
     exchangeSymbol: "string",
     hq_address: "string",
     hq_state: "string",
@@ -37,7 +37,7 @@ export const schemas = {
     active: "boolean",
   },
   bars: {
-    symbol: "string",
+    ticker: "string",
     datetime: "date",
     open: "float",
     high: "float",
@@ -46,6 +46,57 @@ export const schemas = {
     trades: "integer",
     volume: "integer",
     vwap: "float",
+  },
+  news: {
+    id: "string",
+    ticker: "string",
+    publisher_name: "string",
+    publisher_url: "string",
+    publisher_logo: "string",
+    title: "string",
+    author: "string",
+    published_utc: "datetime",
+    article_url: "string",
+    tickers: "string",
+    image_url: "string",
+    description: "string",
+  },
+  dividends: {
+    ticker: "string",
+    exDate: "date",
+    paymentDate: "date",
+    recordDate: "date",
+    amount: "float",
+  },
+  splits: {
+    ticker: "string",
+    exDate: "date",
+    paymentDate: "date",
+    declaredDate: "date",
+    ratio: "float",
+    tofactor: "float",
+    forfactor: "float",
+  },
+  snapshot: {
+    "day-close": "float",
+    "day-high": "float",
+    "day-low": "float",
+    "day-open": "float",
+    "day-volume": "integer",
+    "day-avpx": "float",
+    "last-price": "float",
+    "last-size": "float",
+    "last-exchange": "string",
+    "prev-close": "float",
+    "prev-high": "float",
+    "prev-low": "float",
+    "prev-open": "float",
+    "prev-volume": "integer",
+    "prev-avpx": "float",
+    ticker: "string",
+    todaysChange: "float",
+    todaysChangePerc: "float",
+    updated: "datetime",
   },
 };
 
@@ -83,8 +134,15 @@ export const getTickerReferenceData = async (symbol) => {
   if (!rawData) return [];
 
   // flatten
-  rawData.tags = rawData.tags.join(",");
-  rawData.similar = rawData.similar.join(",");
+  if (typeof rawData.tags === "string") {
+    rawData.tags = rawData.tags.join(",");
+  }
+
+  if (typeof rawData.similar === "string") {
+    rawData.similar = rawData.similar.join(",");
+  }
+
+  rawData.ticker = symbol;
 
   // envelop in array
   return [rawData];
@@ -96,7 +154,7 @@ export const getBars = async (symbol) => {
   const from = moment(to).subtract(6, "months").format("YYYY-MM-DD");
 
   if (currentClients) {
-    rawData = await currentClients.rest.stocks.aggregates(symbol, 1, "day", from, to);
+    rawData = (await currentClients.rest.stocks.aggregates(symbol, 1, "day", from, to)).results;
   } else {
     rawData = SampleData.bars[symbol];
   }
@@ -105,7 +163,7 @@ export const getBars = async (symbol) => {
   if (!rawData) return [];
 
   // flatten
-  return rawData.results.map((record) => ({
+  return rawData.map((record) => ({
     volume: record.v,
     vwap: record.vw,
     open: record.o,
@@ -114,6 +172,73 @@ export const getBars = async (symbol) => {
     close: record.c,
     datetime: record.t,
     trades: record.n,
-    symbol,
+    ticker: symbol,
+  }));
+};
+
+export const getNews = async (symbol) => {
+  let rawData;
+
+  if (currentClients) {
+    rawData = (await currentClients.rest.reference.tickerNews(symbol)).results;
+  } else {
+    rawData = SampleData.news[symbol];
+  }
+
+  // if not in our sample data or nonexistent, return nothing
+  if (!rawData) return [];
+
+  // flatten
+  return rawData.map((record) => ({
+    id: record.id,
+    ticker: symbol,
+    publisher_name: record.publisher.name,
+    publisher_url: record.publisher.homepage_url,
+    publisher_logo: record.publisher.logo_url,
+    title: record.title,
+    author: record.author,
+    published_utc: record.published_utc,
+    article_url: record.article_url,
+    tickers: record.tickers.join(","),
+    image_url: record.image_url,
+    description: record.description,
+  }));
+};
+
+export const getDividends = async (symbol) => {
+  let rawData;
+
+  if (currentClients) {
+    rawData = (await currentClients.rest.reference.stockDividends(symbol)).results;
+  } else {
+    rawData = SampleData.dividends[symbol];
+  }
+
+  // if not in our sample data or nonexistent, return nothing
+  if (!rawData) return [];
+
+  return rawData;
+};
+
+export const getSplits = async (symbol) => {
+  let rawData;
+
+  if (currentClients) {
+    rawData = (await currentClients.rest.reference.stockSplits(symbol)).results;
+  } else {
+    rawData = SampleData.splits[symbol];
+  }
+
+  // if not in our sample data or nonexistent, return nothing
+  if (!rawData) return [];
+
+  return rawData.map((record) => ({
+    ticker: record.ticker,
+    exDate: record.exDate,
+    paymentDate: record.paymentDate,
+    declaredDate: record.declaredDate,
+    ratio: record.ratio,
+    tofactor: record.tofactor || null,
+    forfactor: record.forfactor || null,
   }));
 };

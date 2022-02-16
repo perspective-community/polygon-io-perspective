@@ -116,6 +116,7 @@ ul {
 }
 
 .text_input,
+.text_button,
 .layout_config {
     background: transparent;
     border: 1px solid var(--border);
@@ -125,6 +126,11 @@ ul {
     font-size: 11px;
     padding: 10px;
     cursor: pointer;
+}
+
+.text_button:hover {
+    background: var(--highlight);
+    color: var(--background);
 }
 
 .text_input::placeholder {

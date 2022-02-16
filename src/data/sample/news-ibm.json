@@ -1,0 +1,197 @@
+[
+  {
+    "id": "nkZsY7TFsfz1BS5-RWdPVq74vZjku3QlUXz1Ph1SCwc",
+    "publisher": {
+      "name": "MarketWatch",
+      "homepage_url": "https://www.marketwatch.com/",
+      "logo_url": "https://s3.polygon.io/public/assets/news/logos/marketwatch.svg",
+      "favicon_url": "https://s3.polygon.io/public/assets/news/favicons/marketwatch.ico"
+    },
+    "title": "IBM executives call older workers 'dinobabies,' discrimination lawsuit alleges",
+    "author": "MarketWatch",
+    "published_utc": "2022-02-16T15:34:00Z",
+    "article_url": "https://www.marketwatch.com/story/ibm-executives-called-older-workers-dinobabies-in-company-emails-according-to-age-discrimination-lawsuit-11644859247",
+    "tickers": ["IBM"],
+    "amp_url": "https://www.marketwatch.com/amp/story/ibm-executives-called-older-workers-dinobabies-in-company-emails-according-to-age-discrimination-lawsuit-11644859247",
+    "image_url": "https://images.mktw.net/im-242189/horizontal",
+    "description": "The emails were submitted as evidence in an ageism case that former IBM employees have brought against the company."
+  },
+  {
+    "id": "W-xavRNIFBlYcZTLP7lFIworiJGxe9KEW2q9DKW5gLc",
+    "publisher": {
+      "name": "Zacks Investment Research",
+      "homepage_url": "https://www.zacks.com/",
+      "logo_url": "https://s3.polygon.io/public/assets/news/logos/zacks.png",
+      "favicon_url": "https://s3.polygon.io/public/assets/news/favicons/zacks.ico"
+    },
+    "title": "IBM Boosts Hybrid Multicloud Services With Neudesic Buyout",
+    "author": "Zacks Equity Research",
+    "published_utc": "2022-02-16T14:27:00Z",
+    "article_url": "https://www.zacks.com/stock/news/1868371/ibm-boosts-hybrid-multicloud-services-with-neudesic-buyout",
+    "tickers": ["MSFT", "IBM", "VCRA", "VIAV"],
+    "amp_url": "https://www.zacks.com/amp/stock/news/1868371/ibm-boosts-hybrid-multicloud-services-with-neudesic-buyout",
+    "image_url": "https://staticx-tuner.zacks.com/images/articles/main/3a/521.jpg",
+    "description": "The transaction is likely to extend IBM Consulting's certifications across the hybrid cloud ecosystem and bring on board deep Microsoft Azure cloud, data engineering and data analytics expertise."
+  },
+  {
+    "id": "2PzJLm50NS2UvcuUp1t0u1BjyPhj38PfiyaBW9GPwGU",
+    "publisher": {
+      "name": "The Motley Fool",
+      "homepage_url": "https://www.fool.com/",
+      "logo_url": "https://s3.polygon.io/public/assets/news/logos/themotleyfool.svg",
+      "favicon_url": "https://s3.polygon.io/public/assets/news/favicons/themotleyfool.ico"
+    },
+    "title": "3 High-Yield Tech Stocks to Buy in February",
+    "author": "newsfeedback@fool.com (Justin Pope)",
+    "published_utc": "2022-02-16T12:40:00Z",
+    "article_url": "https://www.fool.com/investing/2022/02/16/3-high-yield-tech-stocks-to-buy-in-february/",
+    "tickers": ["AVGO", "IBM", "TXN"],
+    "image_url": "https://g.foolcdn.com/editorial/images/665886/gettyimages-1289228163.jpg",
+    "description": "Want to get paid to hold stocks? High-yielding technology stocks are a great option for investors.",
+    "keywords": ["investing"]
+  },
+  {
+    "id": "a8bOV75Vb_RImV5mZdkbiIHxwgXDbNM0Y_6aNgxQuMs",
+    "publisher": {
+      "name": "The Motley Fool",
+      "homepage_url": "https://www.fool.com/",
+      "logo_url": "https://s3.polygon.io/public/assets/news/logos/themotleyfool.svg",
+      "favicon_url": "https://s3.polygon.io/public/assets/news/favicons/themotleyfool.ico"
+    },
+    "title": "Want $3,000 in Passive Income? Invest $20,000 in These 2 Dow Dividend Kings and Wait 5 Years",
+    "author": "newsfeedback@fool.com (Daniel Foelber)",
+    "published_utc": "2022-02-16T10:02:00Z",
+    "article_url": "https://www.fool.com/investing/2022/02/16/want-3000-in-passive-income-invest-20000-in-these/",
+    "tickers": ["MMM", "PG", "IBM", "WBA"],
+    "image_url": "https://g.foolcdn.com/editorial/images/666001/gettyimages-950560696.jpg",
+    "description": "3M and Procter & Gamble are two solid dividend stocks worth buying now.",
+    "keywords": ["investing"]
+  },
+  {
+    "id": "sOdKDibnpW7Hw3NMuw053_ZXPKDiGjuRlrX-Bts-UM4",
+    "publisher": {
+      "name": "Seeking Alpha",
+      "homepage_url": "https://seekingalpha.com/",
+      "logo_url": "https://s3.polygon.io/public/assets/news/logos/seekingalpha.svg",
+      "favicon_url": "https://s3.polygon.io/public/assets/news/favicons/seekingalpha.ico"
+    },
+    "title": "The One Top Stock To Buy If The Market Crashes: MSFT - For An Unusual Reason",
+    "author": "Psycho Analyst",
+    "published_utc": "2022-02-15T18:56:25Z",
+    "article_url": "https://seekingalpha.com/article/4487141-one-top-stock-buy-if-the-market-crashes-msft",
+    "tickers": [
+      "AAPL",
+      "AMZN",
+      "BMY",
+      "BP",
+      "C",
+      "CSCO",
+      "DD",
+      "FB",
+      "GE",
+      "GOOG",
+      "GOOGL",
+      "IBM",
+      "IVV",
+      "KO",
+      "MRK",
+      "NVDA",
+      "PM",
+      "SLB",
+      "T",
+      "TSLA",
+      "VOO",
+      "WMT",
+      "XOM",
+      "MSFT"
+    ],
+    "amp_url": "https://seekingalpha.com/amp/article/4487141-one-top-stock-buy-if-the-market-crashes-msft",
+    "image_url": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/917844370/image_917844370.jpg?io=getty-c-w750",
+    "description": "Investors wonder which is the top stock to buy if the market crashes? View why we believe Microsoft is the top choice due to financials and dramatic growth in earnings."
+  },
+  {
+    "id": "NYldtH8G1KQIGu1fSAkpFtRLnojecs4I9d48JRGgN6I",
+    "publisher": {
+      "name": "Seeking Alpha",
+      "homepage_url": "https://seekingalpha.com/",
+      "logo_url": "https://s3.polygon.io/public/assets/news/logos/seekingalpha.svg",
+      "favicon_url": "https://s3.polygon.io/public/assets/news/favicons/seekingalpha.ico"
+    },
+    "title": "IBM: Get Paid To Wait",
+    "author": "Graham Grieder",
+    "published_utc": "2022-02-15T05:42:37Z",
+    "article_url": "https://seekingalpha.com/article/4486966-ibm-get-paid-to-wait",
+    "tickers": ["IBM"],
+    "amp_url": "https://seekingalpha.com/amp/article/4486966-ibm-get-paid-to-wait",
+    "image_url": "https://static.seekingalpha.com/cdn/s3/uploads/getty_images/1322147027/image_1322147027.jpg?io=getty-c-w750",
+    "description": "IBM is targeting single-digit revenue growth and $35 billion in free cash flow over the next 3 years.Though it pays a good dividend for a tech stock, read on to know why we should wait.."
+  },
+  {
+    "id": "oR5jLNlXchRqMe7dD8g7bTMNrkX08zPF86dXaOFDebA",
+    "publisher": {
+      "name": "Zacks Investment Research",
+      "homepage_url": "https://www.zacks.com/",
+      "logo_url": "https://s3.polygon.io/public/assets/news/logos/zacks.png",
+      "favicon_url": "https://s3.polygon.io/public/assets/news/favicons/zacks.ico"
+    },
+    "title": "SAP & IBM Join Forces to Rev Up Workload Transition to Cloud",
+    "author": "Zacks Equity Research",
+    "published_utc": "2022-02-14T14:01:00Z",
+    "article_url": "https://www.zacks.com/stock/news/1867027/sap-ibm-join-forces-to-rev-up-workload-transition-to-cloud",
+    "tickers": ["IBM", "SAP", "CDNS", "PRGS"],
+    "amp_url": "https://www.zacks.com/amp/stock/news/1867027/sap-ibm-join-forces-to-rev-up-workload-transition-to-cloud",
+    "image_url": "https://staticx-tuner.zacks.com/images/articles/main/ab/1753.jpg",
+    "description": "The latest agreement strengthens the existing partnership between SAP and IBM by giving clients access to tools, enabling them to expedite the transition of their SAP workloads to the cloud."
+  },
+  {
+    "id": "gkh9mMXn5ye1ZbFaTawlQgpL7IhGtiaNTSNv7K3aKvk",
+    "publisher": {
+      "name": "MarketWatch",
+      "homepage_url": "https://www.marketwatch.com/",
+      "logo_url": "https://s3.polygon.io/public/assets/news/logos/marketwatch.svg",
+      "favicon_url": "https://s3.polygon.io/public/assets/news/favicons/marketwatch.ico"
+    },
+    "title": "Weekend reads: Inflation fear and opportunities for investors",
+    "author": "MarketWatch",
+    "published_utc": "2022-02-12T11:36:00Z",
+    "article_url": "https://www.marketwatch.com/story/weekend-reads-inflation-fear-and-opportunities-for-investors-11644595941",
+    "tickers": ["IBM", "AAPL", "FB", "YUM", "ADM"],
+    "amp_url": "https://www.marketwatch.com/amp/story/weekend-reads-inflation-fear-and-opportunities-for-investors-11644595941",
+    "image_url": "https://images.mktw.net/im-484461/social",
+    "description": "Also, retirement locations, TikTok, a bitcoin stock pick and how to set up a trust."
+  },
+  {
+    "id": "XmlleFLgVd1S70CtSWxkk1AS-M86IsV3z-9Z6EKntiY",
+    "publisher": {
+      "name": "Benzinga",
+      "homepage_url": "https://www.benzinga.com/",
+      "logo_url": "https://s3.polygon.io/public/assets/news/logos/benzinga.svg",
+      "favicon_url": "https://s3.polygon.io/public/assets/news/favicons/benzinga.ico"
+    },
+    "title": "Elon Musk Elected Into The National Academy Of Engineering",
+    "author": "Phil Hall",
+    "published_utc": "2022-02-10T20:33:32Z",
+    "article_url": "https://www.benzinga.com/news/22/02/25545989/elon-musk-elected-into-the-national-academy-of-engineering",
+    "tickers": ["IBM", "LMT", "TSLA", "MRNA"],
+    "amp_url": "https://www.benzinga.com/amp/content/25545989",
+    "image_url": "https://cdn.benzinga.com/files/imagecache/og_image_social_share_1200x630/images/story/2012/50280652497_fa535e1501_c.jpg",
+    "description": "Tesla Inc. (NASDAQ: TSLA) CEO Elon Musk was among the newest slate of members elected into the National Academy of Engineering (NAE).\nWhat Happened: Academy membership honors individuals who made exemplary contributions to \"engineering research, practice, or education, including, where appropriate, significant contributions to the engineering literature\" and to \"the pioneering of new and developing fields of technology, making major advancements in traditional fields of ...",
+    "keywords": ["News", "Events"]
+  },
+  {
+    "id": "FzoYq0HYPBSp8rsffLTOykAZO8qPcCagkMUiRrztsSw",
+    "publisher": {
+      "name": "Investing.com",
+      "homepage_url": "https://www.investing.com/",
+      "logo_url": "https://s3.polygon.io/public/assets/news/logos/investing.png",
+      "favicon_url": "https://s3.polygon.io/public/assets/news/favicons/investing.ico"
+    },
+    "title": "With Volatility, Rate Hikes, Fed – Are We Having Fun Yet?",
+    "author": "David Moenning",
+    "published_utc": "2022-02-07T16:41:00Z",
+    "article_url": "https://www.investing.com/analysis/with-volatility-rate-hikes-fed--are-we-having-fun-yet-200617332",
+    "tickers": ["FB", "IBM", "MSFT"],
+    "amp_url": "https://m.investing.com/analysis/with-volatility-rate-hikes-fed--are-we-having-fun-yet-200617332?ampMode=1",
+    "image_url": "https://i-invdn-com.investing.com/redesign/images/seo/investingcom_analysis_og.jpg"
+  }
+]
