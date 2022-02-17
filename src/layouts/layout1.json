@@ -63,8 +63,8 @@
         "title": { "column_size_override": 536.6410000000001 }
       },
       "settings": false,
-      "row_pivots": [],
-      "column_pivots": [],
+      "group_by": [],
+      "split_by": [],
       "columns": [
         "ticker",
         "image_url",
@@ -91,8 +91,8 @@
         "_": { "gradient": 3.29, "number_color_mode": "bar" }
       },
       "settings": false,
-      "row_pivots": [],
-      "column_pivots": [],
+      "group_by": [],
+      "split_by": [],
       "columns": [
         "ticker",
         "amount",
@@ -114,8 +114,8 @@
       "plugin": "Datagrid",
       "plugin_config": { "_": { "gradient": 0.5, "number_color_mode": "bar" } },
       "settings": false,
-      "row_pivots": [],
-      "column_pivots": [],
+      "group_by": [],
+      "split_by": [],
       "columns": [
         "ticker",
         "ratio",
@@ -139,8 +139,8 @@
       "plugin": "OHLC",
       "plugin_config": {},
       "settings": false,
-      "row_pivots": ["datetime"],
-      "column_pivots": ["ticker"],
+      "group_by": ["datetime"],
+      "split_by": ["ticker"],
       "columns": ["open", "close", "high", "low"],
       "filter": [],
       "sort": [["datetime", "asc"]],

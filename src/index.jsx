@@ -14,12 +14,12 @@ import scrollbars from "!raw-loader!./style/scrollbar.css";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import Workspace from "./components/workspace";
-import {getClients, schemas, getTickerReferenceData, getBars, getNews, getDividends, getSplits} from "./data";
+import {getClients, schemas, indexes, getTickerReferenceData, getBars, getNews, getDividends, getSplits} from "./data";
 import layout1 from "./layouts/layout1.json";
 import layout2 from "./layouts/layout2.json";
 
 import "./style/index.css";
-import "@finos/perspective-workspace/dist/umd/material.dark.css";
+import "@finos/perspective-workspace/dist/umd/material-dark.css";
 
 window.chroma = chroma;
 
@@ -29,7 +29,7 @@ const makeTables = async () => {
   const ret = {};
   await Promise.all(
     Object.keys(schemas).map(async (key) => {
-      ret[key] = await worker.table(schemas[key]);
+      ret[key] = await worker.table(schemas[key], indexes[key]);
     })
   );
   return ret;
