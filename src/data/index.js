@@ -100,6 +100,17 @@ export const schemas = {
   },
 };
 
+export const indexes = {
+  reference: {},
+  bars: {},
+  news: {
+    index: "title",
+  },
+  dividends: {},
+  splits: {},
+  snapshot: {},
+};
+
 export const getClients = (apiKey) => {
   console.debug(`instantiating clients with ${apiKey}`);
 
