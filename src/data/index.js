@@ -1,4 +1,4 @@
-import {restClient, websocketClient} from "@polygon.io/client-js";
+import { restClient, websocketClient } from "@polygon.io/client-js";
 import moment from "moment";
 import SampleData from "./sample";
 
@@ -7,34 +7,31 @@ let currentClients;
 
 export const schemas = {
   reference: {
-    logo: "string",
-    listdate: "date",
-    cik: "string",
-    bloomberg: "string",
-    figi: "string",
-    lei: "string",
-    sic: "string",
-    country: "string",
-    industry: "string",
-    sector: "string",
-    marketcap: "integer",
-    employees: "integer",
-    phone: "string",
-    ceo: "string",
-    url: "string",
-    description: "string",
-    exchange: "string",
-    name: "string",
     ticker: "string",
-    exchangeSymbol: "string",
-    hq_address: "string",
-    hq_state: "string",
-    hq_country: "string",
+    name: "string",
+    market: "string",
+    locale: "string",
+    primary_exchange: "string",
     type: "string",
-    updated: "date",
-    tags: "string",
-    similar: "string",
     active: "boolean",
+    currency_name: "string",
+    cik: "string",
+    composite_figi: "string",
+    share_class_figi: "string",
+    market_cap: "integer",
+    phone_number: "string",
+    address: "string",
+    description: "string",
+    sic_code: "string",
+    sic_description: "string",
+    ticker_root: "string",
+    homepage_url: "string",
+    total_employees: "integer",
+    list_date: "date",
+    logo_url: "string",
+    icon_url: "string",
+    share_class_shares_outstanding: "integer",
+    weighted_shares_outstanding: "integer",
   },
   bars: {
     ticker: "string",
@@ -117,7 +114,8 @@ export const getClients = (apiKey) => {
 
 export const getReferenceData = async (search) => {
   if (currentClients) {
-    return (await currentClients.rest.reference.tickers({limit: 50, search})).results;
+    return (await currentClients.rest.reference.tickers({ limit: 50, search }))
+      .results;
   }
   return SampleData.reference;
 };
@@ -125,7 +123,7 @@ export const getReferenceData = async (search) => {
 export const getTickerReferenceData = async (symbol) => {
   let rawData;
   if (currentClients) {
-    rawData = await currentClients.rest.reference.tickerDetails(symbol);
+    rawData = (await currentClients.rest.reference.tickerDetails(symbol)).results;
   } else {
     rawData = SampleData.referenceTicker[symbol];
   }
@@ -134,15 +132,12 @@ export const getTickerReferenceData = async (symbol) => {
   if (!rawData) return [];
 
   // flatten
-  if (typeof rawData.tags === "string") {
-    rawData.tags = rawData.tags.join(",");
+  if (typeof rawData.address === "object") {
+    rawData.address = `${rawData.address.adress1}, ${rawData.address.city}, ${rawData.address.state} ${rawData.address.postal_code}`;
   }
 
-  if (typeof rawData.similar === "string") {
-    rawData.similar = rawData.similar.join(",");
-  }
-
-  rawData.ticker = symbol;
+  rawData.logo_url = rawData.branding.logo_url;
+  rawData.icon_url = rawData.branding.icon_url;
 
   // envelop in array
   return [rawData];
@@ -154,7 +149,9 @@ export const getBars = async (symbol) => {
   const from = moment(to).subtract(6, "months").format("YYYY-MM-DD");
 
   if (currentClients) {
-    rawData = (await currentClients.rest.stocks.aggregates(symbol, 1, "day", from, to)).results;
+    rawData = (
+      await currentClients.rest.stocks.aggregates(symbol, 1, "day", from, to)
+    ).results;
   } else {
     rawData = SampleData.bars[symbol];
   }
@@ -180,7 +177,9 @@ export const getNews = async (symbol) => {
   let rawData;
 
   if (currentClients) {
-    rawData = (await currentClients.rest.reference.tickerNews({ticker: symbol})).results;
+    rawData = (
+      await currentClients.rest.reference.tickerNews({ ticker: symbol })
+    ).results;
   } else {
     rawData = SampleData.news[symbol];
   }
@@ -209,7 +208,8 @@ export const getDividends = async (symbol) => {
   let rawData;
 
   if (currentClients) {
-    rawData = (await currentClients.rest.reference.stockDividends(symbol)).results;
+    rawData = (await currentClients.rest.reference.stockDividends(symbol))
+      .results;
   } else {
     rawData = SampleData.dividends[symbol];
   }

@@ -57,11 +57,11 @@ class CustomDatagridPlugin extends customElements.get("perspective-viewer-datagr
       }
       const clean_name = metadata.value && metadata.value.trim && metadata.value.trim();
 
-      if (["logo"].indexOf(column_name) >= 0) {
+      if (["logo_url"].indexOf(column_name) >= 0) {
         make_image(td, metadata);
       } else if (["image_url", "publisher_logo"].indexOf(column_name) >= 0) {
         make_image(td, metadata, 25, 50);
-      } else if (["url", "publisher_url"].indexOf(column_name) >= 0) {
+      } else if (["homepage_url", "publisher_url"].indexOf(column_name) >= 0) {
         make_link(td, clean_name);
       } else if (["article_url"].indexOf(column_name) >= 0) {
         make_link(td, clean_name, "Link");

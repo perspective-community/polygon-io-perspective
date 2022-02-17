@@ -19,7 +19,7 @@ import layout1 from "./layouts/layout1.json";
 import layout2 from "./layouts/layout2.json";
 
 import "./style/index.css";
-import "@finos/perspective-workspace/dist/umd/material.dark.css";
+import "@finos/perspective-workspace/dist/umd/material-dark.css";
 
 window.chroma = chroma;
 
