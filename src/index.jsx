@@ -89,11 +89,14 @@ function App() {
   /**
    * Layout
    */
-  // layout
   const [layout, changeLayout] = useState("Layout 1");
+
+  const possibleCustomLayout = window.localStorage.getItem("polygon_io_perspective_workspace_config");
+
   const [layouts, changeLayouts] = useState({
     "Layout 1": layout1,
     "Layout 2": layout2,
+    ...(possibleCustomLayout ? {"Custom Layout": JSON.parse(possibleCustomLayout)} : {})
   });
 
   /**

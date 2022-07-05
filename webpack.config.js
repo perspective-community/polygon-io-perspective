@@ -7,6 +7,10 @@ module.exports = {
   devtool: "source-map",
   resolve: {
     extensions: [".js", ".jsx"],
+    fallback: {
+      fs: false,
+      path: false,
+    },
   },
 
   plugins: [

@@ -1157,7 +1157,7 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@finos/perspective-viewer-d3fc@^1.4.0":
+"@finos/perspective-viewer-d3fc@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@finos/perspective-viewer-d3fc/-/perspective-viewer-d3fc-1.5.0.tgz#edfe4a7109eeef6ba946143921b7b858a13bfd34"
   integrity sha512-WZwcRlPZGcbJSz3fFF2fFn894SVvTyIyDAAXuLzpzumsQEQMlwCiqS9jJqTTxY5gFDkH59HRL6R6AmEvaLIXZQ==
@@ -1170,7 +1170,7 @@
     d3fc "15.2.4"
     gradient-parser "1.0.2"
 
-"@finos/perspective-viewer-datagrid@^1.4.0":
+"@finos/perspective-viewer-datagrid@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@finos/perspective-viewer-datagrid/-/perspective-viewer-datagrid-1.5.0.tgz#07f6d898b218dc4a5030a610075d56ea4ae9e1a0"
   integrity sha512-wsLEsqOZ82Jx+ifkbatNN6LkXmos8wfQITY3Xjuetr1iRpGuEUg2Oiy/0EIVJW3ra7jQcd2wGUQQfMs5JAZbrQ==
@@ -1180,7 +1180,7 @@
     chroma-js "^1.3.4"
     regular-table "=0.5.6"
 
-"@finos/perspective-viewer@^1.4.0", "@finos/perspective-viewer@^1.5.0":
+"@finos/perspective-viewer@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@finos/perspective-viewer/-/perspective-viewer-1.5.0.tgz#d8b381c4fcf5860541f9b2453852a4bfa8c5a134"
   integrity sha512-qtCDDm4jA1x0SRFbMlTMyBjxPU3mog/10gZPcvdN4XSLNXiEtqeb3zXcbVMXiEcvOsBHgGUs8poJ6Y54a/F5UQ==
@@ -1192,7 +1192,7 @@
   optionalDependencies:
     monaco-editor-webpack-plugin "3.1.0"
 
-"@finos/perspective-webpack-plugin@^1.4.0":
+"@finos/perspective-webpack-plugin@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@finos/perspective-webpack-plugin/-/perspective-webpack-plugin-1.5.0.tgz#b2b018cf0f397b1ea25e1108bdd3ebf37470c578"
   integrity sha512-USvMEIXoGdmqkfPmHAJE35PeQMW6CDlHswVhDmTVPseO3xI+gXwgT3lu2Mtt6wScOIBNjoiDKZ87+k9CcX+6VQ==
@@ -1207,7 +1207,7 @@
     string-replace-loader "^3.0.1"
     worker-loader "^3.0.7"
 
-"@finos/perspective-workspace@^1.4.0":
+"@finos/perspective-workspace@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@finos/perspective-workspace/-/perspective-workspace-1.5.0.tgz#9eb77b77138a5b70a9d18ad00e35f6b2148fc218"
   integrity sha512-tvJoHQahuS4+tAygGCUf0exlebeVCSbroBSxFaDmj6gmT9SmOHD08qsiNg5t1hPi260DCoPw2zNBsO7QgILiyg==
@@ -1218,7 +1218,7 @@
     "@lumino/widgets" "1.31.1"
     lodash "^4.17.4"
 
-"@finos/perspective@^1.4.0", "@finos/perspective@^1.5.0":
+"@finos/perspective@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@finos/perspective/-/perspective-1.5.0.tgz#717c4caf8d4da9ed9e6f25c7c21edee927225dde"
   integrity sha512-g57dcsdwaHleFp2m7wyZSnEcc8FAigd7Gvw/l5+gwyeZugQpezfmKf1loGYwjYzzun7EMlyvPK5kYbRauAcjVg==
