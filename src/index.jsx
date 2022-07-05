@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from "react";
+import React, {useState, useEffect} from "react";
 import ReactDOM from "react-dom";
 import perspective from "@finos/perspective";
 import chroma from "chroma-js";
@@ -89,15 +89,15 @@ function App() {
   /**
    * Layout
    */
-  // layout
   const [layout, changeLayout] = useState("Layout 1");
+
+  const possibleCustomLayout = window.localStorage.getItem("polygon_io_perspective_workspace_config");
+
   const [layouts, changeLayouts] = useState({
     "Layout 1": layout1,
     "Layout 2": layout2,
+    ...(possibleCustomLayout ? {"Custom Layout": JSON.parse(possibleCustomLayout)} : {}),
   });
-
-  // restore layout when it changes
-  useEffect(() => document.getElementsByTagName("perspective-workspace")[0].restore(layout), [layout]);
 
   /**
    * Return nodes

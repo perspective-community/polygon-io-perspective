@@ -62,19 +62,19 @@ export const schemas = {
   },
   dividends: {
     ticker: "string",
-    exDate: "date",
-    paymentDate: "date",
-    recordDate: "date",
-    amount: "float",
+    ex_dividend_date: "date",
+    declaration_date: "date",
+    pay_date: "date",
+    record_date: "date",
+    dividend_type: "string",
+    cash_amount: "float",
+    frequency: "integer",
   },
   splits: {
     ticker: "string",
-    exDate: "date",
-    paymentDate: "date",
-    declaredDate: "date",
-    ratio: "float",
-    tofactor: "float",
-    forfactor: "float",
+    execution_date: "date",
+    split_from: "float",
+    split_to: "float",
   },
   snapshot: {
     "day-close": "float",
@@ -135,15 +135,13 @@ export const getReferenceData = async (search) => {
 export const getTickerReferenceData = async (symbol) => {
   let rawData;
   if (currentClients) {
-    rawData = await currentClients.rest.reference.tickerDetails(symbol);
+    rawData = (await currentClients.rest.reference.tickerDetails(symbol)).results;
   } else {
     rawData = SampleData.referenceTicker[symbol];
   }
 
   // if not in our sample data or nonexistent, return nothing
   if (!rawData) return [];
-
-  rawData = rawData.results;
 
   // envelop in array
   return [
@@ -172,7 +170,9 @@ export const getTickerReferenceData = async (symbol) => {
       homepage_url: rawData.homepage_url,
       total_employees: rawData.total_employees,
       list_date: rawData.list_date,
-      logo: `${rawData.branding.icon_url}?apiKey=${currentApiKey}`,
+      // FIXME
+      logo: `https://s3.polygon.io/logos/${rawData.ticker.toLowerCase()}/logo.png`,
+      // logo: `${rawData.branding.icon_url}?apiKey=${currentApiKey}`,
       share_class_shares_outstanding: rawData.share_class_shares_outstanding,
       weighted_shares_outstanding: rawData.weighted_shares_outstanding,
     },
@@ -240,7 +240,7 @@ export const getDividends = async (symbol) => {
   let rawData;
 
   if (currentClients) {
-    rawData = (await currentClients.rest.reference.dividends(symbol)).results;
+    rawData = (await currentClients.rest.reference.dividends({ticker: symbol})).results;
   } else {
     rawData = SampleData.dividends[symbol];
   }
@@ -255,7 +255,7 @@ export const getSplits = async (symbol) => {
   let rawData;
 
   if (currentClients) {
-    rawData = (await currentClients.rest.reference.stockSplits(symbol)).results;
+    rawData = (await currentClients.rest.reference.stockSplits({ticker: symbol})).results;
   } else {
     rawData = SampleData.splits[symbol];
   }
@@ -265,11 +265,8 @@ export const getSplits = async (symbol) => {
 
   return rawData.map((record) => ({
     ticker: record.ticker,
-    exDate: record.exDate,
-    paymentDate: record.paymentDate,
-    declaredDate: record.declaredDate,
-    ratio: record.ratio,
-    tofactor: record.tofactor || null,
-    forfactor: record.forfactor || null,
+    execution_date: record.execution_date,
+    split_from: record.split_from || null,
+    split_to: record.split_to || null,
   }));
 };

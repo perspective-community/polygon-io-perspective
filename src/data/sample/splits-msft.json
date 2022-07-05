@@ -1,20 +1,56 @@
 [
   {
-    "ticker": "MSFT",
-    "exDate": "2003-02-18",
-    "paymentDate": "2003-02-18",
-    "ratio": 0.5
+    "execution_date": "2003-02-18",
+    "split_from": 1,
+    "split_to": 2,
+    "ticker": "MSFT"
   },
   {
-    "ticker": "MSFT",
-    "exDate": "1999-03-29",
-    "paymentDate": "1999-03-29",
-    "ratio": 0.5
+    "execution_date": "1999-03-29",
+    "split_from": 1,
+    "split_to": 2,
+    "ticker": "MSFT"
   },
   {
-    "ticker": "MSFT",
-    "exDate": "1998-02-23",
-    "paymentDate": "1998-02-23",
-    "ratio": 0.5
+    "execution_date": "1998-02-23",
+    "split_from": 1,
+    "split_to": 2,
+    "ticker": "MSFT"
+  },
+  {
+    "execution_date": "1996-12-09",
+    "split_from": 1,
+    "split_to": 2,
+    "ticker": "MSFT"
+  },
+  {
+    "execution_date": "1994-05-23",
+    "split_from": 1,
+    "split_to": 2,
+    "ticker": "MSFT"
+  },
+  {
+    "execution_date": "1992-06-15",
+    "split_from": 2,
+    "split_to": 3,
+    "ticker": "MSFT"
+  },
+  {
+    "execution_date": "1991-06-27",
+    "split_from": 2,
+    "split_to": 3,
+    "ticker": "MSFT"
+  },
+  {
+    "execution_date": "1990-04-16",
+    "split_from": 1,
+    "split_to": 2,
+    "ticker": "MSFT"
+  },
+  {
+    "execution_date": "1987-09-21",
+    "split_from": 1,
+    "split_to": 2,
+    "ticker": "MSFT"
   }
 ]

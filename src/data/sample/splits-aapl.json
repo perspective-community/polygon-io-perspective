@@ -1,31 +1,32 @@
 [
   {
-    "ticker": "AAPL",
-    "exDate": "2020-08-31",
-    "paymentDate": "2020-08-28",
-    "declaredDate": "2020-07-30",
-    "ratio": 0.25,
-    "tofactor": 1,
-    "forfactor": 4
+    "execution_date": "2020-08-31",
+    "split_from": 1,
+    "split_to": 4,
+    "ticker": "AAPL"
   },
   {
-    "ticker": "AAPL",
-    "exDate": "2014-06-09",
-    "paymentDate": "2014-06-10",
-    "ratio": 0.14285714285714285,
-    "tofactor": 1,
-    "forfactor": 7
+    "execution_date": "2014-06-09",
+    "split_from": 1,
+    "split_to": 7,
+    "ticker": "AAPL"
   },
   {
-    "ticker": "AAPL",
-    "exDate": "2005-02-28",
-    "paymentDate": "2005-02-28",
-    "ratio": 0.5
+    "execution_date": "2005-02-28",
+    "split_from": 1,
+    "split_to": 2,
+    "ticker": "AAPL"
   },
   {
-    "ticker": "AAPL",
-    "exDate": "2000-06-21",
-    "paymentDate": "2000-06-21",
-    "ratio": 0.5
+    "execution_date": "2000-06-21",
+    "split_from": 1,
+    "split_to": 2,
+    "ticker": "AAPL"
+  },
+  {
+    "execution_date": "1987-06-16",
+    "split_from": 1,
+    "split_to": 2,
+    "ticker": "AAPL"
   }
 ]

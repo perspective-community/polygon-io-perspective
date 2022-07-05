@@ -1,12 +1,3 @@
-/* ***************************************************************************
- *
- * Copyright (c) 2021, the perspective-studio authors.
- *
- * This file is part of the perspective-studio library, distributed under the terms of
- * the Apache License 2.0.  The full license can be found in the LICENSE file.
- *
- */
-
 module.exports = {
   parser: "@babel/eslint-parser",
   extends: ["airbnb", "prettier", "plugin:json/recommended"],

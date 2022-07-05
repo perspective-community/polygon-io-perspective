@@ -37,7 +37,6 @@
   "viewers": {
     "PERSPECTIVE_GENERATED_ID_1": {
       "plugin": "Custom Datagrid",
-      "index": "ticker",
       "plugin_config": {
         "columns": {},
         "editable": false,

@@ -105,7 +105,7 @@ ul {
     margin-right: 10px;
 }
 
-.footer #github-link:hover path {
+.footer .github-link:hover path {
     stroke: var(--color);
     fill: var(--color);
 }
@@ -309,10 +309,6 @@ perspective-viewer.workspace-detail-widget regular-table table tbody th:empty {
 
 td canvas {
     margin-bottom: -4px;
-}
-
-td.penguin-canvas {
-    padding: 0px;
 }
 
 td.is-timestamp:not(.psp-is-width-override) {
