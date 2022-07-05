@@ -30,7 +30,7 @@
     "@babel/eslint-parser": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
-    "@finos/perspective-webpack-plugin": "^1.2.0",
+    "@finos/perspective-webpack-plugin": "^1.4.0",
     "@types/chroma-js": "^2.1.3",
     "babel-loader": "^8.2.3",
     "eslint": "^8.9.0",

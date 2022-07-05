@@ -1,8 +1,26 @@
 [
   {
-    "ticker": "IBM",
-    "exDate": "1999-05-27",
-    "paymentDate": "1999-05-27",
-    "ratio": 0.5
+    "execution_date": "1999-05-27",
+    "split_from": 1,
+    "split_to": 2,
+    "ticker": "IBM"
+  },
+  {
+    "execution_date": "1997-05-28",
+    "split_from": 1,
+    "split_to": 2,
+    "ticker": "IBM"
+  },
+  {
+    "execution_date": "1979-06-01",
+    "split_from": 1,
+    "split_to": 4,
+    "ticker": "IBM"
+  },
+  {
+    "execution_date": "1973-05-29",
+    "split_from": 4,
+    "split_to": 5,
+    "ticker": "IBM"
   }
 ]

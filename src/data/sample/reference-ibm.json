@@ -1,38 +1,34 @@
 {
-  "results": {
-    "ticker": "IBM",
-    "name": "International Business Machines Corporation",
-    "market": "stocks",
-    "locale": "us",
-    "primary_exchange": "XNYS",
-    "type": "CS",
-    "active": true,
-    "currency_name": "usd",
-    "cik": "0000051143",
-    "composite_figi": "BBG000BLNNH6",
-    "share_class_figi": "BBG001S5S399",
-    "market_cap": 122035384896,
-    "phone_number": "(914) 499-1900",
-    "address": {
-      "address1": "1 NEW ORCHARD ROAD",
-      "city": "ARMONK",
-      "state": "NY",
-      "postal_code": "10504"
-    },
-    "description": "IBM looks to be a part of every aspect of an enterprise's IT needs. The company primarily sells software, IT services, consulting, and hardware. IBM operates in 175 countries and employs approximately 350,000 people. The company has a robust roster of 80,000 business partners to service 5,200 clients--which includes 95% of all Fortune 500. While IBM is a B2B company, IBM's outward impact is substantial. For example, IBM manages 90% of all credit card transactions globally and is responsible for 50% of all wireless connections in the world.",
-    "sic_code": "3570",
-    "sic_description": "COMPUTER & OFFICE EQUIPMENT",
-    "ticker_root": "IBM",
-    "homepage_url": "http://www.ibm.com",
-    "total_employees": 307600,
-    "list_date": "1949-01-28",
-    "branding": {
-      "logo_url": "https://api.polygon.io/v1/reference/company-branding/d3d3LmlibS5jb20/images/2022-01-10_logo.svg",
-      "icon_url": "https://api.polygon.io/v1/reference/company-branding/d3d3LmlibS5jb20/images/2022-01-10_icon.png"
-    },
-    "share_class_shares_outstanding": 899440000,
-    "weighted_shares_outstanding": 899435325
+  "ticker": "IBM",
+  "name": "International Business Machines Corporation",
+  "market": "stocks",
+  "locale": "us",
+  "primary_exchange": "XNYS",
+  "type": "CS",
+  "active": true,
+  "currency_name": "usd",
+  "cik": "0000051143",
+  "composite_figi": "BBG000BLNNH6",
+  "share_class_figi": "BBG001S5S399",
+  "market_cap": 122035384896,
+  "phone_number": "(914) 499-1900",
+  "address": {
+    "address1": "1 NEW ORCHARD ROAD",
+    "city": "ARMONK",
+    "state": "NY",
+    "postal_code": "10504"
   },
-  "status": "OK",
-  "request_id": "417c5a5758505de6e8b2370c8aa473e2"
+  "description": "IBM looks to be a part of every aspect of an enterprise's IT needs. The company primarily sells software, IT services, consulting, and hardware. IBM operates in 175 countries and employs approximately 350,000 people. The company has a robust roster of 80,000 business partners to service 5,200 clients--which includes 95% of all Fortune 500. While IBM is a B2B company, IBM's outward impact is substantial. For example, IBM manages 90% of all credit card transactions globally and is responsible for 50% of all wireless connections in the world.",
+  "sic_code": "3570",
+  "sic_description": "COMPUTER & OFFICE EQUIPMENT",
+  "ticker_root": "IBM",
+  "homepage_url": "http://www.ibm.com",
+  "total_employees": 307600,
+  "list_date": "1949-01-28",
+  "branding": {
+    "logo_url": "https://api.polygon.io/v1/reference/company-branding/d3d3LmlibS5jb20/images/2022-01-10_logo.svg",
+    "icon_url": "https://api.polygon.io/v1/reference/company-branding/d3d3LmlibS5jb20/images/2022-01-10_icon.png"
+  },
+  "share_class_shares_outstanding": 899440000,
+  "weighted_shares_outstanding": 899435325
 }
