@@ -96,9 +96,6 @@ function App() {
     "Layout 2": layout2,
   });
 
-  // restore layout when it changes
-  useEffect(() => document.getElementsByTagName("perspective-workspace")[0].restore(layout), [layout]);
-
   /**
    * Return nodes
    */
