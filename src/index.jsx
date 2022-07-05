@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from "react";
+import React, {useState, useEffect} from "react";
 import ReactDOM from "react-dom";
 import perspective from "@finos/perspective";
 import chroma from "chroma-js";
@@ -96,7 +96,7 @@ function App() {
   const [layouts, changeLayouts] = useState({
     "Layout 1": layout1,
     "Layout 2": layout2,
-    ...(possibleCustomLayout ? {"Custom Layout": JSON.parse(possibleCustomLayout)} : {})
+    ...(possibleCustomLayout ? {"Custom Layout": JSON.parse(possibleCustomLayout)} : {}),
   });
 
   /**
