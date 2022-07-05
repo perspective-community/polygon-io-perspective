@@ -61,15 +61,15 @@ var load_perspective = (() => {
 
     if (ENVIRONMENT_IS_NODE) {
       if (ENVIRONMENT_IS_WORKER) {
-        scriptDirectory = Object(function webpackMissingModule() { var e = new Error("Cannot find module 'path'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(scriptDirectory) + "/";
+        scriptDirectory = (__webpack_require__(/*! path */ "?2ae5").dirname)(scriptDirectory) + "/";
       } else {
         scriptDirectory = __dirname + "/";
       }
 
       requireNodeFS = () => {
         if (!nodePath) {
-          fs = __webpack_require__(Object(function webpackMissingModule() { var e = new Error("Cannot find module 'fs'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-          nodePath = __webpack_require__(Object(function webpackMissingModule() { var e = new Error("Cannot find module 'path'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+          fs = __webpack_require__(/*! fs */ "?3113");
+          nodePath = __webpack_require__(/*! path */ "?2ae5");
         }
       };
 
@@ -7393,6 +7393,26 @@ module.exports.get_config = function get_config() {
 
   return __webpack_require__.g.__PERSPECTIVE_CONFIG__;
 };
+
+/***/ }),
+
+/***/ "?3113":
+/*!********************!*\
+  !*** fs (ignored) ***!
+  \********************/
+/***/ (() => {
+
+/* (ignored) */
+
+/***/ }),
+
+/***/ "?2ae5":
+/*!**********************!*\
+  !*** path (ignored) ***!
+  \**********************/
+/***/ (() => {
+
+/* (ignored) */
 
 /***/ })
 
