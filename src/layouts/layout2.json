@@ -37,17 +37,21 @@
   "viewers": {
     "PERSPECTIVE_GENERATED_ID_1": {
       "plugin": "Custom Datagrid",
+      "index": "ticker",
+      "plugin_config": {
+        "columns": {},
+        "editable": false,
+        "scroll_lock": false
+      },
       "settings": false,
       "columns": [
         "logo",
         "ticker",
         "name",
-        "sector",
-        "industry",
-        "type",
-        "tags",
-        "url",
-        "exchange"
+        "market",
+        "primary_exchange",
+        "cik",
+        "homepage_url"
       ],
       "master": false,
       "name": "Reference Data",
