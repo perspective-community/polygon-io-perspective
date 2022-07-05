@@ -8,39 +8,35 @@
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
+var __filename = "/index.js";
+var __dirname = "/";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-var load_perspective = function () {
+var load_perspective = (() => {
   var _scriptDir = typeof document !== 'undefined' && document.currentScript ? document.currentScript.src : undefined;
 
+  if (true) _scriptDir = _scriptDir || __filename;
   return function (load_perspective) {
     load_perspective = load_perspective || {};
-    var Module = typeof load_perspective !== "undefined" ? load_perspective : {};
+    var Module = typeof load_perspective != "undefined" ? load_perspective : {};
     var readyPromiseResolve, readyPromiseReject;
     Module["ready"] = new Promise(function (resolve, reject) {
       readyPromiseResolve = resolve;
       readyPromiseReject = reject;
     });
-    var moduleOverrides = {};
-    var key;
-
-    for (key in Module) {
-      if (Module.hasOwnProperty(key)) {
-        moduleOverrides[key] = Module[key];
-      }
-    }
-
+    var moduleOverrides = Object.assign({}, Module);
     var arguments_ = [];
     var thisProgram = "./this.program";
 
-    var quit_ = function (status, toThrow) {
+    var quit_ = (status, toThrow) => {
       throw toThrow;
     };
 
-    var ENVIRONMENT_IS_WEB = false;
-    var ENVIRONMENT_IS_WORKER = true;
+    var ENVIRONMENT_IS_WEB = typeof window == "object";
+    var ENVIRONMENT_IS_WORKER = typeof importScripts == "function";
+    var ENVIRONMENT_IS_NODE = typeof process == "object" && typeof process.versions == "object" && typeof process.versions.node == "string";
     var scriptDirectory = "";
 
     function locateFile(path) {
@@ -53,10 +49,85 @@ var load_perspective = function () {
 
     var read_, readAsync, readBinary, setWindowTitle;
 
-    if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER) {
+    function logExceptionOnExit(e) {
+      if (e instanceof ExitStatus) return;
+      let toLog = e;
+      err("exiting due to exception: " + toLog);
+    }
+
+    var fs;
+    var nodePath;
+    var requireNodeFS;
+
+    if (ENVIRONMENT_IS_NODE) {
+      if (ENVIRONMENT_IS_WORKER) {
+        scriptDirectory = Object(function webpackMissingModule() { var e = new Error("Cannot find module 'path'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(scriptDirectory) + "/";
+      } else {
+        scriptDirectory = __dirname + "/";
+      }
+
+      requireNodeFS = () => {
+        if (!nodePath) {
+          fs = __webpack_require__(Object(function webpackMissingModule() { var e = new Error("Cannot find module 'fs'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+          nodePath = __webpack_require__(Object(function webpackMissingModule() { var e = new Error("Cannot find module 'path'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+        }
+      };
+
+      read_ = function shell_read(filename, binary) {
+        requireNodeFS();
+        filename = nodePath["normalize"](filename);
+        return fs.readFileSync(filename, binary ? undefined : "utf8");
+      };
+
+      readBinary = filename => {
+        var ret = read_(filename, true);
+
+        if (!ret.buffer) {
+          ret = new Uint8Array(ret);
+        }
+
+        return ret;
+      };
+
+      readAsync = (filename, onload, onerror) => {
+        requireNodeFS();
+        filename = nodePath["normalize"](filename);
+        fs.readFile(filename, function (err, data) {
+          if (err) onerror(err);else onload(data.buffer);
+        });
+      };
+
+      if (process["argv"].length > 1) {
+        thisProgram = process["argv"][1].replace(/\\/g, "/");
+      }
+
+      arguments_ = process["argv"].slice(2);
+      process["on"]("uncaughtException", function (ex) {
+        if (!(ex instanceof ExitStatus)) {
+          throw ex;
+        }
+      });
+      process["on"]("unhandledRejection", function (reason) {
+        throw reason;
+      });
+
+      quit_ = (status, toThrow) => {
+        if (keepRuntimeAlive()) {
+          process["exitCode"] = status;
+          throw toThrow;
+        }
+
+        logExceptionOnExit(toThrow);
+        process["exit"](status);
+      };
+
+      Module["inspect"] = function () {
+        return "[Emscripten Module object]";
+      };
+    } else if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER) {
       if (ENVIRONMENT_IS_WORKER) {
         scriptDirectory = self.location.href;
-      } else if (typeof document !== "undefined" && document.currentScript) {
+      } else if (typeof document != "undefined" && document.currentScript) {
         scriptDirectory = document.currentScript.src;
       }
 
@@ -65,13 +136,13 @@ var load_perspective = function () {
       }
 
       if (scriptDirectory.indexOf("blob:") !== 0) {
-        scriptDirectory = scriptDirectory.substr(0, scriptDirectory.lastIndexOf("/") + 1);
+        scriptDirectory = scriptDirectory.substr(0, scriptDirectory.replace(/[?#].*/, "").lastIndexOf("/") + 1);
       } else {
         scriptDirectory = "";
       }
 
       {
-        read_ = function (url) {
+        read_ = url => {
           var xhr = new XMLHttpRequest();
           xhr.open("GET", url, false);
           xhr.send(null);
@@ -79,7 +150,7 @@ var load_perspective = function () {
         };
 
         if (ENVIRONMENT_IS_WORKER) {
-          readBinary = function (url) {
+          readBinary = url => {
             var xhr = new XMLHttpRequest();
             xhr.open("GET", url, false);
             xhr.responseType = "arraybuffer";
@@ -88,12 +159,12 @@ var load_perspective = function () {
           };
         }
 
-        readAsync = function (url, onload, onerror) {
+        readAsync = (url, onload, onerror) => {
           var xhr = new XMLHttpRequest();
           xhr.open("GET", url, true);
           xhr.responseType = "arraybuffer";
 
-          xhr.onload = function () {
+          xhr.onload = () => {
             if (xhr.status == 200 || xhr.status == 0 && xhr.response) {
               onload(xhr.response);
               return;
@@ -107,27 +178,20 @@ var load_perspective = function () {
         };
       }
 
-      setWindowTitle = function (title) {
-        document.title = title;
-      };
+      setWindowTitle = title => document.title = title;
     } else {}
 
     var out = Module["print"] || console.log.bind(console);
     var err = Module["printErr"] || console.warn.bind(console);
-
-    for (key in moduleOverrides) {
-      if (moduleOverrides.hasOwnProperty(key)) {
-        Module[key] = moduleOverrides[key];
-      }
-    }
-
+    Object.assign(Module, moduleOverrides);
     moduleOverrides = null;
     if (Module["arguments"]) arguments_ = Module["arguments"];
     if (Module["thisProgram"]) thisProgram = Module["thisProgram"];
     if (Module["quit"]) quit_ = Module["quit"];
+    var POINTER_SIZE = 4;
     var tempRet0 = 0;
 
-    var setTempRet0 = function (value) {
+    var setTempRet0 = value => {
       tempRet0 = value;
     };
 
@@ -135,7 +199,7 @@ var load_perspective = function () {
     if (Module["wasmBinary"]) wasmBinary = Module["wasmBinary"];
     var noExitRuntime = Module["noExitRuntime"] || true;
 
-    if (typeof WebAssembly !== "object") {
+    if (typeof WebAssembly != "object") {
       abort("no native wasm support detected");
     }
 
@@ -145,45 +209,45 @@ var load_perspective = function () {
 
     function assert(condition, text) {
       if (!condition) {
-        abort("Assertion failed: " + text);
+        abort(text);
       }
     }
 
-    var UTF8Decoder = typeof TextDecoder !== "undefined" ? new TextDecoder("utf8") : undefined;
+    var UTF8Decoder = typeof TextDecoder != "undefined" ? new TextDecoder("utf8") : undefined;
 
-    function UTF8ArrayToString(heap, idx, maxBytesToRead) {
+    function UTF8ArrayToString(heapOrArray, idx, maxBytesToRead) {
       idx >>>= 0;
       var endIdx = idx + maxBytesToRead;
       var endPtr = idx;
 
-      while (heap[endPtr >>> 0] && !(endPtr >= endIdx)) ++endPtr;
+      while (heapOrArray[endPtr] && !(endPtr >= endIdx)) ++endPtr;
 
-      if (endPtr - idx > 16 && heap.subarray && UTF8Decoder) {
-        return UTF8Decoder.decode(heap.subarray(idx >>> 0, endPtr >>> 0));
+      if (endPtr - idx > 16 && heapOrArray.buffer && UTF8Decoder) {
+        return UTF8Decoder.decode(heapOrArray.subarray(idx, endPtr));
       } else {
         var str = "";
 
         while (idx < endPtr) {
-          var u0 = heap[idx++ >>> 0];
+          var u0 = heapOrArray[idx++];
 
           if (!(u0 & 128)) {
             str += String.fromCharCode(u0);
             continue;
           }
 
-          var u1 = heap[idx++ >>> 0] & 63;
+          var u1 = heapOrArray[idx++] & 63;
 
           if ((u0 & 224) == 192) {
             str += String.fromCharCode((u0 & 31) << 6 | u1);
             continue;
           }
 
-          var u2 = heap[idx++ >>> 0] & 63;
+          var u2 = heapOrArray[idx++] & 63;
 
           if ((u0 & 240) == 224) {
             u0 = (u0 & 15) << 12 | u1 << 6 | u2;
           } else {
-            u0 = (u0 & 7) << 18 | u1 << 12 | u2 << 6 | heap[idx++ >>> 0] & 63;
+            u0 = (u0 & 7) << 18 | u1 << 12 | u2 << 6 | heapOrArray[idx++] & 63;
           }
 
           if (u0 < 65536) {
@@ -258,7 +322,7 @@ var load_perspective = function () {
       return len;
     }
 
-    var UTF16Decoder = typeof TextDecoder !== "undefined" ? new TextDecoder("utf-16le") : undefined;
+    var UTF16Decoder = typeof TextDecoder != "undefined" ? new TextDecoder("utf-16le") : undefined;
 
     function UTF16ToString(ptr, maxBytesToRead) {
       var endPtr = ptr;
@@ -377,13 +441,6 @@ var load_perspective = function () {
       return ret;
     }
 
-    function allocateUTF8OnStack(str) {
-      var size = lengthBytesUTF8(str) + 1;
-      var ret = stackAlloc(size);
-      stringToUTF8Array(str, HEAP8, ret, size);
-      return ret;
-    }
-
     function writeArrayToMemory(array, buffer) {
       HEAP8.set(array, buffer >>> 0);
     }
@@ -394,14 +451,6 @@ var load_perspective = function () {
       }
 
       if (!dontAddNull) HEAP8[buffer >>> 0] = 0;
-    }
-
-    function alignUp(x, multiple) {
-      if (x % multiple > 0) {
-        x += multiple - x % multiple;
-      }
-
-      return x;
     }
 
     var buffer, HEAP8, HEAPU8, HEAP16, HEAPU16, HEAP32, HEAPU32, HEAPF32, HEAPF64;
@@ -422,14 +471,11 @@ var load_perspective = function () {
     var wasmTable;
     var __ATPRERUN__ = [];
     var __ATINIT__ = [];
-    var __ATMAIN__ = [];
     var __ATPOSTRUN__ = [];
     var runtimeInitialized = false;
-    var runtimeExited = false;
-    var runtimeKeepaliveCounter = 0;
 
     function keepRuntimeAlive() {
-      return noExitRuntime || runtimeKeepaliveCounter > 0;
+      return noExitRuntime;
     }
 
     function preRun() {
@@ -447,14 +493,6 @@ var load_perspective = function () {
     function initRuntime() {
       runtimeInitialized = true;
       callRuntimeCallbacks(__ATINIT__);
-    }
-
-    function preMain() {
-      callRuntimeCallbacks(__ATMAIN__);
-    }
-
-    function exitRuntime() {
-      runtimeExited = true;
     }
 
     function postRun() {
@@ -514,20 +552,17 @@ var load_perspective = function () {
       }
     }
 
-    Module["preloadedImages"] = {};
-    Module["preloadedAudios"] = {};
-
     function abort(what) {
       {
         if (Module["onAbort"]) {
           Module["onAbort"](what);
         }
       }
-      what += "";
+      what = "Aborted(" + what + ")";
       err(what);
       ABORT = true;
       EXITSTATUS = 1;
-      what = "abort(" + what + "). Build with -s ASSERTIONS=1 for more info.";
+      what += ". Build with -sASSERTIONS for more info.";
       var e = new WebAssembly.RuntimeError(what);
       readyPromiseReject(e);
       throw e;
@@ -537,6 +572,10 @@ var load_perspective = function () {
 
     function isDataURI(filename) {
       return filename.startsWith(dataURIPrefix);
+    }
+
+    function isFileURI(filename) {
+      return filename.startsWith("file://");
     }
 
     var wasmBinaryFile;
@@ -564,7 +603,7 @@ var load_perspective = function () {
 
     function getBinaryPromise() {
       if (!wasmBinary && (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER)) {
-        if (typeof fetch === "function") {
+        if (typeof fetch == "function" && !isFileURI(wasmBinaryFile)) {
           return fetch(wasmBinaryFile, {
             credentials: "same-origin"
           }).then(function (response) {
@@ -576,6 +615,14 @@ var load_perspective = function () {
           }).catch(function () {
             return getBinary(wasmBinaryFile);
           });
+        } else {
+          if (readAsync) {
+            return new Promise(function (resolve, reject) {
+              readAsync(wasmBinaryFile, function (response) {
+                resolve(new Uint8Array(response));
+              }, reject);
+            });
+          }
         }
       }
 
@@ -594,7 +641,7 @@ var load_perspective = function () {
         Module["asm"] = exports;
         wasmMemory = Module["asm"]["qa"];
         updateGlobalBufferAndViews(wasmMemory.buffer);
-        wasmTable = Module["asm"]["va"];
+        wasmTable = Module["asm"]["ua"];
         addOnInit(Module["asm"]["ra"]);
         removeRunDependency("wasm-instantiate");
       }
@@ -617,7 +664,7 @@ var load_perspective = function () {
       }
 
       function instantiateAsync() {
-        if (!wasmBinary && typeof WebAssembly.instantiateStreaming === "function" && !isDataURI(wasmBinaryFile) && typeof fetch === "function") {
+        if (!wasmBinary && typeof WebAssembly.instantiateStreaming == "function" && !isDataURI(wasmBinaryFile) && !isFileURI(wasmBinaryFile) && !ENVIRONMENT_IS_NODE && typeof fetch == "function") {
           return fetch(wasmBinaryFile, {
             credentials: "same-origin"
           }).then(function (response) {
@@ -648,21 +695,7 @@ var load_perspective = function () {
     }
 
     var ASM_CONSTS = {
-      797484: function () {
-        if (typeof self !== "undefined") {
-          try {
-            if (self.dispatchEvent && !self._perspective_initialized && self.document !== null) {
-              self._perspective_initialized = true;
-              var event = self.document.createEvent("Event");
-              event.initEvent("perspective-ready", false, true);
-              self.dispatchEvent(event);
-            } else if (!self.document && self.postMessage) {
-              self.postMessage({});
-            }
-          } catch (e) {}
-        }
-      },
-      797869: function ($0) {
+      833364: $0 => {
         throw new Error(UTF8ToString($0));
       }
     };
@@ -678,11 +711,11 @@ var load_perspective = function () {
 
         var func = callback.func;
 
-        if (typeof func === "number") {
+        if (typeof func == "number") {
           if (callback.arg === undefined) {
-            wasmTable.get(func)();
+            getWasmTableEntry(func)();
           } else {
-            wasmTable.get(func)(callback.arg);
+            getWasmTableEntry(func)(callback.arg);
           }
         } else {
           func(callback.arg === undefined ? null : callback.arg);
@@ -690,14 +723,17 @@ var load_perspective = function () {
       }
     }
 
-    function handleException(e) {
-      if (e instanceof ExitStatus || e == "unwind") {
-        return EXITSTATUS;
+    var wasmTableMirror = [];
+
+    function getWasmTableEntry(funcPtr) {
+      var func = wasmTableMirror[funcPtr];
+
+      if (!func) {
+        if (funcPtr >= wasmTableMirror.length) wasmTableMirror.length = funcPtr + 1;
+        wasmTableMirror[funcPtr] = func = wasmTable.get(funcPtr);
       }
 
-      var toLog = e;
-      err("exception thrown: " + toLog);
-      quit_(1, e);
+      return func;
     }
 
     function ___assert_fail(condition, filename, line, func) {
@@ -705,27 +741,27 @@ var load_perspective = function () {
     }
 
     function ___cxa_allocate_exception(size) {
-      return _malloc(size + 16) + 16;
+      return _malloc(size + 24) + 24;
     }
 
     function ExceptionInfo(excPtr) {
       this.excPtr = excPtr;
-      this.ptr = excPtr - 16;
+      this.ptr = excPtr - 24;
 
       this.set_type = function (type) {
-        HEAP32[this.ptr + 4 >>> 2] = type;
+        HEAPU32[this.ptr + 4 >>> 2] = type;
       };
 
       this.get_type = function () {
-        return HEAP32[this.ptr + 4 >>> 2];
+        return HEAPU32[this.ptr + 4 >>> 2];
       };
 
       this.set_destructor = function (destructor) {
-        HEAP32[this.ptr + 8 >>> 2] = destructor;
+        HEAPU32[this.ptr + 8 >>> 2] = destructor;
       };
 
       this.get_destructor = function () {
-        return HEAP32[this.ptr + 8 >>> 2];
+        return HEAPU32[this.ptr + 8 >>> 2];
       };
 
       this.set_refcount = function (refcount) {
@@ -751,6 +787,7 @@ var load_perspective = function () {
       };
 
       this.init = function (type, destructor) {
+        this.set_adjusted_ptr(0);
         this.set_type(type);
         this.set_destructor(destructor);
         this.set_refcount(0);
@@ -768,6 +805,26 @@ var load_perspective = function () {
         HEAP32[this.ptr >>> 2] = prev - 1;
         return prev === 1;
       };
+
+      this.set_adjusted_ptr = function (adjustedPtr) {
+        HEAPU32[this.ptr + 16 >>> 2] = adjustedPtr;
+      };
+
+      this.get_adjusted_ptr = function () {
+        return HEAPU32[this.ptr + 16 >>> 2];
+      };
+
+      this.get_exception_ptr = function () {
+        var isPointer = ___cxa_is_pointer_type(this.get_type());
+
+        if (isPointer) {
+          return HEAPU32[this.excPtr >>> 2];
+        }
+
+        var adjusted = this.get_adjusted_ptr();
+        if (adjusted !== 0) return adjusted;
+        return this.excPtr;
+      };
     }
 
     var exceptionLast = 0;
@@ -781,88 +838,7 @@ var load_perspective = function () {
       throw ptr;
     }
 
-    function _tzset_impl() {
-      var currentYear = new Date().getFullYear();
-      var winter = new Date(currentYear, 0, 1);
-      var summer = new Date(currentYear, 6, 1);
-      var winterOffset = winter.getTimezoneOffset();
-      var summerOffset = summer.getTimezoneOffset();
-      var stdTimezoneOffset = Math.max(winterOffset, summerOffset);
-      HEAP32[__get_timezone() >>> 2] = stdTimezoneOffset * 60;
-      HEAP32[__get_daylight() >>> 2] = Number(winterOffset != summerOffset);
-
-      function extractZone(date) {
-        var match = date.toTimeString().match(/\(([A-Za-z ]+)\)$/);
-        return match ? match[1] : "GMT";
-      }
-
-      var winterName = extractZone(winter);
-      var summerName = extractZone(summer);
-      var winterNamePtr = allocateUTF8(winterName);
-      var summerNamePtr = allocateUTF8(summerName);
-
-      if (summerOffset < winterOffset) {
-        HEAP32[__get_tzname() >>> 2] = winterNamePtr;
-        HEAP32[__get_tzname() + 4 >>> 2] = summerNamePtr;
-      } else {
-        HEAP32[__get_tzname() >>> 2] = summerNamePtr;
-        HEAP32[__get_tzname() + 4 >>> 2] = winterNamePtr;
-      }
-    }
-
-    function _tzset() {
-      if (_tzset.called) return;
-      _tzset.called = true;
-
-      _tzset_impl();
-    }
-
-    function _localtime_r(time, tmPtr) {
-      _tzset();
-
-      var date = new Date(HEAP32[time >>> 2] * 1e3);
-      HEAP32[tmPtr >>> 2] = date.getSeconds();
-      HEAP32[tmPtr + 4 >>> 2] = date.getMinutes();
-      HEAP32[tmPtr + 8 >>> 2] = date.getHours();
-      HEAP32[tmPtr + 12 >>> 2] = date.getDate();
-      HEAP32[tmPtr + 16 >>> 2] = date.getMonth();
-      HEAP32[tmPtr + 20 >>> 2] = date.getFullYear() - 1900;
-      HEAP32[tmPtr + 24 >>> 2] = date.getDay();
-      var start = new Date(date.getFullYear(), 0, 1);
-      var yday = (date.getTime() - start.getTime()) / (1e3 * 60 * 60 * 24) | 0;
-      HEAP32[tmPtr + 28 >>> 2] = yday;
-      HEAP32[tmPtr + 36 >>> 2] = -(date.getTimezoneOffset() * 60);
-      var summerOffset = new Date(date.getFullYear(), 6, 1).getTimezoneOffset();
-      var winterOffset = start.getTimezoneOffset();
-      var dst = (summerOffset != winterOffset && date.getTimezoneOffset() == Math.min(winterOffset, summerOffset)) | 0;
-      HEAP32[tmPtr + 32 >>> 2] = dst;
-      var zonePtr = HEAP32[__get_tzname() + (dst ? 4 : 0) >>> 2];
-      HEAP32[tmPtr + 40 >>> 2] = zonePtr;
-      return tmPtr;
-    }
-
-    function ___localtime_r(a0, a1) {
-      return _localtime_r(a0, a1);
-    }
-
-    function setErrNo(value) {
-      HEAP32[___errno_location() >>> 2] = value;
-      return value;
-    }
-
     var SYSCALLS = {
-      mappings: {},
-      buffers: [null, [], []],
-      printChar: function (stream, curr) {
-        var buffer = SYSCALLS.buffers[stream];
-
-        if (curr === 0 || curr === 10) {
-          (stream === 1 ? out : err)(UTF8ArrayToString(buffer, 0));
-          buffer.length = 0;
-        } else {
-          buffer.push(curr);
-        }
-      },
       varargs: undefined,
       get: function () {
         SYSCALLS.varargs += 4;
@@ -872,120 +848,30 @@ var load_perspective = function () {
       getStr: function (ptr) {
         var ret = UTF8ToString(ptr);
         return ret;
-      },
-      get64: function (low, high) {
-        return low;
       }
     };
 
-    function ___sys_fcntl64(fd, cmd, varargs) {
+    function ___syscall_fcntl64(fd, cmd, varargs) {
       SYSCALLS.varargs = varargs;
       return 0;
     }
 
-    function ___sys_ftruncate64(fd, zero, low, high) {}
+    function ___syscall_ftruncate64(fd, length_low, length_high) {}
 
-    function ___sys_getdents64(fd, dirp, count) {}
+    function ___syscall_getdents64(fd, dirp, count) {}
 
-    function ___sys_getpid() {
-      return 42;
-    }
-
-    function ___sys_ioctl(fd, op, varargs) {
+    function ___syscall_ioctl(fd, op, varargs) {
       SYSCALLS.varargs = varargs;
       return 0;
     }
 
-    function ___sys_madvise1(addr, length, advice) {
-      return 0;
-    }
-
-    function zeroMemory(address, size) {
-      HEAPU8.fill(0, address, address + size);
-    }
-
-    function alignMemory(size, alignment) {
-      return Math.ceil(size / alignment) * alignment;
-    }
-
-    function mmapAlloc(size) {
-      size = alignMemory(size, 65536);
-
-      var ptr = _memalign(65536, size);
-
-      if (!ptr) return 0;
-      zeroMemory(ptr, size);
-      return ptr;
-    }
-
-    function syscallMmap2(addr, len, prot, flags, fd, off) {
-      off <<= 12;
-      var ptr;
-      var allocated = false;
-
-      if ((flags & 16) !== 0 && addr % 65536 !== 0) {
-        return -28;
-      }
-
-      if ((flags & 32) !== 0) {
-        ptr = mmapAlloc(len);
-        if (!ptr) return -48;
-        allocated = true;
-      } else {
-        return -52;
-      }
-
-      ptr >>>= 0;
-      SYSCALLS.mappings[ptr] = {
-        malloc: ptr,
-        len: len,
-        allocated: allocated,
-        fd: fd,
-        prot: prot,
-        flags: flags,
-        offset: off
-      };
-      return ptr;
-    }
-
-    function ___sys_mmap2(addr, len, prot, flags, fd, off) {
-      return syscallMmap2(addr, len, prot, flags, fd, off);
-    }
-
-    function ___sys_mremap(old_addr, old_size, new_size, flags) {
-      return -48;
-    }
-
-    function syscallMunmap(addr, len) {
-      addr >>>= 0;
-      var info = SYSCALLS.mappings[addr];
-
-      if (len === 0 || !info) {
-        return -28;
-      }
-
-      if (len === info.len) {
-        SYSCALLS.mappings[addr] = null;
-
-        if (info.allocated) {
-          _free(info.malloc);
-        }
-      }
-
-      return 0;
-    }
-
-    function ___sys_munmap(addr, len) {
-      return syscallMunmap(addr, len);
-    }
-
-    function ___sys_open(path, flags, varargs) {
+    function ___syscall_openat(dirfd, path, flags, varargs) {
       SYSCALLS.varargs = varargs;
     }
 
-    function ___sys_stat64(path, buf) {}
+    function ___syscall_stat64(path, buf) {}
 
-    function ___sys_unlink(path) {}
+    function ___syscall_unlinkat(dirfd, path, flags) {}
 
     var structRegistrations = {};
 
@@ -1017,9 +903,9 @@ var load_perspective = function () {
 
       if (f >= char_0 && f <= char_9) {
         return "_" + name;
-      } else {
-        return name;
       }
+
+      return name;
     }
 
     function createNamedFunction(name, body) {
@@ -1077,7 +963,7 @@ var load_perspective = function () {
       var typeConverters = new Array(dependentTypes.length);
       var unregisteredTypes = [];
       var registered = 0;
-      dependentTypes.forEach(function (dt, i) {
+      dependentTypes.forEach((dt, i) => {
         if (registeredTypes.hasOwnProperty(dt)) {
           typeConverters[i] = registeredTypes[dt];
         } else {
@@ -1087,7 +973,7 @@ var load_perspective = function () {
             awaitingDependencies[dt] = [];
           }
 
-          awaitingDependencies[dt].push(function () {
+          awaitingDependencies[dt].push(() => {
             typeConverters[i] = registeredTypes[dt];
             ++registered;
 
@@ -1109,14 +995,10 @@ var load_perspective = function () {
       var rawConstructor = reg.rawConstructor;
       var rawDestructor = reg.rawDestructor;
       var fieldRecords = reg.fields;
-      var fieldTypes = fieldRecords.map(function (field) {
-        return field.getterReturnType;
-      }).concat(fieldRecords.map(function (field) {
-        return field.setterArgumentType;
-      }));
-      whenDependentTypesAreResolved([structType], fieldTypes, function (fieldTypes) {
+      var fieldTypes = fieldRecords.map(field => field.getterReturnType).concat(fieldRecords.map(field => field.setterArgumentType));
+      whenDependentTypesAreResolved([structType], fieldTypes, fieldTypes => {
         var fields = {};
-        fieldRecords.forEach(function (field, i) {
+        fieldRecords.forEach((field, i) => {
           var fieldName = field.fieldName;
           var getterReturnType = fieldTypes[i];
           var getter = field.getter;
@@ -1125,10 +1007,10 @@ var load_perspective = function () {
           var setter = field.setter;
           var setterContext = field.setterContext;
           fields[fieldName] = {
-            read: function (ptr) {
+            read: ptr => {
               return getterReturnType["fromWireType"](getter(getterContext, ptr));
             },
-            write: function (ptr, o) {
+            write: (ptr, o) => {
               var destructors = [];
               setter(setterContext, ptr, setterArgumentType["toWireType"](destructors, o));
               runDestructors(destructors);
@@ -1223,8 +1105,8 @@ var load_perspective = function () {
       throw new BindingError(message);
     }
 
-    function registerType(rawType, registeredInstance, options) {
-      options = options || {};
+    function registerType(rawType, registeredInstance) {
+      let options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
       if (!("argPackAdvance" in registeredInstance)) {
         throw new TypeError("registerType registeredInstance requires argPackAdvance");
@@ -1250,9 +1132,7 @@ var load_perspective = function () {
       if (awaitingDependencies.hasOwnProperty(rawType)) {
         var callbacks = awaitingDependencies[rawType];
         delete awaitingDependencies[rawType];
-        callbacks.forEach(function (cb) {
-          cb();
-        });
+        callbacks.forEach(cb => cb());
       }
     }
 
@@ -1334,7 +1214,7 @@ var load_perspective = function () {
       throwBindingError(getInstanceTypeName(obj) + " instance already deleted");
     }
 
-    var finalizationGroup = false;
+    var finalizationRegistry = false;
 
     function detachFinalizer(handle) {}
 
@@ -1355,35 +1235,211 @@ var load_perspective = function () {
       }
     }
 
+    function downcastPointer(ptr, ptrClass, desiredClass) {
+      if (ptrClass === desiredClass) {
+        return ptr;
+      }
+
+      if (undefined === desiredClass.baseClass) {
+        return null;
+      }
+
+      var rv = downcastPointer(ptr, ptrClass, desiredClass.baseClass);
+
+      if (rv === null) {
+        return null;
+      }
+
+      return desiredClass.downcast(rv);
+    }
+
+    var registeredPointers = {};
+
+    function getInheritedInstanceCount() {
+      return Object.keys(registeredInstances).length;
+    }
+
+    function getLiveInheritedInstances() {
+      var rv = [];
+
+      for (var k in registeredInstances) {
+        if (registeredInstances.hasOwnProperty(k)) {
+          rv.push(registeredInstances[k]);
+        }
+      }
+
+      return rv;
+    }
+
+    var deletionQueue = [];
+
+    function flushPendingDeletes() {
+      while (deletionQueue.length) {
+        var obj = deletionQueue.pop();
+        obj.$$.deleteScheduled = false;
+        obj["delete"]();
+      }
+    }
+
+    var delayFunction = undefined;
+
+    function setDelayFunction(fn) {
+      delayFunction = fn;
+
+      if (deletionQueue.length && delayFunction) {
+        delayFunction(flushPendingDeletes);
+      }
+    }
+
+    function init_embind() {
+      Module["getInheritedInstanceCount"] = getInheritedInstanceCount;
+      Module["getLiveInheritedInstances"] = getLiveInheritedInstances;
+      Module["flushPendingDeletes"] = flushPendingDeletes;
+      Module["setDelayFunction"] = setDelayFunction;
+    }
+
+    var registeredInstances = {};
+
+    function getBasestPointer(class_, ptr) {
+      if (ptr === undefined) {
+        throwBindingError("ptr should not be undefined");
+      }
+
+      while (class_.baseClass) {
+        ptr = class_.upcast(ptr);
+        class_ = class_.baseClass;
+      }
+
+      return ptr;
+    }
+
+    function getInheritedInstance(class_, ptr) {
+      ptr = getBasestPointer(class_, ptr);
+      return registeredInstances[ptr];
+    }
+
+    function makeClassHandle(prototype, record) {
+      if (!record.ptrType || !record.ptr) {
+        throwInternalError("makeClassHandle requires ptr and ptrType");
+      }
+
+      var hasSmartPtrType = !!record.smartPtrType;
+      var hasSmartPtr = !!record.smartPtr;
+
+      if (hasSmartPtrType !== hasSmartPtr) {
+        throwInternalError("Both smartPtrType and smartPtr must be specified");
+      }
+
+      record.count = {
+        value: 1
+      };
+      return attachFinalizer(Object.create(prototype, {
+        $$: {
+          value: record
+        }
+      }));
+    }
+
+    function RegisteredPointer_fromWireType(ptr) {
+      var rawPointer = this.getPointee(ptr);
+
+      if (!rawPointer) {
+        this.destructor(ptr);
+        return null;
+      }
+
+      var registeredInstance = getInheritedInstance(this.registeredClass, rawPointer);
+
+      if (undefined !== registeredInstance) {
+        if (0 === registeredInstance.$$.count.value) {
+          registeredInstance.$$.ptr = rawPointer;
+          registeredInstance.$$.smartPtr = ptr;
+          return registeredInstance["clone"]();
+        } else {
+          var rv = registeredInstance["clone"]();
+          this.destructor(ptr);
+          return rv;
+        }
+      }
+
+      function makeDefaultHandle() {
+        if (this.isSmartPointer) {
+          return makeClassHandle(this.registeredClass.instancePrototype, {
+            ptrType: this.pointeeType,
+            ptr: rawPointer,
+            smartPtrType: this,
+            smartPtr: ptr
+          });
+        } else {
+          return makeClassHandle(this.registeredClass.instancePrototype, {
+            ptrType: this,
+            ptr: ptr
+          });
+        }
+      }
+
+      var actualType = this.registeredClass.getActualType(rawPointer);
+      var registeredPointerRecord = registeredPointers[actualType];
+
+      if (!registeredPointerRecord) {
+        return makeDefaultHandle.call(this);
+      }
+
+      var toType;
+
+      if (this.isConst) {
+        toType = registeredPointerRecord.constPointerType;
+      } else {
+        toType = registeredPointerRecord.pointerType;
+      }
+
+      var dp = downcastPointer(rawPointer, this.registeredClass, toType.registeredClass);
+
+      if (dp === null) {
+        return makeDefaultHandle.call(this);
+      }
+
+      if (this.isSmartPointer) {
+        return makeClassHandle(toType.registeredClass.instancePrototype, {
+          ptrType: toType,
+          ptr: dp,
+          smartPtrType: this,
+          smartPtr: ptr
+        });
+      } else {
+        return makeClassHandle(toType.registeredClass.instancePrototype, {
+          ptrType: toType,
+          ptr: dp
+        });
+      }
+    }
+
     function attachFinalizer(handle) {
-      if ("undefined" === typeof FinalizationGroup) {
-        attachFinalizer = function (handle) {
-          return handle;
-        };
+      if ("undefined" === typeof FinalizationRegistry) {
+        attachFinalizer = handle => handle;
 
         return handle;
       }
 
-      finalizationGroup = new FinalizationGroup(function (iter) {
-        for (var result = iter.next(); !result.done; result = iter.next()) {
-          var $$ = result.value;
-
-          if (!$$.ptr) {
-            console.warn("object already deleted: " + $$.ptr);
-          } else {
-            releaseClassHandle($$);
-          }
-        }
+      finalizationRegistry = new FinalizationRegistry(info => {
+        releaseClassHandle(info.$$);
       });
 
-      attachFinalizer = function (handle) {
-        finalizationGroup.register(handle, handle.$$, handle.$$);
+      attachFinalizer = handle => {
+        var $$ = handle.$$;
+        var hasSmartPtr = !!$$.smartPtr;
+
+        if (hasSmartPtr) {
+          var info = {
+            $$: $$
+          };
+          finalizationRegistry.register(handle, info, handle);
+        }
+
         return handle;
       };
 
-      detachFinalizer = function (handle) {
-        finalizationGroup.unregister(handle.$$);
-      };
+      detachFinalizer = handle => finalizationRegistry.unregister(handle);
 
       return attachFinalizer(handle);
     }
@@ -1430,17 +1486,6 @@ var load_perspective = function () {
       return !this.$$.ptr;
     }
 
-    var delayFunction = undefined;
-    var deletionQueue = [];
-
-    function flushPendingDeletes() {
-      while (deletionQueue.length) {
-        var obj = deletionQueue.pop();
-        obj.$$.deleteScheduled = false;
-        obj["delete"]();
-      }
-    }
-
     function ClassHandle_deleteLater() {
       if (!this.$$.ptr) {
         throwInstanceAlreadyDeleted(this);
@@ -1469,8 +1514,6 @@ var load_perspective = function () {
     }
 
     function ClassHandle() {}
-
-    var registeredPointers = {};
 
     function ensureOverloadTable(proto, methodName, humanName) {
       if (undefined === proto[methodName].overloadTable) {
@@ -1618,7 +1661,7 @@ var load_perspective = function () {
               ptr = handle.$$.smartPtr;
             } else {
               var clonedHandle = handle["clone"]();
-              ptr = this.rawShare(ptr, __emval_register(function () {
+              ptr = this.rawShare(ptr, Emval.toHandle(function () {
                 clonedHandle["delete"]();
               }));
 
@@ -1683,171 +1726,6 @@ var load_perspective = function () {
       }
     }
 
-    function downcastPointer(ptr, ptrClass, desiredClass) {
-      if (ptrClass === desiredClass) {
-        return ptr;
-      }
-
-      if (undefined === desiredClass.baseClass) {
-        return null;
-      }
-
-      var rv = downcastPointer(ptr, ptrClass, desiredClass.baseClass);
-
-      if (rv === null) {
-        return null;
-      }
-
-      return desiredClass.downcast(rv);
-    }
-
-    function getInheritedInstanceCount() {
-      return Object.keys(registeredInstances).length;
-    }
-
-    function getLiveInheritedInstances() {
-      var rv = [];
-
-      for (var k in registeredInstances) {
-        if (registeredInstances.hasOwnProperty(k)) {
-          rv.push(registeredInstances[k]);
-        }
-      }
-
-      return rv;
-    }
-
-    function setDelayFunction(fn) {
-      delayFunction = fn;
-
-      if (deletionQueue.length && delayFunction) {
-        delayFunction(flushPendingDeletes);
-      }
-    }
-
-    function init_embind() {
-      Module["getInheritedInstanceCount"] = getInheritedInstanceCount;
-      Module["getLiveInheritedInstances"] = getLiveInheritedInstances;
-      Module["flushPendingDeletes"] = flushPendingDeletes;
-      Module["setDelayFunction"] = setDelayFunction;
-    }
-
-    var registeredInstances = {};
-
-    function getBasestPointer(class_, ptr) {
-      if (ptr === undefined) {
-        throwBindingError("ptr should not be undefined");
-      }
-
-      while (class_.baseClass) {
-        ptr = class_.upcast(ptr);
-        class_ = class_.baseClass;
-      }
-
-      return ptr;
-    }
-
-    function getInheritedInstance(class_, ptr) {
-      ptr = getBasestPointer(class_, ptr);
-      return registeredInstances[ptr];
-    }
-
-    function makeClassHandle(prototype, record) {
-      if (!record.ptrType || !record.ptr) {
-        throwInternalError("makeClassHandle requires ptr and ptrType");
-      }
-
-      var hasSmartPtrType = !!record.smartPtrType;
-      var hasSmartPtr = !!record.smartPtr;
-
-      if (hasSmartPtrType !== hasSmartPtr) {
-        throwInternalError("Both smartPtrType and smartPtr must be specified");
-      }
-
-      record.count = {
-        value: 1
-      };
-      return attachFinalizer(Object.create(prototype, {
-        $$: {
-          value: record
-        }
-      }));
-    }
-
-    function RegisteredPointer_fromWireType(ptr) {
-      var rawPointer = this.getPointee(ptr);
-
-      if (!rawPointer) {
-        this.destructor(ptr);
-        return null;
-      }
-
-      var registeredInstance = getInheritedInstance(this.registeredClass, rawPointer);
-
-      if (undefined !== registeredInstance) {
-        if (0 === registeredInstance.$$.count.value) {
-          registeredInstance.$$.ptr = rawPointer;
-          registeredInstance.$$.smartPtr = ptr;
-          return registeredInstance["clone"]();
-        } else {
-          var rv = registeredInstance["clone"]();
-          this.destructor(ptr);
-          return rv;
-        }
-      }
-
-      function makeDefaultHandle() {
-        if (this.isSmartPointer) {
-          return makeClassHandle(this.registeredClass.instancePrototype, {
-            ptrType: this.pointeeType,
-            ptr: rawPointer,
-            smartPtrType: this,
-            smartPtr: ptr
-          });
-        } else {
-          return makeClassHandle(this.registeredClass.instancePrototype, {
-            ptrType: this,
-            ptr: ptr
-          });
-        }
-      }
-
-      var actualType = this.registeredClass.getActualType(rawPointer);
-      var registeredPointerRecord = registeredPointers[actualType];
-
-      if (!registeredPointerRecord) {
-        return makeDefaultHandle.call(this);
-      }
-
-      var toType;
-
-      if (this.isConst) {
-        toType = registeredPointerRecord.constPointerType;
-      } else {
-        toType = registeredPointerRecord.pointerType;
-      }
-
-      var dp = downcastPointer(rawPointer, this.registeredClass, toType.registeredClass);
-
-      if (dp === null) {
-        return makeDefaultHandle.call(this);
-      }
-
-      if (this.isSmartPointer) {
-        return makeClassHandle(toType.registeredClass.instancePrototype, {
-          ptrType: toType,
-          ptr: dp,
-          smartPtrType: this,
-          smartPtr: ptr
-        });
-      } else {
-        return makeClassHandle(toType.registeredClass.instancePrototype, {
-          ptrType: toType,
-          ptr: dp
-        });
-      }
-    }
-
     function init_RegisteredPointer() {
       RegisteredPointer.prototype.getPointee = RegisteredPointer_getPointee;
       RegisteredPointer.prototype.destructor = RegisteredPointer_destructor;
@@ -1906,18 +1784,14 @@ var load_perspective = function () {
         return dynCallLegacy(sig, ptr, args);
       }
 
-      return wasmTable.get(ptr).apply(null, args);
+      return getWasmTableEntry(ptr).apply(null, args);
     }
 
     function getDynCaller(sig, ptr) {
       var argCache = [];
       return function () {
-        argCache.length = arguments.length;
-
-        for (var i = 0; i < arguments.length; i++) {
-          argCache[i] = arguments[i];
-        }
-
+        argCache.length = 0;
+        Object.assign(argCache, arguments);
         return dynCall(sig, ptr, argCache);
       };
     }
@@ -1930,12 +1804,12 @@ var load_perspective = function () {
           return getDynCaller(signature, rawFunction);
         }
 
-        return wasmTable.get(rawFunction);
+        return getWasmTableEntry(rawFunction);
       }
 
       var fp = makeDynCaller();
 
-      if (typeof fp !== "function") {
+      if (typeof fp != "function") {
         throwBindingError("unknown function pointer with signature " + signature + ": " + rawFunction);
       }
 
@@ -2055,35 +1929,6 @@ var load_perspective = function () {
       return array;
     }
 
-    function __embind_register_class_constructor(rawClassType, argCount, rawArgTypesAddr, invokerSignature, invoker, rawConstructor) {
-      assert(argCount > 0);
-      var rawArgTypes = heap32VectorToArray(argCount, rawArgTypesAddr);
-      invoker = embind__requireFunction(invokerSignature, invoker);
-      whenDependentTypesAreResolved([], [rawClassType], function (classType) {
-        classType = classType[0];
-        var humanName = "constructor " + classType.name;
-
-        if (undefined === classType.registeredClass.constructor_body) {
-          classType.registeredClass.constructor_body = [];
-        }
-
-        if (undefined !== classType.registeredClass.constructor_body[argCount - 1]) {
-          throw new BindingError("Cannot register multiple constructors with identical number of parameters (" + (argCount - 1) + ") for class '" + classType.name + "'! Overload resolution is currently only performed using the parameter count, not actual type info!");
-        }
-
-        classType.registeredClass.constructor_body[argCount - 1] = function unboundTypeHandler() {
-          throwUnboundTypeError("Cannot construct " + classType.name + " due to unbound types", rawArgTypes);
-        };
-
-        whenDependentTypesAreResolved([], rawArgTypes, function (argTypes) {
-          argTypes.splice(1, 0, null);
-          classType.registeredClass.constructor_body[argCount - 1] = craftInvokerFunction(humanName, argTypes, null, invoker, rawConstructor);
-          return [];
-        });
-        return [];
-      });
-    }
-
     function new_(constructor, argumentList) {
       if (!(constructor instanceof Function)) {
         throw new TypeError("new_ called with constructor type " + typeof constructor + " which is not a function");
@@ -2170,6 +2015,35 @@ var load_perspective = function () {
       args1.push(invokerFnBody);
       var invokerFunction = new_(Function, args1).apply(null, args2);
       return invokerFunction;
+    }
+
+    function __embind_register_class_constructor(rawClassType, argCount, rawArgTypesAddr, invokerSignature, invoker, rawConstructor) {
+      assert(argCount > 0);
+      var rawArgTypes = heap32VectorToArray(argCount, rawArgTypesAddr);
+      invoker = embind__requireFunction(invokerSignature, invoker);
+      whenDependentTypesAreResolved([], [rawClassType], function (classType) {
+        classType = classType[0];
+        var humanName = "constructor " + classType.name;
+
+        if (undefined === classType.registeredClass.constructor_body) {
+          classType.registeredClass.constructor_body = [];
+        }
+
+        if (undefined !== classType.registeredClass.constructor_body[argCount - 1]) {
+          throw new BindingError("Cannot register multiple constructors with identical number of parameters (" + (argCount - 1) + ") for class '" + classType.name + "'! Overload resolution is currently only performed using the parameter count, not actual type info!");
+        }
+
+        classType.registeredClass.constructor_body[argCount - 1] = () => {
+          throwUnboundTypeError("Cannot construct " + classType.name + " due to unbound types", rawArgTypes);
+        };
+
+        whenDependentTypesAreResolved([], rawArgTypes, function (argTypes) {
+          argTypes.splice(1, 0, null);
+          classType.registeredClass.constructor_body[argCount - 1] = craftInvokerFunction(humanName, argTypes, null, invoker, rawConstructor);
+          return [];
+        });
+        return [];
+      });
     }
 
     function __embind_register_class_function(rawClassType, methodName, argCount, rawArgTypesAddr, invokerSignature, rawInvoker, context, isPureVirtual) {
@@ -2265,53 +2139,54 @@ var load_perspective = function () {
       Module["get_first_emval"] = get_first_emval;
     }
 
-    function __emval_register(value) {
-      switch (value) {
-        case undefined:
-          {
+    var Emval = {
+      toValue: handle => {
+        if (!handle) {
+          throwBindingError("Cannot use deleted val. handle = " + handle);
+        }
+
+        return emval_handle_array[handle].value;
+      },
+      toHandle: value => {
+        switch (value) {
+          case undefined:
             return 1;
-          }
 
-        case null:
-          {
+          case null:
             return 2;
-          }
 
-        case true:
-          {
+          case true:
             return 3;
-          }
 
-        case false:
-          {
+          case false:
             return 4;
-          }
 
-        default:
-          {
-            var handle = emval_free_list.length ? emval_free_list.pop() : emval_handle_array.length;
-            emval_handle_array[handle] = {
-              refcount: 1,
-              value: value
-            };
-            return handle;
-          }
+          default:
+            {
+              var handle = emval_free_list.length ? emval_free_list.pop() : emval_handle_array.length;
+              emval_handle_array[handle] = {
+                refcount: 1,
+                value: value
+              };
+              return handle;
+            }
+        }
       }
-    }
+    };
 
     function __embind_register_emval(rawType, name) {
       name = readLatin1String(name);
       registerType(rawType, {
         name: name,
         "fromWireType": function (handle) {
-          var rv = emval_handle_array[handle].value;
+          var rv = Emval.toValue(handle);
 
           __emval_decref(handle);
 
           return rv;
         },
         "toWireType": function (destructors, value) {
-          return __emval_register(value);
+          return Emval.toHandle(value);
         },
         "argPackAdvance": 8,
         "readValueFromPointer": simpleReadValueFromPointer,
@@ -2433,10 +2308,6 @@ var load_perspective = function () {
           return value;
         },
         "toWireType": function (destructors, value) {
-          if (typeof value !== "number" && typeof value !== "boolean") {
-            throw new TypeError('Cannot convert "' + _embind_repr(value) + '" to ' + this.name);
-          }
-
           return value;
         },
         "argPackAdvance": 8,
@@ -2496,33 +2367,36 @@ var load_perspective = function () {
 
       var shift = getShiftFromSize(size);
 
-      var fromWireType = function (value) {
-        return value;
-      };
+      var fromWireType = value => value;
 
       if (minRange === 0) {
         var bitshift = 32 - 8 * size;
 
-        fromWireType = function (value) {
-          return value << bitshift >>> bitshift;
-        };
+        fromWireType = value => value << bitshift >>> bitshift;
       }
 
       var isUnsignedType = name.includes("unsigned");
+
+      var checkAssertions = (value, toTypeName) => {};
+
+      var toWireType;
+
+      if (isUnsignedType) {
+        toWireType = function (destructors, value) {
+          checkAssertions(value, this.name);
+          return value >>> 0;
+        };
+      } else {
+        toWireType = function (destructors, value) {
+          checkAssertions(value, this.name);
+          return value;
+        };
+      }
+
       registerType(primitiveType, {
         name: name,
         "fromWireType": fromWireType,
-        "toWireType": function (destructors, value) {
-          if (typeof value !== "number" && typeof value !== "boolean") {
-            throw new TypeError('Cannot convert "' + _embind_repr(value) + '" to ' + this.name);
-          }
-
-          if (value < minRange || value > maxRange) {
-            throw new TypeError('Passing a number "' + _embind_repr(value) + '" from JS side to C/C++ side to an argument of type "' + name + '", which is outside the valid range [' + minRange + ", " + maxRange + "]!");
-          }
-
-          return isUnsignedType ? value >>> 0 : value | 0;
-        },
+        "toWireType": toWireType,
         "argPackAdvance": 8,
         "readValueFromPointer": integerReadValueFromPointer(name, shift, minRange !== 0),
         destructorFunction: null
@@ -2614,20 +2488,16 @@ var load_perspective = function () {
           }
 
           var getLength;
-          var valueIsOfTypeString = typeof value === "string";
+          var valueIsOfTypeString = typeof value == "string";
 
           if (!(valueIsOfTypeString || value instanceof Uint8Array || value instanceof Uint8ClampedArray || value instanceof Int8Array)) {
             throwBindingError("Cannot pass non-string to std::string");
           }
 
           if (stdStringIsUTF8 && valueIsOfTypeString) {
-            getLength = function () {
-              return lengthBytesUTF8(value);
-            };
+            getLength = () => lengthBytesUTF8(value);
           } else {
-            getLength = function () {
-              return value.length;
-            };
+            getLength = () => value.length;
           }
 
           var length = getLength();
@@ -2682,9 +2552,7 @@ var load_perspective = function () {
         encodeString = stringToUTF16;
         lengthBytesUTF = lengthBytesUTF16;
 
-        getHeap = function () {
-          return HEAPU16;
-        };
+        getHeap = () => HEAPU16;
 
         shift = 1;
       } else if (charSize === 4) {
@@ -2692,9 +2560,7 @@ var load_perspective = function () {
         encodeString = stringToUTF32;
         lengthBytesUTF = lengthBytesUTF32;
 
-        getHeap = function () {
-          return HEAPU32;
-        };
+        getHeap = () => HEAPU32;
 
         shift = 2;
       }
@@ -2730,7 +2596,7 @@ var load_perspective = function () {
           return str;
         },
         "toWireType": function (destructors, value) {
-          if (!(typeof value === "string")) {
+          if (!(typeof value == "string")) {
             throwBindingError("Cannot pass non-string to C++ string type " + name);
           }
 
@@ -2792,40 +2658,38 @@ var load_perspective = function () {
       });
     }
 
-    function requireHandle(handle) {
-      if (!handle) {
-        throwBindingError("Cannot use deleted val. handle = " + handle);
-      }
+    function __emscripten_date_now() {
+      return Date.now();
+    }
 
-      return emval_handle_array[handle].value;
+    var nowIsMonotonic = true;
+
+    function __emscripten_get_now_is_monotonic() {
+      return nowIsMonotonic;
     }
 
     function __emval_as(handle, returnType, destructorsRef) {
-      handle = requireHandle(handle);
+      handle = Emval.toValue(handle);
       returnType = requireRegisteredType(returnType, "emval::as");
       var destructors = [];
-
-      var rd = __emval_register(destructors);
-
+      var rd = Emval.toHandle(destructors);
       HEAP32[destructorsRef >>> 2] = rd;
       return returnType["toWireType"](destructors, handle);
     }
 
-    function __emval_lookupTypes(argCount, argTypes) {
+    function emval_lookupTypes(argCount, argTypes) {
       var a = new Array(argCount);
 
       for (var i = 0; i < argCount; ++i) {
-        a[i] = requireRegisteredType(HEAP32[(argTypes >> 2) + i >>> 0], "parameter " + i);
+        a[i] = requireRegisteredType(HEAPU32[argTypes + i * POINTER_SIZE >>> 2], "parameter " + i);
       }
 
       return a;
     }
 
     function __emval_call(handle, argCount, argTypes, argv) {
-      handle = requireHandle(handle);
-
-      var types = __emval_lookupTypes(argCount, argTypes);
-
+      handle = Emval.toValue(handle);
+      var types = emval_lookupTypes(argCount, argTypes);
       var args = new Array(argCount);
 
       for (var i = 0; i < argCount; ++i) {
@@ -2835,12 +2699,12 @@ var load_perspective = function () {
       }
 
       var rv = handle.apply(undefined, args);
-      return __emval_register(rv);
+      return Emval.toHandle(rv);
     }
 
-    function __emval_allocateDestructors(destructorsRef) {
+    function emval_allocateDestructors(destructorsRef) {
       var destructors = [];
-      HEAP32[destructorsRef >>> 2] = __emval_register(destructors);
+      HEAP32[destructorsRef >>> 2] = Emval.toHandle(destructors);
       return destructors;
     }
 
@@ -2851,29 +2715,29 @@ var load_perspective = function () {
 
       if (symbol === undefined) {
         return readLatin1String(address);
-      } else {
-        return symbol;
       }
+
+      return symbol;
     }
 
     var emval_methodCallers = [];
 
     function __emval_call_method(caller, handle, methodName, destructorsRef, args) {
       caller = emval_methodCallers[caller];
-      handle = requireHandle(handle);
+      handle = Emval.toValue(handle);
       methodName = getStringOrSymbol(methodName);
-      return caller(handle, methodName, __emval_allocateDestructors(destructorsRef), args);
+      return caller(handle, methodName, emval_allocateDestructors(destructorsRef), args);
     }
 
     function __emval_call_void_method(caller, handle, methodName, args) {
       caller = emval_methodCallers[caller];
-      handle = requireHandle(handle);
+      handle = Emval.toValue(handle);
       methodName = getStringOrSymbol(methodName);
       caller(handle, methodName, null, args);
     }
 
     function emval_get_global() {
-      if (typeof globalThis === "object") {
+      if (typeof globalThis == "object") {
         return globalThis;
       }
 
@@ -2884,26 +2748,33 @@ var load_perspective = function () {
 
     function __emval_get_global(name) {
       if (name === 0) {
-        return __emval_register(emval_get_global());
+        return Emval.toHandle(emval_get_global());
       } else {
         name = getStringOrSymbol(name);
-        return __emval_register(emval_get_global()[name]);
+        return Emval.toHandle(emval_get_global()[name]);
       }
     }
 
-    function __emval_addMethodCaller(caller) {
+    function emval_addMethodCaller(caller) {
       var id = emval_methodCallers.length;
       emval_methodCallers.push(caller);
       return id;
     }
 
-    function __emval_get_method_caller(argCount, argTypes) {
-      var types = __emval_lookupTypes(argCount, argTypes);
+    var emval_registeredMethods = [];
 
+    function __emval_get_method_caller(argCount, argTypes) {
+      var types = emval_lookupTypes(argCount, argTypes);
       var retType = types[0];
       var signatureName = retType.name + "_$" + types.slice(1).map(function (t) {
         return t.name;
       }).join("_") + "$";
+      var returnId = emval_registeredMethods[signatureName];
+
+      if (returnId !== undefined) {
+        return returnId;
+      }
+
       var params = ["retType"];
       var args = [retType];
       var argsList = "";
@@ -2938,18 +2809,20 @@ var load_perspective = function () {
       functionBody += "};\n";
       params.push(functionBody);
       var invokerFunction = new_(Function, params).apply(null, args);
-      return __emval_addMethodCaller(invokerFunction);
+      returnId = emval_addMethodCaller(invokerFunction);
+      emval_registeredMethods[signatureName] = returnId;
+      return returnId;
     }
 
     function __emval_get_module_property(name) {
       name = getStringOrSymbol(name);
-      return __emval_register(Module[name]);
+      return Emval.toHandle(Module[name]);
     }
 
     function __emval_get_property(handle, key) {
-      handle = requireHandle(handle);
-      key = requireHandle(key);
-      return __emval_register(handle[key]);
+      handle = Emval.toValue(handle);
+      key = Emval.toValue(key);
+      return Emval.toHandle(handle[key]);
     }
 
     function __emval_incref(handle) {
@@ -2959,8 +2832,8 @@ var load_perspective = function () {
     }
 
     function __emval_instanceof(object, constructor) {
-      object = requireHandle(object);
-      constructor = requireHandle(constructor);
+      object = Emval.toValue(object);
+      constructor = Emval.toValue(constructor);
       return object instanceof constructor;
     }
 
@@ -2977,14 +2850,14 @@ var load_perspective = function () {
         functionBody += "var argType" + i + " = requireRegisteredType(Module['HEAP32'][(argTypes >>> 2) + " + i + '], "parameter ' + i + '");\n' + "var arg" + i + " = argType" + i + ".readValueFromPointer(args);\n" + "args += argType" + i + "['argPackAdvance'];\n";
       }
 
-      functionBody += "var obj = new constructor(" + argsList + ");\n" + "return __emval_register(obj);\n" + "}\n";
-      return new Function("requireRegisteredType", "Module", "__emval_register", functionBody)(requireRegisteredType, Module, __emval_register);
+      functionBody += "var obj = new constructor(" + argsList + ");\n" + "return valueToHandle(obj);\n" + "}\n";
+      return new Function("requireRegisteredType", "Module", "valueToHandle", functionBody)(requireRegisteredType, Module, Emval.toHandle);
     }
 
     var emval_newers = {};
 
     function __emval_new(handle, argCount, argTypes, args) {
-      handle = requireHandle(handle);
+      handle = Emval.toValue(handle);
       var newer = emval_newers[argCount];
 
       if (!newer) {
@@ -2996,69 +2869,107 @@ var load_perspective = function () {
     }
 
     function __emval_new_array() {
-      return __emval_register([]);
+      return Emval.toHandle([]);
     }
 
     function __emval_new_cstring(v) {
-      return __emval_register(getStringOrSymbol(v));
+      return Emval.toHandle(getStringOrSymbol(v));
     }
 
     function __emval_new_object() {
-      return __emval_register({});
+      return Emval.toHandle({});
     }
 
     function __emval_run_destructors(handle) {
-      var destructors = emval_handle_array[handle].value;
+      var destructors = Emval.toValue(handle);
       runDestructors(destructors);
 
       __emval_decref(handle);
     }
 
     function __emval_set_property(handle, key, value) {
-      handle = requireHandle(handle);
-      key = requireHandle(key);
-      value = requireHandle(value);
+      handle = Emval.toValue(handle);
+      key = Emval.toValue(key);
+      value = Emval.toValue(value);
       handle[key] = value;
     }
 
     function __emval_take_value(type, argv) {
       type = requireRegisteredType(type, "_emval_take_value");
       var v = type["readValueFromPointer"](argv);
-      return __emval_register(v);
+      return Emval.toHandle(v);
     }
 
     function __emval_typeof(handle) {
-      handle = requireHandle(handle);
-      return __emval_register(typeof handle);
+      handle = Emval.toValue(handle);
+      return Emval.toHandle(typeof handle);
+    }
+
+    function __localtime_js(time, tmPtr) {
+      var date = new Date(HEAP32[time >>> 2] * 1e3);
+      HEAP32[tmPtr >>> 2] = date.getSeconds();
+      HEAP32[tmPtr + 4 >>> 2] = date.getMinutes();
+      HEAP32[tmPtr + 8 >>> 2] = date.getHours();
+      HEAP32[tmPtr + 12 >>> 2] = date.getDate();
+      HEAP32[tmPtr + 16 >>> 2] = date.getMonth();
+      HEAP32[tmPtr + 20 >>> 2] = date.getFullYear() - 1900;
+      HEAP32[tmPtr + 24 >>> 2] = date.getDay();
+      var start = new Date(date.getFullYear(), 0, 1);
+      var yday = (date.getTime() - start.getTime()) / (1e3 * 60 * 60 * 24) | 0;
+      HEAP32[tmPtr + 28 >>> 2] = yday;
+      HEAP32[tmPtr + 36 >>> 2] = -(date.getTimezoneOffset() * 60);
+      var summerOffset = new Date(date.getFullYear(), 6, 1).getTimezoneOffset();
+      var winterOffset = start.getTimezoneOffset();
+      var dst = (summerOffset != winterOffset && date.getTimezoneOffset() == Math.min(winterOffset, summerOffset)) | 0;
+      HEAP32[tmPtr + 32 >>> 2] = dst;
+    }
+
+    function __mmap_js(len, prot, flags, fd, off, allocated) {
+      return -52;
+    }
+
+    function __munmap_js(addr, len, prot, flags, fd, offset) {
+      addr >>>= 0;
+    }
+
+    function _tzset_impl(timezone, daylight, tzname) {
+      var currentYear = new Date().getFullYear();
+      var winter = new Date(currentYear, 0, 1);
+      var summer = new Date(currentYear, 6, 1);
+      var winterOffset = winter.getTimezoneOffset();
+      var summerOffset = summer.getTimezoneOffset();
+      var stdTimezoneOffset = Math.max(winterOffset, summerOffset);
+      HEAP32[timezone >>> 2] = stdTimezoneOffset * 60;
+      HEAP32[daylight >>> 2] = Number(winterOffset != summerOffset);
+
+      function extractZone(date) {
+        var match = date.toTimeString().match(/\(([A-Za-z ]+)\)$/);
+        return match ? match[1] : "GMT";
+      }
+
+      var winterName = extractZone(winter);
+      var summerName = extractZone(summer);
+      var winterNamePtr = allocateUTF8(winterName);
+      var summerNamePtr = allocateUTF8(summerName);
+
+      if (summerOffset < winterOffset) {
+        HEAPU32[tzname >>> 2] = winterNamePtr;
+        HEAPU32[tzname + 4 >>> 2] = summerNamePtr;
+      } else {
+        HEAPU32[tzname >>> 2] = summerNamePtr;
+        HEAPU32[tzname + 4 >>> 2] = winterNamePtr;
+      }
+    }
+
+    function __tzset_js(timezone, daylight, tzname) {
+      if (__tzset_js.called) return;
+      __tzset_js.called = true;
+
+      _tzset_impl(timezone, daylight, tzname);
     }
 
     function _abort() {
-      abort();
-    }
-
-    var _emscripten_get_now;
-
-    _emscripten_get_now = function () {
-      return performance.now();
-    };
-
-    var _emscripten_get_now_is_monotonic = true;
-
-    function _clock_gettime(clk_id, tp) {
-      var now;
-
-      if (clk_id === 0) {
-        now = Date.now();
-      } else if ((clk_id === 1 || clk_id === 4) && _emscripten_get_now_is_monotonic) {
-        now = _emscripten_get_now();
-      } else {
-        setErrNo(28);
-        return -1;
-      }
-
-      HEAP32[tp >>> 2] = now / 1e3 | 0;
-      HEAP32[tp + 4 >>> 2] = now % 1e3 * 1e3 * 1e3 | 0;
-      return 0;
+      abort("");
     }
 
     var readAsmConstArgsArray = [];
@@ -3069,9 +2980,8 @@ var load_perspective = function () {
       buf >>= 2;
 
       while (ch = HEAPU8[sigPtr++ >>> 0]) {
-        var double = ch < 105;
-        if (double && buf & 1) buf++;
-        readAsmConstArgsArray.push(double ? HEAPF64[buf++ >>> 1] : HEAP32[buf >>> 0]);
+        buf += ch != 105 & buf;
+        readAsmConstArgsArray.push(ch == 105 ? HEAP32[buf >>> 0] : HEAPF64[buf++ >>> 1]);
         ++buf;
       }
 
@@ -3083,9 +2993,22 @@ var load_perspective = function () {
       return ASM_CONSTS[code].apply(null, args);
     }
 
-    function _emscripten_get_heap_max() {
+    function getHeapMax() {
       return 4294901760;
     }
+
+    function _emscripten_get_heap_max() {
+      return getHeapMax();
+    }
+
+    var _emscripten_get_now;
+
+    if (ENVIRONMENT_IS_NODE) {
+      _emscripten_get_now = () => {
+        var t = process["hrtime"]();
+        return t[0] * 1e3 + t[1] / 1e6;
+      };
+    } else _emscripten_get_now = () => performance.now();
 
     function _emscripten_memcpy_big(dest, src, num) {
       HEAPU8.copyWithin(dest >>> 0, src >>> 0, src + num >>> 0);
@@ -3102,11 +3025,13 @@ var load_perspective = function () {
     function _emscripten_resize_heap(requestedSize) {
       var oldSize = HEAPU8.length;
       requestedSize = requestedSize >>> 0;
-      var maxHeapSize = 4294901760;
+      var maxHeapSize = getHeapMax();
 
       if (requestedSize > maxHeapSize) {
         return false;
       }
+
+      let alignUp = (x, multiple) => x + (multiple - x % multiple) % multiple;
 
       for (var cutDown = 1; cutDown <= 4; cutDown *= 2) {
         var overGrownHeapSize = oldSize * (1 + .2 / cutDown);
@@ -3130,7 +3055,7 @@ var load_perspective = function () {
 
     function getEnvStrings() {
       if (!getEnvStrings.strings) {
-        var lang = (typeof navigator === "object" && navigator.languages && navigator.languages[0] || "C").replace("-", "_") + ".UTF-8";
+        var lang = (typeof navigator == "object" && navigator.languages && navigator.languages[0] || "C").replace("-", "_") + ".UTF-8";
         var env = {
           "USER": "web_user",
           "LOGNAME": "web_user",
@@ -3161,7 +3086,7 @@ var load_perspective = function () {
       var bufSize = 0;
       getEnvStrings().forEach(function (string, i) {
         var ptr = environ_buf + bufSize;
-        HEAP32[__environ + i * 4 >>> 2] = ptr;
+        HEAPU32[__environ + i * 4 >>> 2] = ptr;
         writeAsciiToMemory(string, ptr);
         bufSize += string.length + 1;
       });
@@ -3170,43 +3095,56 @@ var load_perspective = function () {
 
     function _environ_sizes_get(penviron_count, penviron_buf_size) {
       var strings = getEnvStrings();
-      HEAP32[penviron_count >>> 2] = strings.length;
+      HEAPU32[penviron_count >>> 2] = strings.length;
       var bufSize = 0;
       strings.forEach(function (string) {
         bufSize += string.length + 1;
       });
-      HEAP32[penviron_buf_size >>> 2] = bufSize;
+      HEAPU32[penviron_buf_size >>> 2] = bufSize;
       return 0;
     }
 
     function _fd_close(fd) {
-      return 0;
+      return 52;
     }
 
     function _fd_read(fd, iov, iovcnt, pnum) {
-      var stream = SYSCALLS.getStreamFromFD(fd);
-      var num = SYSCALLS.doReadv(stream, iov, iovcnt);
-      HEAP32[pnum >>> 2] = num;
-      return 0;
+      return 52;
     }
 
-    function _fd_seek(fd, offset_low, offset_high, whence, newOffset) {}
+    function _fd_seek(fd, offset_low, offset_high, whence, newOffset) {
+      return 70;
+    }
+
+    var printCharBuffers = [null, [], []];
+
+    function printChar(stream, curr) {
+      var buffer = printCharBuffers[stream];
+
+      if (curr === 0 || curr === 10) {
+        (stream === 1 ? out : err)(UTF8ArrayToString(buffer, 0));
+        buffer.length = 0;
+      } else {
+        buffer.push(curr);
+      }
+    }
 
     function _fd_write(fd, iov, iovcnt, pnum) {
       var num = 0;
 
       for (var i = 0; i < iovcnt; i++) {
-        var ptr = HEAP32[iov + i * 8 >>> 2];
-        var len = HEAP32[iov + (i * 8 + 4) >>> 2];
+        var ptr = HEAPU32[iov >>> 2];
+        var len = HEAPU32[iov + 4 >>> 2];
+        iov += 8;
 
         for (var j = 0; j < len; j++) {
-          SYSCALLS.printChar(fd, HEAPU8[ptr + j >>> 0]);
+          printChar(fd, HEAPU8[ptr + j >>> 0]);
         }
 
         num += len;
       }
 
-      HEAP32[pnum >>> 2] = num;
+      HEAPU32[pnum >>> 2] = num;
       return 0;
     }
 
@@ -3312,7 +3250,7 @@ var load_perspective = function () {
       var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
       function leadingSomething(value, digits, character) {
-        var str = typeof value === "number" ? value.toString() : value || "";
+        var str = typeof value == "number" ? value.toString() : value || "";
 
         while (str.length < digits) {
           str = character[0] + str;
@@ -3451,61 +3389,36 @@ var load_perspective = function () {
           return date.tm_wday || 7;
         },
         "%U": function (date) {
-          var janFirst = new Date(date.tm_year + 1900, 0, 1);
-          var firstSunday = janFirst.getDay() === 0 ? janFirst : __addDays(janFirst, 7 - janFirst.getDay());
-          var endDate = new Date(date.tm_year + 1900, date.tm_mon, date.tm_mday);
-
-          if (compareByDay(firstSunday, endDate) < 0) {
-            var februaryFirstUntilEndMonth = __arraySum(__isLeapYear(endDate.getFullYear()) ? __MONTH_DAYS_LEAP : __MONTH_DAYS_REGULAR, endDate.getMonth() - 1) - 31;
-            var firstSundayUntilEndJanuary = 31 - firstSunday.getDate();
-            var days = firstSundayUntilEndJanuary + februaryFirstUntilEndMonth + endDate.getDate();
-            return leadingNulls(Math.ceil(days / 7), 2);
-          }
-
-          return compareByDay(firstSunday, janFirst) === 0 ? "01" : "00";
+          var days = date.tm_yday + 7 - date.tm_wday;
+          return leadingNulls(Math.floor(days / 7), 2);
         },
         "%V": function (date) {
-          var janFourthThisYear = new Date(date.tm_year + 1900, 0, 4);
-          var janFourthNextYear = new Date(date.tm_year + 1901, 0, 4);
-          var firstWeekStartThisYear = getFirstWeekStartDate(janFourthThisYear);
-          var firstWeekStartNextYear = getFirstWeekStartDate(janFourthNextYear);
+          var val = Math.floor((date.tm_yday + 7 - (date.tm_wday + 6) % 7) / 7);
 
-          var endDate = __addDays(new Date(date.tm_year + 1900, 0, 1), date.tm_yday);
-
-          if (compareByDay(endDate, firstWeekStartThisYear) < 0) {
-            return "53";
+          if ((date.tm_wday + 371 - date.tm_yday - 2) % 7 <= 2) {
+            val++;
           }
 
-          if (compareByDay(firstWeekStartNextYear, endDate) <= 0) {
-            return "01";
+          if (!val) {
+            val = 52;
+            var dec31 = (date.tm_wday + 7 - date.tm_yday - 1) % 7;
+
+            if (dec31 == 4 || dec31 == 5 && __isLeapYear(date.tm_year % 400 - 1)) {
+              val++;
+            }
+          } else if (val == 53) {
+            var jan1 = (date.tm_wday + 371 - date.tm_yday) % 7;
+            if (jan1 != 4 && (jan1 != 3 || !__isLeapYear(date.tm_year))) val = 1;
           }
 
-          var daysDifference;
-
-          if (firstWeekStartThisYear.getFullYear() < date.tm_year + 1900) {
-            daysDifference = date.tm_yday + 32 - firstWeekStartThisYear.getDate();
-          } else {
-            daysDifference = date.tm_yday + 1 - firstWeekStartThisYear.getDate();
-          }
-
-          return leadingNulls(Math.ceil(daysDifference / 7), 2);
+          return leadingNulls(val, 2);
         },
         "%w": function (date) {
           return date.tm_wday;
         },
         "%W": function (date) {
-          var janFirst = new Date(date.tm_year, 0, 1);
-          var firstMonday = janFirst.getDay() === 1 ? janFirst : __addDays(janFirst, janFirst.getDay() === 0 ? 1 : 7 - janFirst.getDay() + 1);
-          var endDate = new Date(date.tm_year + 1900, date.tm_mon, date.tm_mday);
-
-          if (compareByDay(firstMonday, endDate) < 0) {
-            var februaryFirstUntilEndMonth = __arraySum(__isLeapYear(endDate.getFullYear()) ? __MONTH_DAYS_LEAP : __MONTH_DAYS_REGULAR, endDate.getMonth() - 1) - 31;
-            var firstMondayUntilEndJanuary = 31 - firstMonday.getDate();
-            var days = firstMondayUntilEndJanuary + februaryFirstUntilEndMonth + endDate.getDate();
-            return leadingNulls(Math.ceil(days / 7), 2);
-          }
-
-          return compareByDay(firstMonday, janFirst) === 0 ? "01" : "00";
+          var days = date.tm_yday + 7 - (date.tm_wday + 6) % 7;
+          return leadingNulls(Math.floor(days / 7), 2);
         },
         "%y": function (date) {
           return (date.tm_year + 1900).toString().substring(2);
@@ -3527,6 +3440,7 @@ var load_perspective = function () {
           return "%";
         }
       };
+      pattern = pattern.replace(/%%/g, "\0\0");
 
       for (var rule in EXPANSION_RULES_2) {
         if (pattern.includes(rule)) {
@@ -3534,6 +3448,7 @@ var load_perspective = function () {
         }
       }
 
+      pattern = pattern.replace(/\0\0/g, "%");
       var bytes = intArrayFromString(pattern, false);
 
       if (bytes.length > maxsize) {
@@ -3648,7 +3563,7 @@ var load_perspective = function () {
 
       function initDate() {
         function fixup(value, min, max) {
-          return typeof value !== "number" || isNaN(value) ? min : value >= min ? value <= max ? value : max : min;
+          return typeof value != "number" || isNaN(value) ? min : value >= min ? value <= max ? value : max : min;
         }
 
         return {
@@ -3665,7 +3580,7 @@ var load_perspective = function () {
         var date = initDate();
         var value;
 
-        var getMatch = function (symbol) {
+        var getMatch = symbol => {
           var pos = capture.indexOf(symbol);
 
           if (pos >= 0) {
@@ -3783,8 +3698,8 @@ var load_perspective = function () {
     embind_init_charCodes();
     BindingError = Module["BindingError"] = extendError(Error, "BindingError");
     init_ClassHandle();
-    init_RegisteredPointer();
     init_embind();
+    init_RegisteredPointer();
     UnboundTypeError = Module["UnboundTypeError"] = extendError(Error, "UnboundTypeError");
     init_emval();
 
@@ -3799,73 +3714,73 @@ var load_perspective = function () {
     var asmLibraryArg = {
       "a": ___assert_fail,
       "i": ___cxa_allocate_exception,
-      "j": ___cxa_throw,
-      "Z": ___localtime_r,
-      "L": ___sys_fcntl64,
-      "ia": ___sys_ftruncate64,
-      "ja": ___sys_getdents64,
-      "M": ___sys_getpid,
-      "ea": ___sys_ioctl,
-      "aa": ___sys_madvise1,
-      "ca": ___sys_mmap2,
-      "$": ___sys_mremap,
-      "ba": ___sys_munmap,
-      "N": ___sys_open,
-      "da": ___sys_stat64,
-      "ga": ___sys_unlink,
-      "E": __embind_finalize_value_object,
+      "h": ___cxa_throw,
+      "M": ___syscall_fcntl64,
+      "T": ___syscall_ftruncate64,
+      "X": ___syscall_getdents64,
+      "da": ___syscall_ioctl,
+      "N": ___syscall_openat,
+      "aa": ___syscall_stat64,
+      "V": ___syscall_unlinkat,
+      "F": __embind_finalize_value_object,
       "U": __embind_register_bigint,
       "la": __embind_register_bool,
-      "p": __embind_register_class,
+      "q": __embind_register_class,
       "v": __embind_register_class_constructor,
       "d": __embind_register_class_function,
       "ka": __embind_register_emval,
-      "R": __embind_register_enum,
+      "Q": __embind_register_enum,
       "u": __embind_register_enum_value,
       "O": __embind_register_float,
-      "o": __embind_register_function,
-      "z": __embind_register_integer,
-      "y": __embind_register_memory_view,
-      "w": __embind_register_smart_ptr,
+      "p": __embind_register_function,
+      "B": __embind_register_integer,
+      "x": __embind_register_memory_view,
+      "y": __embind_register_smart_ptr,
       "P": __embind_register_std_string,
-      "I": __embind_register_std_wstring,
-      "F": __embind_register_value_object,
-      "x": __embind_register_value_object_field,
+      "J": __embind_register_std_wstring,
+      "G": __embind_register_value_object,
+      "A": __embind_register_value_object_field,
       "ma": __embind_register_void,
-      "k": __emval_as,
+      "ga": __emscripten_date_now,
+      "fa": __emscripten_get_now_is_monotonic,
+      "l": __emval_as,
       "pa": __emval_call,
-      "s": __emval_call_method,
-      "q": __emval_call_void_method,
+      "o": __emval_call_method,
+      "r": __emval_call_void_method,
       "b": __emval_decref,
-      "r": __emval_get_global,
-      "l": __emval_get_method_caller,
-      "C": __emval_get_module_property,
+      "s": __emval_get_global,
+      "k": __emval_get_method_caller,
+      "w": __emval_get_module_property,
       "m": __emval_get_property,
       "e": __emval_incref,
-      "S": __emval_instanceof,
+      "R": __emval_instanceof,
       "t": __emval_new,
-      "G": __emval_new_array,
+      "H": __emval_new_array,
       "n": __emval_new_cstring,
-      "J": __emval_new_object,
+      "L": __emval_new_object,
       "g": __emval_run_destructors,
-      "A": __emval_set_property,
-      "h": __emval_take_value,
-      "B": __emval_typeof,
+      "C": __emval_set_property,
+      "j": __emval_take_value,
+      "D": __emval_typeof,
+      "ha": __localtime_js,
+      "Y": __mmap_js,
+      "Z": __munmap_js,
+      "ia": __tzset_js,
       "f": _abort,
-      "Q": _clock_gettime,
       "c": _emscripten_asm_const_int,
-      "_": _emscripten_get_heap_max,
-      "V": _emscripten_memcpy_big,
-      "H": _emscripten_resize_heap,
-      "X": _environ_get,
-      "Y": _environ_sizes_get,
-      "D": _fd_close,
-      "ha": _fd_read,
-      "T": _fd_seek,
-      "fa": _fd_write,
+      "W": _emscripten_get_heap_max,
+      "ea": _emscripten_get_now,
+      "ja": _emscripten_memcpy_big,
+      "I": _emscripten_resize_heap,
+      "_": _environ_get,
+      "$": _environ_sizes_get,
+      "E": _fd_close,
+      "ca": _fd_read,
+      "S": _fd_seek,
+      "ba": _fd_write,
       "K": _setTempRet0,
       "oa": _strftime,
-      "W": _strftime_l,
+      "z": _strftime_l,
       "na": _strptime
     };
     var asm = createWasm();
@@ -3882,104 +3797,80 @@ var load_perspective = function () {
       return (_free = Module["_free"] = Module["asm"]["ta"]).apply(null, arguments);
     };
 
-    var _main = Module["_main"] = function () {
-      return (_main = Module["_main"] = Module["asm"]["ua"]).apply(null, arguments);
-    };
-
-    var ___errno_location = Module["___errno_location"] = function () {
-      return (___errno_location = Module["___errno_location"] = Module["asm"]["wa"]).apply(null, arguments);
-    };
-
     var ___getTypeName = Module["___getTypeName"] = function () {
-      return (___getTypeName = Module["___getTypeName"] = Module["asm"]["xa"]).apply(null, arguments);
+      return (___getTypeName = Module["___getTypeName"] = Module["asm"]["va"]).apply(null, arguments);
     };
 
     var ___embind_register_native_and_builtin_types = Module["___embind_register_native_and_builtin_types"] = function () {
-      return (___embind_register_native_and_builtin_types = Module["___embind_register_native_and_builtin_types"] = Module["asm"]["ya"]).apply(null, arguments);
+      return (___embind_register_native_and_builtin_types = Module["___embind_register_native_and_builtin_types"] = Module["asm"]["wa"]).apply(null, arguments);
     };
 
-    var __get_tzname = Module["__get_tzname"] = function () {
-      return (__get_tzname = Module["__get_tzname"] = Module["asm"]["za"]).apply(null, arguments);
-    };
-
-    var __get_daylight = Module["__get_daylight"] = function () {
-      return (__get_daylight = Module["__get_daylight"] = Module["asm"]["Aa"]).apply(null, arguments);
-    };
-
-    var __get_timezone = Module["__get_timezone"] = function () {
-      return (__get_timezone = Module["__get_timezone"] = Module["asm"]["Ba"]).apply(null, arguments);
-    };
-
-    var stackAlloc = Module["stackAlloc"] = function () {
-      return (stackAlloc = Module["stackAlloc"] = Module["asm"]["Ca"]).apply(null, arguments);
-    };
-
-    var _memalign = Module["_memalign"] = function () {
-      return (_memalign = Module["_memalign"] = Module["asm"]["Da"]).apply(null, arguments);
+    var ___cxa_is_pointer_type = Module["___cxa_is_pointer_type"] = function () {
+      return (___cxa_is_pointer_type = Module["___cxa_is_pointer_type"] = Module["asm"]["xa"]).apply(null, arguments);
     };
 
     var dynCall_ji = Module["dynCall_ji"] = function () {
-      return (dynCall_ji = Module["dynCall_ji"] = Module["asm"]["Ea"]).apply(null, arguments);
+      return (dynCall_ji = Module["dynCall_ji"] = Module["asm"]["ya"]).apply(null, arguments);
     };
 
     var dynCall_viij = Module["dynCall_viij"] = function () {
-      return (dynCall_viij = Module["dynCall_viij"] = Module["asm"]["Fa"]).apply(null, arguments);
+      return (dynCall_viij = Module["dynCall_viij"] = Module["asm"]["za"]).apply(null, arguments);
     };
 
     var dynCall_viiij = Module["dynCall_viiij"] = function () {
-      return (dynCall_viiij = Module["dynCall_viiij"] = Module["asm"]["Ga"]).apply(null, arguments);
+      return (dynCall_viiij = Module["dynCall_viiij"] = Module["asm"]["Aa"]).apply(null, arguments);
     };
 
     var dynCall_viiijj = Module["dynCall_viiijj"] = function () {
-      return (dynCall_viiijj = Module["dynCall_viiijj"] = Module["asm"]["Ha"]).apply(null, arguments);
-    };
-
-    var dynCall_viiji = Module["dynCall_viiji"] = function () {
-      return (dynCall_viiji = Module["dynCall_viiji"] = Module["asm"]["Ia"]).apply(null, arguments);
-    };
-
-    var dynCall_viijji = Module["dynCall_viijji"] = function () {
-      return (dynCall_viijji = Module["dynCall_viijji"] = Module["asm"]["Ja"]).apply(null, arguments);
-    };
-
-    var dynCall_viijj = Module["dynCall_viijj"] = function () {
-      return (dynCall_viijj = Module["dynCall_viijj"] = Module["asm"]["Ka"]).apply(null, arguments);
-    };
-
-    var dynCall_viijij = Module["dynCall_viijij"] = function () {
-      return (dynCall_viijij = Module["dynCall_viijij"] = Module["asm"]["La"]).apply(null, arguments);
-    };
-
-    var dynCall_viiiijii = Module["dynCall_viiiijii"] = function () {
-      return (dynCall_viiiijii = Module["dynCall_viiiijii"] = Module["asm"]["Ma"]).apply(null, arguments);
+      return (dynCall_viiijj = Module["dynCall_viiijj"] = Module["asm"]["Ba"]).apply(null, arguments);
     };
 
     var dynCall_viji = Module["dynCall_viji"] = function () {
-      return (dynCall_viji = Module["dynCall_viji"] = Module["asm"]["Na"]).apply(null, arguments);
+      return (dynCall_viji = Module["dynCall_viji"] = Module["asm"]["Ca"]).apply(null, arguments);
+    };
+
+    var dynCall_viiji = Module["dynCall_viiji"] = function () {
+      return (dynCall_viiji = Module["dynCall_viiji"] = Module["asm"]["Da"]).apply(null, arguments);
+    };
+
+    var dynCall_viijji = Module["dynCall_viijji"] = function () {
+      return (dynCall_viijji = Module["dynCall_viijji"] = Module["asm"]["Ea"]).apply(null, arguments);
+    };
+
+    var dynCall_viijj = Module["dynCall_viijj"] = function () {
+      return (dynCall_viijj = Module["dynCall_viijj"] = Module["asm"]["Fa"]).apply(null, arguments);
+    };
+
+    var dynCall_viijij = Module["dynCall_viijij"] = function () {
+      return (dynCall_viijij = Module["dynCall_viijij"] = Module["asm"]["Ga"]).apply(null, arguments);
+    };
+
+    var dynCall_viiiijii = Module["dynCall_viiiijii"] = function () {
+      return (dynCall_viiiijii = Module["dynCall_viiiijii"] = Module["asm"]["Ha"]).apply(null, arguments);
     };
 
     var dynCall_vijjji = Module["dynCall_vijjji"] = function () {
-      return (dynCall_vijjji = Module["dynCall_vijjji"] = Module["asm"]["Oa"]).apply(null, arguments);
+      return (dynCall_vijjji = Module["dynCall_vijjji"] = Module["asm"]["Ia"]).apply(null, arguments);
     };
 
     var dynCall_jiji = Module["dynCall_jiji"] = function () {
-      return (dynCall_jiji = Module["dynCall_jiji"] = Module["asm"]["Pa"]).apply(null, arguments);
-    };
-
-    var dynCall_iiiiij = Module["dynCall_iiiiij"] = function () {
-      return (dynCall_iiiiij = Module["dynCall_iiiiij"] = Module["asm"]["Qa"]).apply(null, arguments);
-    };
-
-    var dynCall_iiiiijj = Module["dynCall_iiiiijj"] = function () {
-      return (dynCall_iiiiijj = Module["dynCall_iiiiijj"] = Module["asm"]["Ra"]).apply(null, arguments);
-    };
-
-    var dynCall_iiiiiijj = Module["dynCall_iiiiiijj"] = function () {
-      return (dynCall_iiiiiijj = Module["dynCall_iiiiiijj"] = Module["asm"]["Sa"]).apply(null, arguments);
+      return (dynCall_jiji = Module["dynCall_jiji"] = Module["asm"]["Ja"]).apply(null, arguments);
     };
 
     var dynCall_viijii = Module["dynCall_viijii"] = function () {
-      return (dynCall_viijii = Module["dynCall_viijii"] = Module["asm"]["Ta"]).apply(null, arguments);
+      return (dynCall_viijii = Module["dynCall_viijii"] = Module["asm"]["Ka"]).apply(null, arguments);
+    };
+
+    var dynCall_iiiiij = Module["dynCall_iiiiij"] = function () {
+      return (dynCall_iiiiij = Module["dynCall_iiiiij"] = Module["asm"]["La"]).apply(null, arguments);
+    };
+
+    var dynCall_iiiiijj = Module["dynCall_iiiiijj"] = function () {
+      return (dynCall_iiiiijj = Module["dynCall_iiiiijj"] = Module["asm"]["Ma"]).apply(null, arguments);
+    };
+
+    var dynCall_iiiiiijj = Module["dynCall_iiiiiijj"] = function () {
+      return (dynCall_iiiiiijj = Module["dynCall_iiiiiijj"] = Module["asm"]["Na"]).apply(null, arguments);
     };
 
     var calledRun;
@@ -3990,36 +3881,10 @@ var load_perspective = function () {
       this.status = status;
     }
 
-    var calledMain = false;
-
     dependenciesFulfilled = function runCaller() {
       if (!calledRun) run();
       if (!calledRun) dependenciesFulfilled = runCaller;
     };
-
-    function callMain(args) {
-      var entryFunction = Module["_main"];
-      args = args || [];
-      var argc = args.length + 1;
-      var argv = stackAlloc((argc + 1) * 4);
-      HEAP32[argv >>> 2] = allocateUTF8OnStack(thisProgram);
-
-      for (var i = 1; i < argc; i++) {
-        HEAP32[(argv >> 2) + i >>> 0] = allocateUTF8OnStack(args[i - 1]);
-      }
-
-      HEAP32[(argv >> 2) + argc >>> 0] = 0;
-
-      try {
-        var ret = entryFunction(argc, argv);
-        exit(ret, true);
-        return ret;
-      } catch (e) {
-        return handleException(e);
-      } finally {
-        calledMain = true;
-      }
-    }
 
     function run(args) {
       args = args || arguments_;
@@ -4040,10 +3905,8 @@ var load_perspective = function () {
         Module["calledRun"] = true;
         if (ABORT) return;
         initRuntime();
-        preMain();
         readyPromiseResolve(Module);
         if (Module["onRuntimeInitialized"]) Module["onRuntimeInitialized"]();
-        if (shouldRunNow) callMain(args);
         postRun();
       }
 
@@ -4062,27 +3925,6 @@ var load_perspective = function () {
 
     Module["run"] = run;
 
-    function exit(status, implicit) {
-      EXITSTATUS = status;
-
-      if (keepRuntimeAlive()) {} else {
-        exitRuntime();
-      }
-
-      procExit(status);
-    }
-
-    function procExit(code) {
-      EXITSTATUS = code;
-
-      if (!keepRuntimeAlive()) {
-        if (Module["onExit"]) Module["onExit"](code);
-        ABORT = true;
-      }
-
-      quit_(code, new ExitStatus(code));
-    }
-
     if (Module["preInit"]) {
       if (typeof Module["preInit"] == "function") Module["preInit"] = [Module["preInit"]];
 
@@ -4091,12 +3933,10 @@ var load_perspective = function () {
       }
     }
 
-    var shouldRunNow = true;
-    if (Module["noInitialRun"]) shouldRunNow = false;
     run();
     return load_perspective.ready;
   };
-}();
+})();
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (load_perspective);
 
@@ -4521,14 +4361,14 @@ class Server {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "DATA_TYPES": () => (/* binding */ DATA_TYPES),
+/* harmony export */   "COLUMN_SEPARATOR_STRING": () => (/* binding */ COLUMN_SEPARATOR_STRING),
 /* harmony export */   "CONFIG_ALIASES": () => (/* binding */ CONFIG_ALIASES),
 /* harmony export */   "CONFIG_VALID_KEYS": () => (/* binding */ CONFIG_VALID_KEYS),
+/* harmony export */   "DATA_TYPES": () => (/* binding */ DATA_TYPES),
+/* harmony export */   "FILTER_OPERATORS": () => (/* binding */ FILTER_OPERATORS),
 /* harmony export */   "SORT_ORDERS": () => (/* binding */ SORT_ORDERS),
 /* harmony export */   "SORT_ORDER_IDS": () => (/* binding */ SORT_ORDER_IDS),
 /* harmony export */   "TYPE_AGGREGATES": () => (/* binding */ TYPE_AGGREGATES),
-/* harmony export */   "FILTER_OPERATORS": () => (/* binding */ FILTER_OPERATORS),
-/* harmony export */   "COLUMN_SEPARATOR_STRING": () => (/* binding */ COLUMN_SEPARATOR_STRING),
 /* harmony export */   "TYPE_FILTERS": () => (/* binding */ TYPE_FILTERS)
 /* harmony export */ });
 /******************************************************************************
@@ -4549,19 +4389,19 @@ const DATA_TYPES = {
   object: "object"
 };
 const CONFIG_ALIASES = {
-  row_pivot: "row_pivots",
-  "row-pivot": "row_pivots",
-  "row-pivots": "row_pivots",
-  col_pivot: "column_pivots",
-  col_pivots: "column_pivots",
-  column_pivot: "column_pivots",
-  "column-pivot": "column_pivots",
-  "column-pivots": "column_pivots",
+  row_pivot: "group_by",
+  "row-pivot": "group_by",
+  "row-pivots": "group_by",
+  col_pivot: "split_by",
+  col_pivots: "split_by",
+  column_pivot: "split_by",
+  "column-pivot": "split_by",
+  "column-pivots": "split_by",
   filters: "filter",
   sorts: "sort"
 };
-const CONFIG_VALID_KEYS = ["viewport", "row_pivots", "column_pivots", "aggregates", "columns", "filter", "sort", "computed_columns", "expressions", "row_pivot_depth", "filter_op"];
-const NUMBER_AGGREGATES = ["any", "avg", "abs sum", "count", "distinct count", "dominant", "first by index", "last by index", "last", "high", "join", "low", "mean", "median", "pct sum parent", "pct sum grand total", "stddev", "sum", "sum abs", "sum not null", "unique", "var"];
+const CONFIG_VALID_KEYS = ["viewport", "group_by", "split_by", "aggregates", "columns", "filter", "sort", "computed_columns", "expressions", "group_by_depth", "split_by_depth", "filter_op"];
+const NUMBER_AGGREGATES = ["any", "avg", "abs sum", "count", "distinct count", "dominant", "first by index", "last by index", "last minus first", "last", "high", "join", "low", "high minus low", "mean", "median", "pct sum parent", "pct sum grand total", "stddev", "sum", "sum abs", "sum not null", "unique", "var"];
 const STRING_AGGREGATES = ["any", "count", "distinct count", "distinct leaf", "dominant", "first by index", "join", "last by index", "last", "unique"];
 const BOOLEAN_AGGREGATES = ["any", "count", "distinct count", "distinct leaf", "dominant", "first by index", "last by index", "last", "unique"];
 const SORT_ORDERS = ["none", "asc", "desc", "col asc", "col desc", "asc abs", "desc abs", "col asc abs", "col desc abs"];
@@ -4921,8 +4761,8 @@ function clean_data(value) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "extract_vector": () => (/* binding */ extract_vector),
 /* harmony export */   "extract_map": () => (/* binding */ extract_map),
+/* harmony export */   "extract_vector": () => (/* binding */ extract_vector),
 /* harmony export */   "fill_vector": () => (/* binding */ fill_vector)
 /* harmony export */ });
 /******************************************************************************
@@ -5057,6 +4897,8 @@ const WARNED_KEYS = new Set();
     if (!_POOL_DEBOUNCES[table_id]) {
       _POOL_DEBOUNCES[table_id] = pool;
       setTimeout(() => _call_process(table_id));
+    } else {
+      pool.delete();
     }
   }
 
@@ -5071,6 +4913,9 @@ const WARNED_KEYS = new Set();
   }
 
   function _remove_process(table_id) {
+    var _POOL_DEBOUNCES$table;
+
+    (_POOL_DEBOUNCES$table = _POOL_DEBOUNCES[table_id]) === null || _POOL_DEBOUNCES$table === void 0 ? void 0 : _POOL_DEBOUNCES$table.delete();
     delete _POOL_DEBOUNCES[table_id];
   }
 
@@ -5123,6 +4968,8 @@ const WARNED_KEYS = new Set();
       _set_process(pool, table_id);
     } else {
       pool._process();
+
+      pool.delete();
     }
 
     return _Table;
@@ -5148,7 +4995,7 @@ const WARNED_KEYS = new Set();
    *
    * @example
    * // Returns a new View, pivoted in the row space by the "name" column.
-   * await table.view({row_pivots: ["name"]});
+   * await table.view({group_by: ["name"]});
    *
    * @class
    * @hideconstructor
@@ -5161,7 +5008,7 @@ const WARNED_KEYS = new Set();
     this.table = table;
     this.config = config || {};
     this.view_config = view_config || new view_config();
-    this.is_unit_context = this.table.index === "" && sides === 0 && this.view_config.row_pivots.length === 0 && this.view_config.column_pivots.length === 0 && this.view_config.filter.length === 0 && this.view_config.sort.length === 0 && this.view_config.expressions.length === 0;
+    this.is_unit_context = this.table.index === "" && sides === 0 && this.view_config.group_by.length === 0 && this.view_config.split_by.length === 0 && this.view_config.filter.length === 0 && this.view_config.sort.length === 0 && this.view_config.expressions.length === 0;
 
     if (this.is_unit_context) {
       this._View = __MODULE__.make_view_unit(table._Table, name, _config_constants_js__WEBPACK_IMPORTED_MODULE_0__.COLUMN_SEPARATOR_STRING, this.view_config, null);
@@ -5487,7 +5334,7 @@ const WARNED_KEYS = new Set();
     for (let ridx = start_row; ridx < end_row; ridx++) {
       let row_path = has_row_path ? slice.get_row_path(ridx) : undefined;
 
-      if (has_row_path && leaves_only && row_path.size() < this.config.row_pivots.length) {
+      if (has_row_path && leaves_only && row_path.size() < this.config.group_by.length) {
         row_path.delete();
         continue;
       }
@@ -5656,10 +5503,10 @@ const WARNED_KEYS = new Set();
    *
    * @returns {Promise<Array>} A Promise resolving to An array of Objects
    * representing the rows of this {@link module:perspective~view}.  If this
-   * {@link module:perspective~view} had a "row_pivots" config parameter
+   * {@link module:perspective~view} had a "group_by" config parameter
    * supplied when constructed, each row Object will have a "__ROW_PATH__"
    * key, whose value specifies this row's aggregated path.  If this
-   * {@link module:perspective~view} had a "column_pivots" config parameter
+   * {@link module:perspective~view} had a "split_by" config parameter
    * supplied, the keys of this object will be comma-prepended with their
    * comma-separated column paths.
    */
@@ -5685,10 +5532,10 @@ const WARNED_KEYS = new Set();
    *
    * @returns {Promise<Array>} A Promise resolving to An array of Objects
    * representing the rows of this {@link module:perspective~view}.  If this
-   * {@link module:perspective~view} had a "row_pivots" config parameter
+   * {@link module:perspective~view} had a "group_by" config parameter
    * supplied when constructed, each row Object will have a "__ROW_PATH__"
    * key, whose value specifies this row's aggregated path.  If this
-   * {@link module:perspective~view} had a "column_pivots" config parameter
+   * {@link module:perspective~view} had a "split_by" config parameter
    * supplied, the keys of this object will be comma-prepended with their
    * comma-separated column paths.
    */
@@ -5713,10 +5560,10 @@ const WARNED_KEYS = new Set();
    * serialize.
    * @returns {Promise<string>} A Promise resolving to a string in CSV format
    * representing the rows of this {@link module:perspective~view}.  If this
-   * {@link module:perspective~view} had a "row_pivots" config parameter
+   * {@link module:perspective~view} had a "group_by" config parameter
    * supplied when constructed, each row will have prepended those values
    * specified by this row's aggregated path.  If this
-   * {@link module:perspective~view} had a "column_pivots" config parameter
+   * {@link module:perspective~view} had a "split_by" config parameter
    * supplied, the keys of this object will be comma-prepended with their
    * comma-separated column paths.
    */
@@ -5823,7 +5670,7 @@ const WARNED_KEYS = new Set();
   };
   /**
    * The number of aggregated rows in this {@link module:perspective~view}.
-   * This is affected by the "row_pivots" configuration parameter supplied to
+   * This is affected by the "group_by" configuration parameter supplied to
    * this {@link module:perspective~view}'s contructor.
    *
    * @async
@@ -5839,7 +5686,7 @@ const WARNED_KEYS = new Set();
   };
   /**
    * The number of aggregated columns in this {@link view}.  This is affected
-   * by the "column_pivots" configuration parameter supplied to this
+   * by the "split_by" configuration parameter supplied to this
    * {@link view}'s contructor.
    *
    * @async
@@ -5877,7 +5724,7 @@ const WARNED_KEYS = new Set();
 
 
   view.prototype.expand = function (idx) {
-    return this._View.expand(idx, this.config.row_pivots.length);
+    return this._View.expand(idx, this.config.group_by.length);
   };
   /**
    * Collapses the row at index `idx`.
@@ -5898,7 +5745,7 @@ const WARNED_KEYS = new Set();
 
 
   view.prototype.set_depth = function (depth) {
-    return this._View.set_depth(depth, this.config.row_pivots.length);
+    return this._View.set_depth(depth, this.config.group_by.length);
   };
   /**
    * Returns the data of all changed rows in JSON format, or for 1+ sided
@@ -6114,16 +5961,16 @@ const WARNED_KEYS = new Set();
 
 
   function view_config(config) {
-    this.row_pivots = config.row_pivots || [];
-    this.column_pivots = config.column_pivots || [];
+    this.group_by = config.group_by || [];
+    this.split_by = config.split_by || [];
     this.aggregates = config.aggregates || {};
     this.columns = config.columns;
     this.filter = config.filter || [];
     this.sort = config.sort || [];
     this.expressions = config.expressions || [];
     this.filter_op = config.filter_op || "and";
-    this.row_pivot_depth = config.row_pivot_depth;
-    this.column_pivot_depth = config.column_pivot_depth;
+    this.group_by_depth = config.group_by_depth;
+    this.split_by_depth = config.split_by_depth;
   }
   /**
    * Transform configuration items into `std::vector` objects for interface
@@ -6134,16 +5981,16 @@ const WARNED_KEYS = new Set();
    */
 
 
-  view_config.prototype.get_row_pivots = function () {
+  view_config.prototype.get_group_by = function () {
     let vector = __MODULE__.make_string_vector();
 
-    return (0,_emscripten_js__WEBPACK_IMPORTED_MODULE_3__.fill_vector)(vector, this.row_pivots);
+    return (0,_emscripten_js__WEBPACK_IMPORTED_MODULE_3__.fill_vector)(vector, this.group_by);
   };
 
-  view_config.prototype.get_column_pivots = function () {
+  view_config.prototype.get_split_by = function () {
     let vector = __MODULE__.make_string_vector();
 
-    return (0,_emscripten_js__WEBPACK_IMPORTED_MODULE_3__.fill_vector)(vector, this.column_pivots);
+    return (0,_emscripten_js__WEBPACK_IMPORTED_MODULE_3__.fill_vector)(vector, this.split_by);
   };
 
   view_config.prototype.get_columns = function () {
@@ -6216,10 +6063,16 @@ const WARNED_KEYS = new Set();
 
   function table(_Table, index, limit, overridden_types) {
     this._Table = _Table;
-    this.gnode_id = this._Table.get_gnode().get_id();
 
-    this._Table.get_pool().set_update_delegate(this);
+    const gnode = this._Table.get_gnode();
 
+    this.gnode_id = gnode.get_id();
+    gnode.delete();
+
+    const pool = this._Table.get_pool();
+
+    pool.set_update_delegate(this);
+    pool.delete();
     this.name = Math.random() + "";
     this.initialized = false;
     this.index = index;
@@ -6642,15 +6495,15 @@ const WARNED_KEYS = new Set();
    *
    * @param {Object} [config] The configuration object for this
    * {@link module:perspective~view}.
-   * @param {Array<string>} [config.row_pivots] An array of column names to
-   * use as {@link https://en.wikipedia.org/wiki/Pivot_table#Row_labels Row Pivots}.
-   * @param {Array<string>} [config.column_pivots] An array of column names to
-   * use as {@link https://en.wikipedia.org/wiki/Pivot_table#Column_labels Column Pivots}.
+   * @param {Array<string>} [config.group_by] An array of column names to
+   * use as {@link https://en.wikipedia.org/wiki/Pivot_table#Row_labels Group By}.
+   * @param {Array<string>} [config.split_by] An array of column names to
+   * use as {@link https://en.wikipedia.org/wiki/Pivot_table#Column_labels Split By}.
    * @param {Array<Object>} [config.columns] An array of column names for the
    * output columns. If none are provided, all columns are output.
    * @param {Object} [config.aggregates] An object, the keys of which are
    * column names, and their respective values are the aggregates calculations
-   * to use when this view has `row_pivots`. A column provided to
+   * to use when this view has `group_by`. A column provided to
    * `config.columns` without an aggregate in this object, will use the
    * default aggregate calculation for its type.
    * @param {Array<Array<string>>} [config.filter] An Array of Filter
@@ -6664,7 +6517,7 @@ const WARNED_KEYS = new Set();
    *
    * @example
    * const view = await table.view({
-   *      row_pivots: ["region"],
+   *      group_by: ["region"],
    *      columns: ["region"],
    *      aggregates: {"region": "dominant"},
    *      filter: [["client", "contains", "fred"]],
@@ -6718,8 +6571,8 @@ const WARNED_KEYS = new Set();
       }
     }
 
-    config.row_pivots = config.row_pivots || [];
-    config.column_pivots = config.column_pivots || [];
+    config.group_by = config.group_by || [];
+    config.split_by = config.split_by || [];
     config.aggregates = config.aggregates || {};
     config.filter = config.filter || [];
     config.sort = config.sort || [];
@@ -6760,8 +6613,8 @@ const WARNED_KEYS = new Set();
     let name = Math.random() + "";
     let sides;
 
-    if (config.row_pivots.length > 0 || config.column_pivots.length > 0) {
-      if (config.column_pivots && config.column_pivots.length > 0) {
+    if (config.group_by.length > 0 || config.split_by.length > 0) {
+      if (config.split_by && config.split_by.length > 0) {
         sides = 2;
       } else {
         sides = 1;
@@ -6874,7 +6727,7 @@ const WARNED_KEYS = new Set();
       const op = __MODULE__.t_op.OP_INSERT; // update the Table in C++, but don't keep the returned C++ Table
       // reference as it is identical
 
-      make_table(pdata, this._Table, this.index, this.limit, op, true, is_arrow, is_csv, options.port_id);
+      make_table(pdata, this._Table, this.index, this.limit, op, true, is_arrow, is_csv, options.port_id).delete();
       this.initialized = true;
     } catch (e) {
       console.error(`Update failed: ${e}`);
@@ -6925,7 +6778,7 @@ const WARNED_KEYS = new Set();
       const op = __MODULE__.t_op.OP_DELETE; // update the Table in C++, but don't keep the returned Table
       // reference as it is identical
 
-      make_table(pdata, this._Table, this.index, this.limit, op, false, is_arrow, false, options.port_id);
+      make_table(pdata, this._Table, this.index, this.limit, op, false, is_arrow, false, options.port_id).delete();
       this.initialized = true;
     } catch (e) {
       console.error(`Remove failed`, e);
@@ -7129,6 +6982,10 @@ const WARNED_KEYS = new Set();
           wasmJSMethod: "native-wasm"
         }).then(mod => {
           __MODULE__ = mod;
+
+          __MODULE__.init();
+
+          notify_main_thread();
           super.init(msg);
         });
       }
@@ -7148,6 +7005,21 @@ const WARNED_KEYS = new Set();
   return perspective;
 }
 
+function notify_main_thread() {
+  if (typeof self !== "undefined") {
+    try {
+      if (self.dispatchEvent && !self._perspective_initialized && self.document !== null) {
+        self._perspective_initialized = true;
+        const event = self.document.createEvent("Event");
+        event.initEvent("perspective-ready", false, true);
+        self.dispatchEvent(event);
+      } else if (!self.document && self.postMessage) {
+        self.postMessage({});
+      }
+    } catch (e) {}
+  }
+}
+
 /***/ }),
 
 /***/ "./node_modules/@finos/perspective/src/js/utils.js":
@@ -7159,11 +7031,11 @@ const WARNED_KEYS = new Set();
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "get_column_type": () => (/* binding */ get_column_type),
 /* harmony export */   "bindall": () => (/* binding */ bindall),
-/* harmony export */   "detectNode": () => (/* binding */ detectNode),
 /* harmony export */   "detectChrome": () => (/* binding */ detectChrome),
-/* harmony export */   "detect_iphone": () => (/* binding */ detect_iphone)
+/* harmony export */   "detectNode": () => (/* binding */ detectNode),
+/* harmony export */   "detect_iphone": () => (/* binding */ detect_iphone),
+/* harmony export */   "get_column_type": () => (/* binding */ get_column_type)
 /* harmony export */ });
 /******************************************************************************
  *
@@ -7603,7 +7475,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _finos_perspective_pkg_esm_perspective_cpp_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @finos/perspective/pkg/esm/perspective.cpp.js */ "./node_modules/@finos/perspective/dist/pkg/esm/perspective.cpp.js");
+/* harmony import */ var _finos_perspective_dist_pkg_esm_perspective_cpp_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @finos/perspective/dist/pkg/esm/perspective.cpp.js */ "./node_modules/@finos/perspective/dist/pkg/esm/perspective.cpp.js");
 /* harmony import */ var _perspective_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./perspective.js */ "./node_modules/@finos/perspective/src/js/perspective.js");
 /******************************************************************************
  *
@@ -7619,13 +7491,13 @@ __webpack_require__.r(__webpack_exports__);
 let _perspective_instance;
 
 if (__webpack_require__.g.document !== undefined && typeof WebAssembly !== "undefined") {
-  _perspective_instance = __webpack_require__.g.perspective = (0,_perspective_js__WEBPACK_IMPORTED_MODULE_1__["default"])((0,_finos_perspective_pkg_esm_perspective_cpp_js__WEBPACK_IMPORTED_MODULE_0__["default"])({
+  _perspective_instance = __webpack_require__.g.perspective = (0,_perspective_js__WEBPACK_IMPORTED_MODULE_1__["default"])((0,_finos_perspective_dist_pkg_esm_perspective_cpp_js__WEBPACK_IMPORTED_MODULE_0__["default"])({
     wasmJSMethod: "native-wasm",
     printErr: x => console.error(x),
     print: x => console.log(x)
   }));
 } else {
-  _perspective_instance = __webpack_require__.g.perspective = (0,_perspective_js__WEBPACK_IMPORTED_MODULE_1__["default"])(_finos_perspective_pkg_esm_perspective_cpp_js__WEBPACK_IMPORTED_MODULE_0__["default"]);
+  _perspective_instance = __webpack_require__.g.perspective = (0,_perspective_js__WEBPACK_IMPORTED_MODULE_1__["default"])(_finos_perspective_dist_pkg_esm_perspective_cpp_js__WEBPACK_IMPORTED_MODULE_0__["default"]);
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_perspective_instance);
