@@ -8,7 +8,6 @@ import "@finos/perspective-viewer-datagrid";
 import "@finos/perspective-viewer-d3fc";
 
 import "./components/custom_datagrid";
-// import "./components/custom_heatmap";
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import scrollbars from "!raw-loader!./style/scrollbar.css";
 import Header from "./components/header";
@@ -87,34 +86,15 @@ function App() {
     }
   }, [tables, ticker]);
 
-  // reset function to clear tables
-  const resetTables = useCallback(() => {
-    tables.reference.clear();
-    tables.bars.clear();
-    tables.news.clear();
-    tables.dividends.clear();
-    tables.splits.clear();
-    tables.snapshot.clear();
-  }, [tables]);
-
   /**
    * Layout
    */
   // layout
-  const [layout, changeLayout] = useState(layout1);
-  const [layouts, changeLayouts] = useState({});
-  useEffect(() => {
-    const startingLayouts = {
-      "Layout 1": layout1,
-      "Layout 2": layout2,
-    };
-
-    // Restore a saved config or default
-    const customLayout = window.localStorage.getItem("polygon_io_perspective_workspace_config");
-    if (customLayout) {
-      changeLayouts({...startingLayouts, "Custom Layout": JSON.parse(customLayout)});
-    }
-  }, []);
+  const [layout, changeLayout] = useState("Layout 1");
+  const [layouts, changeLayouts] = useState({
+    "Layout 1": layout1,
+    "Layout 2": layout2,
+  });
 
   // restore layout when it changes
   useEffect(() => document.getElementsByTagName("perspective-workspace")[0].restore(layout), [layout]);
@@ -124,7 +104,7 @@ function App() {
    */
   return (
     <div id="main" className="container">
-      <Header layout={layout} changeLayout={changeLayout} layouts={layouts} changeApiKey={changeApiKey} ticker={ticker} changeTicker={changeTicker} resetTables={resetTables} />
+      <Header layout={layout} changeLayout={changeLayout} layouts={layouts} changeLayouts={changeLayouts} changeApiKey={changeApiKey} ticker={ticker} changeTicker={changeTicker} />
       <Workspace tables={tables} layout={layout} layouts={layouts} changeLayouts={changeLayouts} />
       <Footer />
     </div>

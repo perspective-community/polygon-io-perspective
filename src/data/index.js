@@ -8,33 +8,32 @@ let currentClients;
 export const schemas = {
   reference: {
     logo: "string",
-    listdate: "date",
-    cik: "string",
-    bloomberg: "string",
-    figi: "string",
-    lei: "string",
-    sic: "string",
-    country: "string",
-    industry: "string",
-    sector: "string",
-    marketcap: "integer",
-    employees: "integer",
-    phone: "string",
-    ceo: "string",
-    url: "string",
-    description: "string",
-    exchange: "string",
-    name: "string",
     ticker: "string",
-    exchangeSymbol: "string",
-    hq_address: "string",
-    hq_state: "string",
-    hq_country: "string",
+    name: "string",
+    market: "string",
+    locale: "string",
+    primary_exchange: "string",
     type: "string",
-    updated: "date",
-    tags: "string",
-    similar: "string",
     active: "boolean",
+    currency_name: "string",
+    cik: "string",
+    composite_figi: "string",
+    share_class_figi: "string",
+    market_cap: "integer",
+    phone_number: "string",
+    address: "string",
+    city: "string",
+    state: "string",
+    postal_code: "string",
+    description: "string",
+    sic_code: "string",
+    sic_description: "string",
+    ticker_root: "string",
+    homepage_url: "string",
+    total_employees: "integer",
+    list_date: "string",
+    share_class_shares_outstanding: "integer",
+    weighted_shares_outstanding: "integer",
   },
   bars: {
     ticker: "string",
@@ -128,7 +127,7 @@ export const getClients = (apiKey) => {
 
 export const getReferenceData = async (search) => {
   if (currentClients) {
-    return (await currentClients.rest.reference.tickers({limit: 50, search})).results;
+    return (await currentClients.rest.reference.tickers({limit: 25, search})).results;
   }
   return SampleData.reference;
 };
@@ -144,19 +143,40 @@ export const getTickerReferenceData = async (symbol) => {
   // if not in our sample data or nonexistent, return nothing
   if (!rawData) return [];
 
-  // flatten
-  if (typeof rawData.tags === "string") {
-    rawData.tags = rawData.tags.join(",");
-  }
-
-  if (typeof rawData.similar === "string") {
-    rawData.similar = rawData.similar.join(",");
-  }
-
-  rawData.ticker = symbol;
+  rawData = rawData.results;
 
   // envelop in array
-  return [rawData];
+  return [
+    {
+      ticker: rawData.ticker,
+      name: rawData.name,
+      market: rawData.market,
+      locale: rawData.locale,
+      primary_exchange: rawData.primary_exchange,
+      type: rawData.type,
+      active: rawData.active,
+      currency_name: rawData.currency_name,
+      cik: rawData.cik,
+      composite_figi: rawData.composite_figi,
+      share_class_figi: rawData.share_class_figi,
+      market_cap: rawData.market_cap,
+      phone_number: rawData.phone_number,
+      address: rawData.address.address1,
+      city: rawData.address.city,
+      state: rawData.address.state,
+      postal_code: rawData.address.postal_code,
+      description: rawData.description,
+      sic_code: rawData.sic_code,
+      sic_description: rawData.sic_description,
+      ticker_root: rawData.ticker_root,
+      homepage_url: rawData.homepage_url,
+      total_employees: rawData.total_employees,
+      list_date: rawData.list_date,
+      logo: `${rawData.branding.icon_url}?apiKey=${currentApiKey}`,
+      share_class_shares_outstanding: rawData.share_class_shares_outstanding,
+      weighted_shares_outstanding: rawData.weighted_shares_outstanding,
+    },
+  ];
 };
 
 export const getBars = async (symbol) => {
@@ -220,7 +240,7 @@ export const getDividends = async (symbol) => {
   let rawData;
 
   if (currentClients) {
-    rawData = (await currentClients.rest.reference.stockDividends(symbol)).results;
+    rawData = (await currentClients.rest.reference.dividends(symbol)).results;
   } else {
     rawData = SampleData.dividends[symbol];
   }

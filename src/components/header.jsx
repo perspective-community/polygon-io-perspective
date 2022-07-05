@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import React, {useState} from "react";
 import Autosuggest from "react-autosuggest";
 
@@ -5,10 +6,10 @@ import {getReferenceData} from "../data";
 
 function Header(props) {
   // store ticker and layouts in parent element state
-  const {layouts} = props;
+  const {layout, layouts} = props;
 
   // pass state modifiers in
-  const {changeTicker, changeLayout, changeApiKey, resetTables} = props;
+  const {changeTicker, changeLayout, changeLayouts, changeApiKey} = props;
 
   // search bar state
   const [suggestions, changeSuggestions] = useState([]);
@@ -51,22 +52,36 @@ function Header(props) {
           inputProps={inputProps}
         />
       </div>
-      <button className="text_button" type="button" onClick={() => resetTables()}>
-        Reset Data
-      </button>
-      <select
-        className="layout_config"
-        onChange={(e) => {
-          console.log(JSON.stringify(e.target.value));
-          changeLayout(layouts[e.target.value]);
-        }}
-      >
-        {Object.keys(layouts).map((k) => (
-          <option key={k} value={k}>
-            {k}
-          </option>
-        ))}
-      </select>
+      <div>
+        <select
+          className="layout_config"
+          onChange={(e) => {
+            changeLayout(e.target.value);
+          }}
+          value={layout}
+        >
+          {Object.keys(layouts).map((k) => (
+            <option key={k} value={k}>
+              {k}
+            </option>
+          ))}
+        </select>
+        <button
+          className="text_button"
+          type="button"
+          onClick={async () => {
+            const workspace = document.getElementById("workspace");
+            const modifiedConfig = await workspace.save();
+
+            window.localStorage.setItem("polygon_io_perspective_workspace_config", JSON.stringify(modifiedConfig));
+
+            changeLayouts({...layouts, "Custom Layout": modifiedConfig});
+            changeLayout("Custom Layout");
+          }}
+        >
+          Save Layout
+        </button>
+      </div>
     </div>
   );
 }
