@@ -5147,10 +5147,10 @@ mobile-drag-drop-shadow-dom@3.0.0:
   resolved "https://registry.yarnpkg.com/mobile-drag-drop-shadow-dom/-/mobile-drag-drop-shadow-dom-3.0.0.tgz#f91014af66a0331338d4dfef30ecc5ddcb5a0687"
   integrity sha512-cNDH83lfYhllESH+ddjyxXdnjunLec0ldnygm3nWY1zMtfeA1tHoVsAasZy63QhnRuN4ps0pGuL8TolUK/sYjA==
 
-moment@^2.29.2:
-  version "2.29.3"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.3.tgz#edd47411c322413999f7a5940d526de183c031f3"
-  integrity sha512-c6YRvhEo//6T2Jz/vVtYzqBzwvPT95JBQ+smCytzf7c50oMZRsR/a4w88aD34I+/QVSfnoAnSBFPJHItlOMJVw==
+moment@^2.29.4:
+  version "2.29.4"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
+  integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
 
 monaco-editor-webpack-plugin@3.1.0:
   version "3.1.0"
